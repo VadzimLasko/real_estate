@@ -1,0 +1,16 @@
+.container
+    display: grid
+    text-align: center
+    grid-template-rows: repeat(2, 10vh) repeat(6, 13.3vh) min-content 
+    grid-template-columns: [full-start] minmax(12rem, 1fr)  minmax(min-content, 156rem)  minmax(12rem, 1fr) [full-end] 
+
+
+.main
+    background-color: green
+    display: grid
+    grid-template-rows: repeat(8, 10vh) 
+    grid-template-columns: repeat(10, minmax(min-content, 1fr))
+    grid-column: full-start / full-end
+    grid-row: 3 / 9
+
+
