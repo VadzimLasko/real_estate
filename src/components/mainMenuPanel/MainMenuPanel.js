@@ -3,7 +3,7 @@ import "./mainMenuPanel.sass";
 const MainMenuPanel = () => {
   return (
     <>
-      <section className="section-main">section-main</section>
+      <section className="section-main"></section>
     </>
   );
 };
