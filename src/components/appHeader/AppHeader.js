@@ -7,13 +7,11 @@ const AppHeader = () => {
     <header className="header">
       <div className="header-container">
         <div className="header-container__left">
-          <div className="header-container__logo">
-            <a href="#" className="logo">
-              НЕДВИЖИМОСТЬ
-              <img src="icons/logo.svg" alt="logo" className="logo__img" />
-            </a>
-          </div>
-          <div className="header-container__filter-btns">
+          <a href="#" className="header__logo">
+            Недвижимость
+          </a>
+
+          <div className="header__navigation">
             <button className="btn-1">1 кнопка</button>
             <button className="btn-2">2 кнопка</button>
             <button className="btn-3">3 кнопка</button>

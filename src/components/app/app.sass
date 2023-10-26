@@ -1,20 +1,17 @@
 .container
     display: grid
-    grid-template-rows: repeat(2, minmax(min-content, 10vh)) repeat(6, minmax(min-content, 13.3vh)) min-content
-    grid-template-columns:  minmax(10rem, 1fr) repeat(8, minmax(min-content, 1fr)) minmax(10rem, 1fr)
-    justify-items: center
-
+    grid-template-rows: repeat(2, minmax(min-content, 10vh)) minmax(min-content, 80vh) min-content
+    grid-template-columns:  minmax(10rem, 1fr)  minmax(120rem, auto) minmax(10rem, 1fr)
 
 
 .main
     background-color: #61A568
-    width: 160rem
+    grid-column: 1 / span 3
+    grid-row: 3 / span 1
     display: grid
     grid-template-rows: repeat(8,  minmax(min-content, 1fr)) 
     grid-template-columns: repeat(20, minmax(min-content, 1fr))
-    grid-column: 1 / 13
-    grid-row: 3 / 9
-    justify-items: center
+
 
     
 
