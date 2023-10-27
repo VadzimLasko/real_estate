@@ -1,34 +1,46 @@
-@import '../../styles/variable'
+@import '../../styles/style.sass'
 
 .header
-    // background-color: red
     grid-column: 2 / span 1
     grid-row: 1 / 2
-    &__logo
-        // min-width: 10rem
-        height: 2rem
-        text-decoration: none
-        text-transform: uppercase
-    &__navigation
-
-
-    
-.header-container
     display: flex
     background-color: $color-white
-    width: 120rem
     height: 7rem
     justify-content: space-between
     align-items: center
-    &__left
+    &__left-side 
         display: flex
         justify-content: start
         align-items: center
-    &__right
-
+    &__logo
+        height: 2rem
+        text-decoration: none
+        text-transform: uppercase
+        color: $color-black
+        font-family: "Open Sans", sans-serif
+        font-weight: 700
+        margin-right: 1rem
+        transform: translateY(.2rem)
+    &__navigation
+    &__right-side
         justify-content: end
         display: flex
         align-items: center
+
+.search-panel
+    width: 15rem
+    height: 3rem
+    background: url('../../icons/search.svg') no-repeat
+    background-size: 2rem
+    background-origin: padding-box
+    background-position: left 1rem center
+    padding-left: 3.5rem
+    border: solid 1px 
+    border-radius: 3.5rem
+
+.btn-item
+    &:not(:last-child)
+        margin-right: 1rem
     
     
 

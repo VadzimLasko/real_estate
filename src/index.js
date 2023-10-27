@@ -7,7 +7,7 @@ import { Provider } from "react-redux";
 import App from "./components/app/App";
 
 import "normalize.css";
-import "./styles/index.sass";
+import "./styles/style.sass";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

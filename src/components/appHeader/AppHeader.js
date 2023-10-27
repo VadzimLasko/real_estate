@@ -1,28 +1,29 @@
-import { TextField } from "@mui/material";
-
 import "./appHeader.sass";
 
 const AppHeader = () => {
   return (
     <header className="header">
-      <div className="header-container">
-        <div className="header-container__left">
-          <a href="#" className="header__logo">
-            Недвижимость
+      <div className="header__left-side">
+        <a href="#" className="header__logo">
+          Недвижимость
+        </a>
+        <div className="header__navigation">
+          <a className="btn-item" tabIndex={0}>
+            1 кнопка
           </a>
-
-          <div className="header__navigation">
-            <button className="btn-1">1 кнопка</button>
-            <button className="btn-2">2 кнопка</button>
-            <button className="btn-3">3 кнопка</button>
-            <button className="btn-4">4 кнопка</button>
-          </div>
+          <a className="btn-item" tabIndex={0}>
+            2 кнопка
+          </a>
+          <a className="btn-item" tabIndex={0}>
+            3 кнопка
+          </a>
+          <a className="btn-item" tabIndex={0}>
+            4 кнопка
+          </a>
         </div>
-        <div className="header-container__right">
-          <div className="header-container__search-panel">
-            <TextField placeholder="Найти" size="medium" />
-          </div>
-        </div>
+      </div>
+      <div className="header__right-side search-panel">
+        <input className="search-panel" placeholder="Найти" size="medium" />
       </div>
     </header>
   );
