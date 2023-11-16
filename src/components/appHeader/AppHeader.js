@@ -1,5 +1,6 @@
 import "./appHeader.sass";
 
+//Это header
 const AppHeader = () => {
   return (
     <header className="header">
