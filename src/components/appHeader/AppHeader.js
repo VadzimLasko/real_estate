@@ -8,23 +8,27 @@ const AppHeader = () => {
         <a href="#" className="header__logo">
           Недвижимость
         </a>
-        <div className="header__navigation">
-          <a className="btn-item" tabIndex={0}>
+        <nav className="header__navigation">
+          <a href="#" className="header__navigation__item" tabIndex={0}>
             1 кнопка
           </a>
-          <a className="btn-item" tabIndex={0}>
+          <a href="#" className="header__navigation__item" tabIndex={0}>
             2 кнопка
           </a>
-          <a className="btn-item" tabIndex={0}>
+          <a href="#" className="header__navigation__item" tabIndex={0}>
             3 кнопка
           </a>
-          <a className="btn-item" tabIndex={0}>
+          <a href="#" className="header__navigation__item" tabIndex={0}>
             4 кнопка
           </a>
-        </div>
+        </nav>
       </div>
-      <div className="header__right-side search-panel">
-        <input className="search-panel" placeholder="Найти" size="medium" />
+      <div className="header__right-side">
+        <input
+          className="header__right-side__search-panel"
+          placeholder="Найти"
+          size="medium"
+        />
       </div>
     </header>
   );

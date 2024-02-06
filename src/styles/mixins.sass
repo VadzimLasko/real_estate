@@ -1,24 +1,37 @@
+@mixin center-par
+    display: flex
+    justify-content: center
+    align-items: center
+
+@mixin main-block-center
+    max-width: 130rem
+    margin: 0 auto 
+
 @mixin respond($breakpoint)
     @if $breakpoint == phone 
-        @media only screen and (max-width: 600px)
+        @media only screen and (max-width: 662px)
             @content
 
-    @if $breakpoint == tab-port
-        @media only screen and (max-width: 900px)
+    @if $breakpoint == tab-port-s
+        @media only screen and (max-width: 770px)
+            @content
+
+    @if $breakpoint == tab-port-l
+        @media only screen and (max-width: 860px)
+            @content
+
+    @if $breakpoint == tab-port-m
+        @media only screen and (max-width: 980px)
+            @content
+
+    @if $breakpoint == tab-port-b
+        @media only screen and (max-width: 1080px)
             @content
     
     @if $breakpoint == tab-land
-        @media only screen and (max-width: 1240px)
+        @media only screen and (max-width: 1300px)
             @content
 
     @if $breakpoint == big-screen
         @media only screen and (min-width: 1800px)
             @content
-
-    
-
-    
-
-        
-
-    

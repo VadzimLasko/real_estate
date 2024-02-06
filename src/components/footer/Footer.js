@@ -3,7 +3,7 @@ import "./footer.sass";
 const Footer = () => {
   return (
     <>
-      <footer className="footer">footer</footer>
+      <footer className="footer"></footer>
     </>
   );
 };
