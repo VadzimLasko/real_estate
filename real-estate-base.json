@@ -1,0 +1,34 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "login": 1,
+      "name": "Первый герой",
+      "password": 1111,
+      "favorites": []
+    }
+  ],
+  "ads": [
+    {
+      "title": "all",
+      "description": "Все",
+      "price": 1000,
+      "author": 1,
+      "ads-id": 1,
+      "photos": 1,
+      "rooms": 1,
+      "floor": 1,
+      "square": 1,
+      "coordinates": "bla"
+    }
+  ],
+  "filters": [
+    {
+      "label": 1000,
+      "price": 1000,
+      "rooms": 1,
+      "floor": 1,
+      "square": 1
+    }
+  ]
+}

@@ -4,8 +4,20 @@
     align-items: center
 
 @mixin main-block-center
-    max-width: 130rem
+    max-width: 160rem
     margin: 0 auto 
+
+// @mixin btn
+    background-color: #F8C20A
+    border-radius: .6rem
+    height: 4.4rem
+    width: 24rem
+    border: unset
+    font-weight: 600
+    @include center-par
+    span
+        font-size: 2.9rem
+        margin-right: .5rem 
 
 @mixin respond($breakpoint)
     @if $breakpoint == phone 

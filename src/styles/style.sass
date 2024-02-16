@@ -11,12 +11,17 @@
 
 
 html
-    font-size: 62.5%
-
+  font-size: 62.5%
+  // @include respond(tab-land)
+  //       font-size: 55%
+  // @include respond(tab-port-b)
+  //       font-size: 50%
+  // @include respond(big-screen)
+  //       font-size: 80%
 
 body
   font-family: "Open Sans", sans-serif
-  width: 160rem
+  max-width: 160rem
   font-weight: 400
   font-size: 1.6rem
   margin: 0 auto

@@ -1,5 +1,7 @@
-import { Skeleton } from "@mui/material";
+// import { Skeleton } from "@mui/material";
 
-const Skeleton = () => {
-  return <Skeleton />;
-};
+// const Skeleton = () => {
+//   return <Skeleton />;
+// };
+
+// export default Skeleton;

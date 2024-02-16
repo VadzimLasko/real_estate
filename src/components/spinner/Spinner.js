@@ -1,10 +1,14 @@
-import { CircularProgress } from "@mui/material";
+import "./spinner.css";
 
 const Spinner = () => {
   return (
-    <>
-      <CircularProgress />
-    </>
+    <div class="loading">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
   );
 };
 

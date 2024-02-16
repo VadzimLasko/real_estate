@@ -24,11 +24,9 @@ const AppHeader = () => {
         </nav>
       </div>
       <div className="header__right-side">
-        <input
-          className="header__right-side__search-panel"
-          placeholder="Найти"
-          size="medium"
-        />
+        <button className="header__right-side__add-ad btn" type="button">
+          <span>+</span> Добавить объявление
+        </button>
       </div>
     </header>
   );
