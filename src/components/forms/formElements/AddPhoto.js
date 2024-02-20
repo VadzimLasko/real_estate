@@ -2,6 +2,8 @@ import { useState } from "react";
 import { PlusOutlined } from "@ant-design/icons";
 import { Modal, Upload } from "antd";
 
+import "./addPhoto.sass";
+
 const getBase64 = (file) =>
   new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -42,7 +44,7 @@ const AddAdForm = () => {
           marginTop: 8,
         }}
       >
-        Upload
+        Загрузить фотографии
       </div>
     </button>
   );
@@ -51,6 +53,8 @@ const AddAdForm = () => {
       <Upload
         action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
         listType="picture-card"
+        accept="image/*"
+        //method
         multiple={true}
         maxCount={8}
         fileList={fileList}
