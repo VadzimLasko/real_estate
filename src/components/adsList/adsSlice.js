@@ -36,7 +36,7 @@ const adsSlice = createSlice({
         state.adsLoadingStatus = "loading";
       })
       .addCase(fetchAds.fulfilled, (state, action) => {
-        usersAdapter.setAll(state, action.payload);
+        adsAdapter.setAll(state, action.payload);
         state.adsLoadingStatus = "idle";
       })
       .addCase(fetchAds.rejected, (state) => {

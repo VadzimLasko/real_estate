@@ -11,13 +11,13 @@ const getBase64 = (file) =>
     reader.onload = () => resolve(reader.result);
     reader.onerror = (error) => reject(error);
   });
-const AddAdForm = () => {
+const AddPhoto = (props) => {
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
   const [previewTitle, setPreviewTitle] = useState("");
   const [fileList, setFileList] = useState([]);
 
-  console.log(fileList);
+  // console.log(fileList);
   const handleCancel = () => setPreviewOpen(false);
   const handlePreview = async (file) => {
     if (!file.url && !file.preview) {
@@ -29,7 +29,10 @@ const AddAdForm = () => {
       file.name || file.url.substring(file.url.lastIndexOf("/") + 1)
     );
   };
-  const handleChange = ({ fileList: newFileList }) => setFileList(newFileList);
+  const handleChange = ({ fileList: newFileList }) => {
+    setFileList(newFileList);
+    props.onChangePhoto(newFileList);
+  };
   const uploadButton = (
     <button
       style={{
@@ -49,35 +52,39 @@ const AddAdForm = () => {
     </button>
   );
   return (
-    <>
-      <Upload
-        action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
-        listType="picture-card"
-        accept="image/*"
-        //method
-        multiple={true}
-        maxCount={8}
-        fileList={fileList}
-        onPreview={handlePreview}
-        onChange={handleChange}
-      >
-        {fileList.length >= 8 ? null : uploadButton}
-      </Upload>
-      <Modal
-        open={previewOpen}
-        title={previewTitle}
-        footer={null}
-        onCancel={handleCancel}
-      >
-        <img
-          alt="example"
-          style={{
-            width: "100%",
-          }}
-          src={previewImage}
-        />
-      </Modal>
-    </>
+    fileList,
+    (
+      <>
+        <Upload
+          action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
+          listType="picture-card"
+          accept="image/*"
+          //method
+          multiple={true}
+          maxCount={8}
+          fileList={fileList}
+          onPreview={handlePreview}
+          onChange={handleChange}
+        >
+          {fileList.length >= 8 ? null : uploadButton}
+        </Upload>
+        <Modal
+          open={previewOpen}
+          title={previewTitle}
+          footer={null}
+          onCancel={handleCancel}
+        >
+          <img
+            alt="example"
+            style={{
+              width: "100%",
+            }}
+            src={previewImage}
+          />
+        </Modal>
+      </>
+    )
   );
 };
-export default AddAdForm;
+
+export default AddPhoto;

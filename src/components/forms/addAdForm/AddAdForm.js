@@ -1,5 +1,10 @@
+import { useHttp } from "../../../hooks/http.hook";
+import { useDispatch, useSelector } from "react-redux";
+import { nanoid } from "@reduxjs/toolkit";
+
 import { Button, Form, Input, InputNumber } from "antd";
 
+import { adCreated } from "../../adsList/adsSlice";
 import AddPhoto from "../formElements/AddPhoto";
 
 import "./addAdForm.sass";
@@ -34,28 +39,59 @@ const initialValue = {
 //   },
 // };
 
-{
-  /* <ConfigProvider form={{ validateMessages }}>
-  <Form />
-</ConfigProvider>; */
-}
+// {
+//   /* <ConfigProvider form={{ validateMessages }}>
+//   <Form />
+// </ConfigProvider>; */
+// }
 
-{
-  /* <ConfigProvider
+// {
+/* <ConfigProvider
   theme={{
     token: {
       fontSize: "1.4rem",
     },
   }}form={{ validateMessages }}
 />; */
-}
+
+// const onFinish = () => {
+//   message.success('Submit success!');
+// };
+// const onFinishFailed = () => {
+//   message.error('Submit failed!');
+// }
 
 const AddAdForm = () => {
+  let photos = {};
+  const dispatch = useDispatch();
+  const { request } = useHttp();
+
+  const [form] = Form.useForm();
+
+  const onChangePhoto = (files) => {
+    photos = files;
+  };
+
+  const onFinish = (values) => {
+    values.id = nanoid();
+    values.author = "Vadik";
+    values.photos = photos;
+    values.coordinates = "01 01 01";
+    request("http://localhost:3001/ads", "POST", JSON.stringify(values))
+      .then((res) => console.log(res, "Отправка успешна"))
+      .then(dispatch(adCreated(values)))
+      .catch((err) => console.log(err));
+
+    // Очищаем форму после отправки
+    form.resetFields();
+  };
+
   return (
     <div className="add-ad-form__wrapper">
       <Form
+        form={form}
         {...formItemLayout}
-        // onFinish
+        onFinish={onFinish}
         // onFinishFailed
         initialValue={initialValue}
         scrollToFirstError
@@ -83,8 +119,12 @@ const AddAdForm = () => {
           <Input showCount maxLength={50} />
         </Form.Item>
 
-        <Form.Item label="Фотографии" name="photo">
-          <AddPhoto />
+        <Form.Item
+          name="photos"
+          tooltip="Не более 8 фотографий"
+          label="Фотографии"
+        >
+          <AddPhoto showCount maxLength={50} onChangePhoto={onChangePhoto} />
         </Form.Item>
 
         <Form.Item label="Стоимость" name="price" rules={[{ required: true }]}>
@@ -118,6 +158,7 @@ const AddAdForm = () => {
           ]}
           label="Площадь"
           name="square"
+          tooltip="Положительное число от 1 до 1000"
         >
           <InputNumber
             min={1}
@@ -130,12 +171,18 @@ const AddAdForm = () => {
         <Form.Item
           label="Колличество комнат"
           name="rooms"
+          tooltip="Положительное число от 1 до 10"
           rules={[{ required: true }]}
         >
           <InputNumber min={1} max={10} style={{ width: "100%" }} />
         </Form.Item>
 
-        <Form.Item label="Этаж" name="floor" rules={[{ required: true }]}>
+        <Form.Item
+          label="Этаж"
+          tooltip="Положительное число от 1 до 30"
+          name="floor"
+          rules={[{ required: true }]}
+        >
           <InputNumber min={1} max={30} style={{ width: "100%" }} />
         </Form.Item>
 
