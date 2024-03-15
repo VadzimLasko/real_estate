@@ -11,7 +11,7 @@ const getBase64 = (file) =>
     reader.onload = () => resolve(reader.result);
     reader.onerror = (error) => reject(error);
   });
-const AddPhoto = (props) => {
+const AddPhoto = ({ onChangePhoto }) => {
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
   const [previewTitle, setPreviewTitle] = useState("");
@@ -31,7 +31,7 @@ const AddPhoto = (props) => {
   };
   const handleChange = ({ fileList: newFileList }) => {
     setFileList(newFileList);
-    props.onChangePhoto(newFileList);
+    onChangePhoto(newFileList);
   };
   const uploadButton = (
     <button

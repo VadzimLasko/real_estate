@@ -4,6 +4,9 @@ import Footer from "../footer/Footer";
 import Skeleton from "@mui/material/Skeleton";
 import AddPhoto from "../forms/formElements/AddPhoto";
 import AddAdForm from "../forms/addAdForm/AddAdForm";
+import LoginForm from "../forms/loginForm/LoginForm";
+import RegistrationForm from "../forms/registrationForm/RegistrationForm";
+import Map from "../map/Map";
 import { ConfigProvider } from "antd";
 import "./app.sass";
 
@@ -12,7 +15,10 @@ const App = () => {
     <>
       <AppHeader />
       <MainMenuPanel>
-        <AddAdForm />
+        {/* <AddAdForm /> */}
+        {/* <LoginForm /> */}
+        {/* <RegistrationForm /> */}
+        <Map />
       </MainMenuPanel>
       <Footer />
     </>

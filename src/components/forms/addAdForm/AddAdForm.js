@@ -1,6 +1,7 @@
 import { useHttp } from "../../../hooks/http.hook";
 import { useDispatch, useSelector } from "react-redux";
 import { nanoid } from "@reduxjs/toolkit";
+import { useRef } from "react";
 
 import { Button, Form, Input, InputNumber } from "antd";
 
@@ -66,7 +67,8 @@ const AddAdForm = () => {
   const dispatch = useDispatch();
   const { request } = useHttp();
 
-  const [form] = Form.useForm();
+  // const [form] = Form.useForm();
+  const form = useRef(null);
 
   const onChangePhoto = (files) => {
     photos = files;
@@ -83,13 +85,14 @@ const AddAdForm = () => {
       .catch((err) => console.log(err));
 
     // Очищаем форму после отправки
-    form.resetFields();
+    // form.resetFields();
+    form.current.resetFields();
   };
 
   return (
     <div className="add-ad-form__wrapper">
       <Form
-        form={form}
+        form={form.current}
         {...formItemLayout}
         onFinish={onFinish}
         // onFinishFailed
@@ -100,12 +103,6 @@ const AddAdForm = () => {
         variant="filled"
         required="true"
         name="AddAdForm"
-        // style={{
-        //   maxWidth: 700,
-        //   margin: "0 auto",
-        //   borderRadius: "50",
-        //   outlineColor: "#000000",
-        // }}
       >
         <Form.Item
           label="Заголовок"
@@ -124,7 +121,7 @@ const AddAdForm = () => {
           tooltip="Не более 8 фотографий"
           label="Фотографии"
         >
-          <AddPhoto showCount maxLength={50} onChangePhoto={onChangePhoto} />
+          <AddPhoto showCount maxLength={8} onChangePhoto={onChangePhoto} />
         </Form.Item>
 
         <Form.Item label="Стоимость" name="price" rules={[{ required: true }]}>
