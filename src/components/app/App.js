@@ -6,7 +6,7 @@ import AddPhoto from "../forms/formElements/AddPhoto";
 import AddAdForm from "../forms/addAdForm/AddAdForm";
 import LoginForm from "../forms/loginForm/LoginForm";
 import RegistrationForm from "../forms/registrationForm/RegistrationForm";
-import Map from "../map/Map";
+import MapComponent from "../map/Map";
 import { ConfigProvider } from "antd";
 import "./app.sass";
 
@@ -15,10 +15,10 @@ const App = () => {
     <>
       <AppHeader />
       <MainMenuPanel>
-        {/* <AddAdForm /> */}
-        {/* <LoginForm /> */}
+        {/* <AddAdForm />  */}
+        {/* <LoginForm />  */}
         {/* <RegistrationForm /> */}
-        <Map />
+        <MapComponent />
       </MainMenuPanel>
       <Footer />
     </>

@@ -1,24 +1,41 @@
-import L from "leaflet";
-import "leaflet/dist/leaflet.css";
-import { MapContainer, TileLayer, useMap, Popup, Marker } from "react-leaflet";
+import { useState } from "react";
+import { YMaps, Map as YMap, ZoomControl } from "@pbe/react-yandex-maps";
+import Spinner from "../spinner/Spinner";
+
 import "./map.sass";
 
-const Map = () => {
+const MapComponent = () => {
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  const handleLoad = () => {
+    setIsLoaded(true);
+  };
+
+  const handleError = () => {
+    alert("Произошла ошибка при загрузке карты");
+  };
+
   return (
-    <div className="map">
-      <MapContainer center={[51.505, -0.09]} zoom={13} scrollWheelZoom={false}>
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
-        <Marker position={[51.505, -0.09]}>
-          <Popup>
-            A pretty CSS3 popup. <br /> Easily customizable.
-          </Popup>
-        </Marker>
-      </MapContainer>
-    </div>
+    <YMaps>
+      {!isLoaded ? <Spinner /> : null}
+      <div className="map">
+        <YMap
+          onLoad={handleLoad}
+          onError={handleError}
+          style={{
+            width: "100%",
+            height: "100%",
+          }}
+          defaultState={{
+            center: [53.9, 27.55],
+            zoom: 11,
+          }}
+        >
+          <ZoomControl options={{ float: "right" }} />
+        </YMap>
+      </div>
+    </YMaps>
   );
 };
 
-export default Map;
+export default MapComponent;
