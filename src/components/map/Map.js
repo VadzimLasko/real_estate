@@ -13,19 +13,18 @@ const MapComponent = () => {
 
   const handleError = () => {
     alert("Произошла ошибка при загрузке карты");
+    setIsLoaded(true);
   };
 
   return (
-    <YMaps>
+    <div className="map">
       {!isLoaded ? <Spinner /> : null}
-      <div className="map">
+      <YMaps>
         <YMap
           onLoad={handleLoad}
           onError={handleError}
-          style={{
-            width: "100%",
-            height: "100%",
-          }}
+          width={isLoaded ? "100%" : "0"}
+          height="100%"
           defaultState={{
             center: [53.9, 27.55],
             zoom: 11,
@@ -33,8 +32,8 @@ const MapComponent = () => {
         >
           <ZoomControl options={{ float: "right" }} />
         </YMap>
-      </div>
-    </YMaps>
+      </YMaps>
+    </div>
   );
 };
 

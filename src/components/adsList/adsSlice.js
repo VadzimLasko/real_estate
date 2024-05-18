@@ -20,7 +20,7 @@ export const fetchAds = createAsyncThunk("ads/fetchAds", () => {
 });
 
 const adsSlice = createSlice({
-  name: "ads", // Слайс - это срез. Первый аргумент нейм это имя среза, должно совпадать именем в стейте типа: state.heroes
+  name: "ads",
   initialState,
   reducers: {
     adCreated: (state, action) => {
@@ -51,7 +51,7 @@ const { actions, reducer } = adsSlice;
 export default reducer;
 
 export const { selectAll } = adsAdapter.getSelectors((state) => state.ads);
-
+console.log(selectAll);
 export const filteredAdsSelector = createSelector(
   (state) => state.filters.activeFilter,
   selectAll,
@@ -59,16 +59,9 @@ export const filteredAdsSelector = createSelector(
     if (filter === "all") {
       return ads;
     } else {
-      /////////////////////////////////Элемент снизу
       return ads.filter((item) => item.element === filter);
     }
   }
 );
 
-export const {
-  adsFetching,
-  adsFetched,
-  adsFetchingError,
-  adCreated,
-  adDeleted,
-} = actions;
+export const { adCreated, adDeleted } = actions;

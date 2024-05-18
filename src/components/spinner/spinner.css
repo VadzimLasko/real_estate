@@ -12,6 +12,7 @@
   width: 10rem;
   gap: 0.6rem;
   height: 10rem;
+  margin: auto;
 }
 
 .loading span {

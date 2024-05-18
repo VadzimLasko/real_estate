@@ -1,9 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
-import users from "../components/usersList/usersSlice";
-import ads from "../components/adsList/adsSlice";
-// import clients from '../components/formCard/formSlice';
-// import modalReducer from '../features/modal/modalSlice'
-// import calculatorReducer from '../features/calculator/calculatorSlice';
+// import users from "../components/usersList/usersSlice";
+import { apiSlice } from "@/api/apiSlice";
 
 const stringMiddleware = (store) => (next) => (action) => {
   if (typeof action === "string") {
@@ -15,9 +12,9 @@ const stringMiddleware = (store) => (next) => (action) => {
 };
 
 const store = configureStore({
-  reducer: { users, ads },
+  reducer: { [apiSlice.reducerPath]: apiSlice.reducer },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(stringMiddleware),
+    getDefaultMiddleware().concat(stringMiddleware, apiSlice.middleware),
   devTools: process.env.NODE_ENV !== "production",
 });
 
