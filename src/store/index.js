@@ -1,20 +1,19 @@
 import { configureStore } from "@reduxjs/toolkit";
-// import users from "../components/usersList/usersSlice";
-import { apiSlice } from "@/api/apiSlice";
-
-const stringMiddleware = (store) => (next) => (action) => {
-  if (typeof action === "string") {
-    return next({
-      type: action,
-    });
-  }
-  return next(action);
-};
+import { adApiSlice } from "@/api/adApiSlice";
+import { authApiSlice } from "@/api/authApiSlice";
+import user from "@/pages/userProfilePage/userProfileSlice.js";
 
 const store = configureStore({
-  reducer: { [apiSlice.reducerPath]: apiSlice.reducer },
+  reducer: {
+    user,
+    [adApiSlice.reducerPath]: adApiSlice.reducer,
+    [authApiSlice.reducerPath]: authApiSlice.reducer,
+  },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(stringMiddleware, apiSlice.middleware),
+    getDefaultMiddleware().concat(
+      authApiSlice.middleware,
+      adApiSlice.middleware
+    ),
   devTools: process.env.NODE_ENV !== "production",
 });
 

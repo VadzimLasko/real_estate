@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-export const apiSlice = createApi({
-  reducerPath: "api",
+export const adApiSlice = createApi({
+  reducerPath: "apiAd",
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:3001",
   }),
@@ -10,6 +10,7 @@ export const apiSlice = createApi({
     getAds: builder.query({
       query: () => "/ads", 
       providesTags: ["Ads"], 
+      keepUnusedDataFor: 5,
     }),
     createAd: builder.mutation({
       query: (ad) => ({
@@ -33,4 +34,4 @@ export const {
   useGetAdsQuery,
   useCreateAdMutation,
   useDeleteAdMutation,
-} = apiSlice;
+} = adApiSlice;

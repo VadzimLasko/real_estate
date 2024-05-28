@@ -6,6 +6,150 @@
       "name": "Первый герой",
       "password": 1111,
       "favorites": []
+    },
+    {
+      "id": "a720",
+      "email": "me@mydomain.com",
+      "password": "123",
+      "confirm": "123",
+      "gender": "частное лицо",
+      "agreement": true
+    },
+    {
+      "id": "cb6c",
+      "email": "me@mydomain.com",
+      "password": "123",
+      "confirm": "123",
+      "gender": "частное лицо",
+      "agreement": true
+    },
+    {
+      "id": "b089",
+      "email": "me@mydomain.com",
+      "password": "12",
+      "confirm": "12",
+      "gender": "организация",
+      "agreement": true
+    },
+    {
+      "id": "7918",
+      "email": "me@mydomain.com",
+      "password": "122",
+      "confirm": "122",
+      "gender": "частное лицо",
+      "agreement": true
+    },
+    {
+      "id": "0d00",
+      "email": "me12@mydomain.com",
+      "password": "2",
+      "confirm": "2",
+      "gender": "организация",
+      "agreement": true
+    },
+    {
+      "id": "623a",
+      "email": "m112122e@mydomain.com",
+      "password": "1",
+      "confirm": "1",
+      "gender": "организация",
+      "agreement": true
+    },
+    {
+      "id": "e30a",
+      "email": "m54635e@mydomain.com",
+      "password": "1",
+      "confirm": "1",
+      "gender": "организация",
+      "agreement": true
+    },
+    {
+      "id": "2b4b",
+      "email": "m546335e@mydomain.com",
+      "password": "1",
+      "confirm": "1",
+      "gender": "организация",
+      "agreement": true
+    },
+    {
+      "id": "b29a",
+      "email": "m5462335e@mydomain.com",
+      "password": "1",
+      "confirm": "1",
+      "gender": "организация",
+      "agreement": true
+    },
+    {
+      "id": "126c",
+      "email": "m65744567e@mydomain.com",
+      "password": "1",
+      "confirm": "1",
+      "gender": "частное лицо",
+      "agreement": true
+    },
+    {
+      "id": "e2a1",
+      "email": "m653744567e@mydomain.com",
+      "password": "1",
+      "confirm": "1",
+      "gender": "частное лицо",
+      "agreement": true
+    },
+    {
+      "id": "705b",
+      "email": "m65erqwer3744567e@mydomain.com",
+      "password": "1",
+      "confirm": "1",
+      "gender": "частное лицо",
+      "agreement": true
+    },
+    {
+      "id": "e16b",
+      "email": "m623425erqwer3744567e@mydomain.com",
+      "password": "1",
+      "confirm": "1",
+      "gender": "частное лицо",
+      "agreement": true
+    },
+    {
+      "id": "eb63",
+      "email": "mdvsavsdfve@mydomain.com",
+      "password": "1",
+      "confirm": "1",
+      "gender": "организация",
+      "agreement": true
+    },
+    {
+      "id": "7164",
+      "email": "m121234e@mydomain.com",
+      "password": "12",
+      "confirm": "12",
+      "gender": "частное лицо",
+      "agreement": true
+    },
+    {
+      "id": "2469",
+      "email": "1me@mydomain.com",
+      "password": "1",
+      "confirm": "1",
+      "gender": "частное лицо",
+      "agreement": true
+    },
+    {
+      "id": "BQYCL8D0OraeAipWQJU3P",
+      "email": "2me@mydomain.com",
+      "password": "2",
+      "confirm": "2",
+      "gender": "организация",
+      "agreement": true
+    },
+    {
+      "id": "6HGdMt7lr5vst2Be0jb-Y",
+      "email": "3me@mydomain.com",
+      "password": "3",
+      "confirm": "3",
+      "gender": "организация",
+      "agreement": true
     }
   ],
   "ads": [
@@ -196,6 +340,76 @@
       "rooms": 1,
       "floor": 1,
       "author": "Vadik",
+      "coordinates": "01 01 01"
+    },
+    {
+      "id": "495WPM03JYTP20e4OfvyO",
+      "title": "Mr.",
+      "photos": {},
+      "price": 45,
+      "description": "this is a comment",
+      "square": 45,
+      "rooms": 5,
+      "floor": 5,
+      "name": "my full name",
+      "phone": 298780500,
+      "author": "2me@mydomain.com",
+      "coordinates": "01 01 01"
+    },
+    {
+      "id": "Vyk5DV37lkoEVfgIN3B0G",
+      "title": "Mr.",
+      "photos": {},
+      "price": 45,
+      "description": "this is a comment",
+      "square": 45,
+      "rooms": 5,
+      "floor": 5,
+      "name": "my full name",
+      "phone": 298780500,
+      "author": "2me@mydomain.com",
+      "coordinates": "01 01 01"
+    },
+    {
+      "id": "oHltiqYJBYhiPFEA5h9zh",
+      "title": "Mr.",
+      "photos": {},
+      "price": 12,
+      "description": "this is a comment",
+      "square": 2,
+      "rooms": 10,
+      "floor": 2,
+      "name": "my full name",
+      "phone": 298780500,
+      "author": "2me@mydomain.com",
+      "coordinates": "01 01 01"
+    },
+    {
+      "id": "lQh7Un5JW8TrD2IHQm3st",
+      "title": "Mr.",
+      "photos": {},
+      "price": 12,
+      "description": "this is a comment",
+      "square": 2,
+      "rooms": 10,
+      "floor": 2,
+      "name": "my full name",
+      "phone": 298780500,
+      "author": "2me@mydomain.com",
+      "coordinates": "01 01 01"
+    },
+    {
+      "id": "lulRAxt_smefTanbmSIAx",
+      "title": "qewrfaadfv",
+      "photos": {},
+      "price": 1,
+      "description": "dsFdsaf",
+      "square": 1,
+      "rooms": 1,
+      "floor": 1,
+      "name": "dasfasf",
+      "phone": 375298780500,
+      "author": "2me@mydomain.com",
       "coordinates": "01 01 01"
     }
   ],
