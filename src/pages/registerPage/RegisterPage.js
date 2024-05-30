@@ -4,12 +4,14 @@
 import { nanoid } from "@reduxjs/toolkit";
 // import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
+
 import { Button, Checkbox, Form, Input, Select } from "antd";
 import {
   useGetUsersQuery,
   useRegisterMutation,
   useGetCurrentUserQuery,
 } from "@/api/authApiSlice.js";
+
 import { isCoincidence, setItem } from "@/utils/utils.js";
 
 import "./registerPage.sass";

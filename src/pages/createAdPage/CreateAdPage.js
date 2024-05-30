@@ -81,7 +81,6 @@ const CreateAdPage = () => {
 
   const [createAd] = useCreateAdMutation();
 
-  const dispatch = useDispatch();
   // const accessID = getItem("accessID");
 
   // const { data: users = [] } = useGetUsersQuery();
@@ -98,29 +97,26 @@ const CreateAdPage = () => {
   //   }
   // }, []);
 
-  let photos = {};
-  // const dispatch = useDispatch();
-  // const { request } = useHttp();
+  let photos;
+  let coordinates;
 
   const [form] = Form.useForm();
-  // const form = useRef(null);
 
-  const onChangePhoto = useCallback((files) => {
+  const onChangePhoto = (files) => {
     photos = files;
-  }, []);
+  };
+
+  const onChangeCoordinates = (coords) => {
+    coordinates = coords;
+  };
 
   const onFinish = (values) => {
     values.id = nanoid();
     values.author = currentUser.email;
     values.photos = photos;
-    values.phone = Number("375" + `${values.phone}`);
-    values.coordinates = "01 01 01";
-    //   request("http://localhost:3001/ads", "POST", JSON.stringify(values))
-    //     .then((res) => console.log(res, "Отправка успешна"))
-    //     .then(dispatch(adCreated(values)))
-    //     .catch((err) => console.log(err));
+    values.phone = Number("375".concat(`${values.phone}`));
+    values.coordinates = coordinates;
 
-    // Очищаем форму после отправки
     createAd(values)
       .unwrap()
       .then((response) => {
@@ -162,6 +158,18 @@ const CreateAdPage = () => {
       >
         <Form.Item
           label="Заголовок"
+          name="address"
+          rules={[
+            {
+              required: true,
+            },
+          ]}
+        >
+          <Input maxLength={100} />
+        </Form.Item>
+
+        <Form.Item
+          label="Адрес"
           name="title"
           rules={[
             {
@@ -240,7 +248,7 @@ const CreateAdPage = () => {
           <InputNumber min={1} max={30} style={{ width: "100%" }} />
         </Form.Item>
 
-        <MapComponent />
+        <MapComponent onChangeCoordinates={onChangeCoordinates} />
 
         <Form.Item
           name="name"

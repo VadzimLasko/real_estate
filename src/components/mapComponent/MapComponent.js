@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import {
   YMaps,
   Map as YMap,
@@ -8,14 +8,15 @@ import {
   ObjectManager,
   Clusterer,
   SearchControl,
+  useYMaps,
 } from "@pbe/react-yandex-maps";
 import Spinner from "../spinner/Spinner";
 
 import "./mapComponent.sass";
 
-const MapComponent = () => {
+const MapComponent = ({ onChangeCoordinates }) => {
   const [isLoaded, setIsLoaded] = useState(false);
-  const [coordinate, setCoordinate] = useState([53.9, 27.55]);
+  const [coordinate, setCoordinate] = useState([]);
 
   const handleLoad = () => {
     setIsLoaded(true);
@@ -26,9 +27,10 @@ const MapComponent = () => {
     setIsLoaded(true);
   };
 
-  const handlClick = (event) => {
+  const handleClick = (event) => {
     const coords = event.get("coords");
     setCoordinate(() => coords);
+    onChangeCoordinates(coords);
   };
 
   return (
@@ -38,7 +40,7 @@ const MapComponent = () => {
         <YMap
           onLoad={handleLoad}
           onError={handleError}
-          onClick={handlClick}
+          onClick={handleClick}
           width={isLoaded ? "100%" : "0"}
           height="100%"
           defaultState={{
@@ -78,7 +80,7 @@ const MapComponent = () => {
           <ZoomControl options={{ float: "right" }} />
           <GeolocationControl options={{ float: "left" }} />
           <Placemark geometry={coordinate} />
-          <SearchControl options={{ float: "right" }} />
+          {/* <SearchControl options={{ float: "right" }} /> */}
         </YMap>
       </YMaps>
     </div>

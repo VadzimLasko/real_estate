@@ -11,28 +11,52 @@ const getBase64 = (file) =>
     reader.onload = () => resolve(reader.result);
     reader.onerror = (error) => reject(error);
   });
+
+const setOriginalFileUrl = async (array) => {
+  const newArr = await Promise.all(
+    array.map(async (item) => {
+      if (!item.originalFileUrl) {
+        item.originalFileUrl = await getBase64(item.originFileObj).catch(
+          (error) => console.error(error)
+        );
+      }
+      return item;
+    })
+  );
+  return newArr;
+};
+
 const AddPhoto = ({ onChangePhoto }) => {
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
   const [previewTitle, setPreviewTitle] = useState("");
   const [fileList, setFileList] = useState([]);
 
-  // console.log(fileList);
   const handleCancel = () => setPreviewOpen(false);
+
   const handlePreview = async (file) => {
-    if (!file.url && !file.preview) {
-      file.preview = await getBase64(file.originFileObj);
+    const { url, preview, originFileObj, name } = file;
+    if (!url && !preview) {
+      file.preview = await getBase64(originFileObj);
     }
-    setPreviewImage(file.url || file.preview);
+    setPreviewImage(url || preview);
     setPreviewOpen(true);
-    setPreviewTitle(
-      file.name || file.url.substring(file.url.lastIndexOf("/") + 1)
-    );
+    setPreviewTitle(name || url.substring(url.lastIndexOf("/") + 1));
   };
-  const handleChange = ({ fileList: newFileList }) => {
-    setFileList(newFileList);
-    onChangePhoto(newFileList);
+
+  const emptyCustomRequest = ({ onSuccess, file }) => {
+    setTimeout(() => {
+      onSuccess(null, file);
+    }, 1000);
   };
+
+  const handleChange = async ({ fileList: newFileList }) => {
+    const updatedList = await setOriginalFileUrl(newFileList);
+    setFileList(updatedList);
+    console.log("New foto", updatedList);
+    onChangePhoto(updatedList);
+  };
+
   const uploadButton = (
     <button
       style={{
@@ -56,10 +80,9 @@ const AddPhoto = ({ onChangePhoto }) => {
     (
       <>
         <Upload
-          action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
+          customRequest={emptyCustomRequest}
           listType="picture-card"
           accept="image/*"
-          //method
           multiple={true}
           maxCount={8}
           fileList={fileList}

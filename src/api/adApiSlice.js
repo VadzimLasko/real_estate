@@ -5,11 +5,16 @@ export const adApiSlice = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:3001",
   }),
-  tagTypes: ["Ads"], 
+  tagTypes: ["Ads"],
   endpoints: (builder) => ({
     getAds: builder.query({
-      query: () => "/ads", 
-      providesTags: ["Ads"], 
+      query: () => "/ads",
+      providesTags: ["Ads"],
+      keepUnusedDataFor: 5,
+    }),
+    getOneAd: builder.query({
+      query: (id) => `/ads/${id}`,
+      // providesTags: ["Ads"],
       keepUnusedDataFor: 5,
     }),
     createAd: builder.mutation({
@@ -18,20 +23,21 @@ export const adApiSlice = createApi({
         method: "POST",
         body: ad,
       }),
-      invalidatesTags: ["Ads"], 
+      invalidatesTags: ["Ads"],
     }),
     deleteAd: builder.mutation({
       query: (id) => ({
         url: `/ads/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["Ads"], 
+      invalidatesTags: ["Ads"],
     }),
   }),
 });
 
 export const {
   useGetAdsQuery,
+  useGetOneAdQuery,
   useCreateAdMutation,
   useDeleteAdMutation,
 } = adApiSlice;

@@ -5,9 +5,17 @@ import AppHeader from "@/components/appHeader/AppHeader";
 import Footer from "@/components/footer/Footer";
 // import { useDispatch, useSelector } from "react-redux";
 // import { useEffect } from "react";
-import {AdPage, CreateAdPage, EditAdPage,  HomePage,  LoginPage, RegisterPage, UserProfilePage} from '@/pages/index.js';
+import {
+  AdPage,
+  CreateAdPage,
+  EditAdPage,
+  HomePage,
+  LoginPage,
+  RegisterPage,
+  UserProfilePage,
+} from "@/pages/index.js";
 // import Skeleton from "@mui/material/Skeleton";
-import Spinner from '@/components/spinner/Spinner.js'
+import Spinner from "@/components/spinner/Spinner.js";
 // import AddPhoto from "../forms/formElements/AddPhoto";
 // import AddAdForm from "../forms/addAdForm/AddAdForm";
 // import LoginForm from "../forms/loginForm/LoginForm";
@@ -31,7 +39,7 @@ const App = () => {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/user/:slug" element={<UserProfilePage />} />
         </Routes>
-        <Footer/>
+        <Footer />
       </Suspense>
     </Router>
   );
