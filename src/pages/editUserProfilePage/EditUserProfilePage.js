@@ -1,4 +1,4 @@
-// import { useState } from "react";
+import { useCallback } from "react";
 // import { useHttp } from "../../../hooks/http.hook";
 import { useNavigate, useParams } from "react-router-dom";
 import { nanoid } from "@reduxjs/toolkit";
@@ -14,7 +14,7 @@ import Spinner from "@/components/spinner/Spinner.js";
 
 import { isCoincidence, setItem } from "@/utils/utils.js";
 
-import "./userProfilePage.sass";
+import "./editUserProfilePage.sass";
 
 const formItemLayout = {
   // labelCol: {
@@ -45,29 +45,48 @@ const tailFormItemLayout = {
   // },
 };
 
-const UserProfilePage = (props) => {
+let answer = () => {
+  return (
+    <>
+      <span>Данные успешно сохранены!</span>
+    </>
+  );
+};
+
+const EditUserProfilePage = (props) => {
   //   BQYCL8D0OraeAipWQJU3P
   useGetUsersQuery();
   let { slug } = useParams();
   const { data: user, isFetching } = useGetCurrentUserQuery(slug);
-  const [updateUser, { isFetching: isUpdateFetching }] =
+  const [updateUser, { isFetching: isUpdateFetching, isSuccess }] =
     useUpdateUserMutation();
   const [form] = Form.useForm();
+  console.log(isSuccess);
 
   const { currentUser } = useSelector((state) => state.user);
-
-  const onFinish = (values) => {
-    console.log("Received values of form: ", values);
-  };
 
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
+  // let sameIsSuccess = isSuccess;
+
+  let answer = <span>Данные успешно сохранены!</span>;
+
+  const successUpdated = () => {
+    setTimeout(() => {
+      return (answer = null);
+    }, 3000);
+  };
+
   const { Option } = Select;
 
   const validateMessages = {
     required: "Необходимо заполнить!",
   };
+
+  if (isSuccess) {
+    successUpdated();
+  }
 
   if (isFetching) {
     return <Spinner />;
@@ -81,6 +100,15 @@ const UserProfilePage = (props) => {
   }
 
   let { id, password, confirm, ...initialValues } = user;
+  const onFinish = (values) => {
+    console.log(isSuccess);
+    values.id = id;
+    values.password = values.password ? values.password : password;
+    values.confirm = values.confirm ? values.confirm : confirm;
+    console.log("Received values of form: ", values);
+    updateUser({ id, user: values });
+    console.log(isSuccess);
+  };
   // const initialPhotos = photos ? photos : [];
   // const initialCoordinates = coordinates ? coordinates : [];
   console.log(initialValues);
@@ -129,7 +157,7 @@ const UserProfilePage = (props) => {
           label="Изменить пароль"
           rules={[
             {
-              required: true,
+              required: false,
               // message: "Введен неверный Пароль!",
             },
           ]}
@@ -145,11 +173,11 @@ const UserProfilePage = (props) => {
           hasFeedback
           rules={[
             {
-              required: true,
+              required: false,
             },
             ({ getFieldValue }) => ({
               validator(_, value) {
-                if (!value || getFieldValue("password") === value) {
+                if (getFieldValue("password") === value) {
                   return Promise.resolve();
                 }
                 return Promise.reject(new Error("Пароли не совпадают!"));
@@ -207,38 +235,20 @@ const UserProfilePage = (props) => {
           </Select>
         </Form.Item>
 
-        {/* <Form.Item
-          name="agreement"
-          valuePropName="checked"
-          rules={[
-            {
-              validator: (_, value) =>
-                value
-                  ? Promise.resolve()
-                  : Promise.reject(
-                      new Error("Необходимо принять условия соглашения")
-                    ),
-            },
-          ]}
-          {...tailFormItemLayout}
-        >
-          <Checkbox>
-            Согласен с условиями <a href="">соглашения</a>
-          </Checkbox>
-        </Form.Item> */}
         <Form.Item {...tailFormItemLayout} wrapperCol={{ offset: 8, span: 16 }}>
           <Button
             className="registration-form-button"
             type="primary"
             htmlType="submit"
-            disabled
+            disabled={isUpdateFetching}
           >
             Сохранить измененения
           </Button>
+          {isSuccess ? answer : null}
         </Form.Item>
       </Form>
     </div>
   );
 };
 
-export default UserProfilePage;
+export default EditUserProfilePage;

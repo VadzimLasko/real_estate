@@ -5,6 +5,7 @@ import {
 } from "@reduxjs/toolkit";
 
 import { authApiSlice } from "@/api/authApiSlice.js";
+import { adApiSlice } from "@/api/adApiSlice.js";
 import { isCoincidence, getItem, currentUserFromId } from "@/utils/utils.js";
 
 const userAdapter = createEntityAdapter();
@@ -34,14 +35,25 @@ const userSlice = createSlice({
           const accessID = getItem("accessID");
 
           if (accessID) {
-            const { id, email, ...currentUser } = currentUserFromId(
-              action.payload,
-              accessID
-            );
+            const { id, email } = currentUserFromId(action.payload, accessID);
             state.currentUser = { id, email };
           }
         }
       )
+      // .addMatcher(
+      //   adApiSlice.endpoints.getOneAd.matchFulfilled,
+      //   (state, action) => {
+      //     const accessID = getItem("accessID");
+
+      //     if (accessID) {
+      //       const { id, email, ...currentUser } = currentUserFromId(
+      //         action.payload,
+      //         accessID
+      //       );
+      //       state.currentUser = { id, email };
+      //     }
+      //   }
+      // )
       .addDefaultCase(() => {});
   },
 });

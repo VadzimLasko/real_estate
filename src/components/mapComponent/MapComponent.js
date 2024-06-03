@@ -13,10 +13,10 @@ import {
 import Spinner from "../spinner/Spinner";
 
 import "./mapComponent.sass";
-
-const MapComponent = ({ onChangeCoordinates }) => {
+//Todo разобраться с АПИ для карт
+const MapComponent = ({ onChangeCoordinates, initialCoordinates = [] }) => {
   const [isLoaded, setIsLoaded] = useState(false);
-  const [coordinate, setCoordinate] = useState([]);
+  const [coordinate, setCoordinate] = useState(initialCoordinates);
 
   const handleLoad = () => {
     setIsLoaded(true);

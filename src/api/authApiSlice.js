@@ -5,11 +5,18 @@ export const authApiSlice = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:3001",
   }),
-  tagTypes: ["Auth"], 
+  tagTypes: ["Auth"],
   endpoints: (builder) => ({
     getUsers: builder.query({
-      query: () => "/users", 
+      query: () => "/users",
       providesTags: ["Auth"],
+      keepUnusedDataFor: 5,
+      // transformResponse: (response, meta, arg) => {
+      //   return response
+      // },
+    }),
+    getCurrentUser: builder.query({
+      query: (id) => `/users/${id}`,
       keepUnusedDataFor: 5,
       // transformResponse: (response, meta, arg) => {
       //   return response
@@ -21,14 +28,22 @@ export const authApiSlice = createApi({
         method: "POST",
         body: credentials,
       }),
-      invalidatesTags: ["Auth"], 
+      invalidatesTags: ["Auth"],
     }),
-    getCurrentUser: builder.query({
-      query: (credentials) => ({
-        url: '/users',
+    updateUser: builder.mutation({
+      query: ({ id, user }) => ({
+        url: `/users/${id}`,
+        method: "PUT",
+        body: user,
+      }),
+      invalidatesTags: ["Auth"],
+    }),
+    deleteUser: builder.mutation({
+      query: (id) => ({
+        url: `/users/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["Auth"], 
+      invalidatesTags: ["Auth"],
     }),
   }),
 });
@@ -36,5 +51,7 @@ export const authApiSlice = createApi({
 export const {
   useGetUsersQuery,
   useRegisterMutation,
+  useDeleteUserMutation,
+  useUpdateUserMutation,
   useGetCurrentUserQuery,
 } = authApiSlice;

@@ -13,6 +13,7 @@ import {
   LoginPage,
   RegisterPage,
   UserProfilePage,
+  EditUserProfilePage,
 } from "@/pages/index.js";
 // import Skeleton from "@mui/material/Skeleton";
 import Spinner from "@/components/spinner/Spinner.js";
@@ -38,6 +39,7 @@ const App = () => {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/user/:slug" element={<UserProfilePage />} />
+          <Route path="/user/:slug/edit" element={<EditUserProfilePage />} />
         </Routes>
         <Footer />
       </Suspense>

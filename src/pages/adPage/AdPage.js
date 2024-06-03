@@ -20,7 +20,7 @@ const AdPage = (props) => {
     if (!object) return null;
 
     const objectEntries = Object.entries(object);
-    //Toto сделано только для одного фото
+    //Todo сделано только для одного фото
     const srcForImg = object.photos[0].originalFileUrl;
 
     return (

@@ -64,11 +64,14 @@ const validateMessages = {
 
 const initialValue = {
   title: "", //
+  address: "", //
+  photo: "", //--
   price: "", //
   description: "", //
   square: "", //
   rooms: "", //
   floor: "", //
+  coordinates: "", //--
   name: "", //
   phone: "", //
 
@@ -76,10 +79,9 @@ const initialValue = {
 };
 
 const CreateAdPage = () => {
-  const { currentUser } = useSelector((state) => state.user);
-  const { data: users = [], isFetching } = useGetUsersQuery();
-
+  const { isFetching } = useGetUsersQuery();
   const [createAd] = useCreateAdMutation();
+  const { currentUser } = useSelector((state) => state.user);
 
   // const accessID = getItem("accessID");
 
@@ -97,8 +99,8 @@ const CreateAdPage = () => {
   //   }
   // }, []);
 
-  let photos;
-  let coordinates;
+  let photos = "";
+  let coordinates = "";
 
   const [form] = Form.useForm();
 
@@ -158,7 +160,7 @@ const CreateAdPage = () => {
       >
         <Form.Item
           label="Заголовок"
-          name="address"
+          name="title"
           rules={[
             {
               required: true,
@@ -170,7 +172,7 @@ const CreateAdPage = () => {
 
         <Form.Item
           label="Адрес"
-          name="title"
+          name="address"
           rules={[
             {
               required: true,

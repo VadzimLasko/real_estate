@@ -26,11 +26,11 @@ const setOriginalFileUrl = async (array) => {
   return newArr;
 };
 
-const AddPhoto = ({ onChangePhoto }) => {
+const AddPhoto = ({ onChangePhoto, initialFileList = [] }) => {
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
   const [previewTitle, setPreviewTitle] = useState("");
-  const [fileList, setFileList] = useState([]);
+  const [fileList, setFileList] = useState(initialFileList);
 
   const handleCancel = () => setPreviewOpen(false);
 
@@ -53,7 +53,7 @@ const AddPhoto = ({ onChangePhoto }) => {
   const handleChange = async ({ fileList: newFileList }) => {
     const updatedList = await setOriginalFileUrl(newFileList);
     setFileList(updatedList);
-    console.log("New foto", updatedList);
+    console.log("New photos", updatedList);
     onChangePhoto(updatedList);
   };
 
