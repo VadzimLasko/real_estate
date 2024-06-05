@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 // import { useHttp } from "../../../hooks/http.hook";
 import { useNavigate, useParams } from "react-router-dom";
 import { nanoid } from "@reduxjs/toolkit";
@@ -45,14 +45,6 @@ const tailFormItemLayout = {
   // },
 };
 
-let answer = () => {
-  return (
-    <>
-      <span>Данные успешно сохранены!</span>
-    </>
-  );
-};
-
 const EditUserProfilePage = (props) => {
   //   BQYCL8D0OraeAipWQJU3P
   useGetUsersQuery();
@@ -60,6 +52,15 @@ const EditUserProfilePage = (props) => {
   const { data: user, isFetching } = useGetCurrentUserQuery(slug);
   const [updateUser, { isFetching: isUpdateFetching, isSuccess }] =
     useUpdateUserMutation();
+  const [successUpdate, setSuccessUpdate] = useState(false);
+  useEffect(() => {
+    let timerId;
+    if (isSuccess) {
+      setSuccessUpdate(true);
+      timerId = setTimeout(() => setSuccessUpdate(false), 4000);
+    }
+    return () => clearTimeout(timerId);
+  }, [isSuccess]);
   const [form] = Form.useForm();
   console.log(isSuccess);
 
@@ -70,13 +71,13 @@ const EditUserProfilePage = (props) => {
   };
   // let sameIsSuccess = isSuccess;
 
-  let answer = <span>Данные успешно сохранены!</span>;
+  let answer = <span>Данные успешно обновлены!</span>;
 
-  const successUpdated = () => {
-    setTimeout(() => {
-      return (answer = null);
-    }, 3000);
-  };
+  // const successUpdated = () => {
+  //   setTimeout(() => {
+  //     return (answer = null);
+  //   }, 3000);
+  // };
 
   const { Option } = Select;
 
@@ -84,9 +85,9 @@ const EditUserProfilePage = (props) => {
     required: "Необходимо заполнить!",
   };
 
-  if (isSuccess) {
-    successUpdated();
-  }
+  // if (isSuccess) {
+  //   successUpdated();
+  // }
 
   if (isFetching) {
     return <Spinner />;
@@ -121,133 +122,138 @@ const EditUserProfilePage = (props) => {
   // agreement(pin):true
 
   return (
-    <div className="registration-form__wrapper">
-      <Form
-        // {...formItemLayout}
-        form={form}
-        name="ediUserForm"
-        layout="vertical"
-        validateMessages={validateMessages}
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
-        initialValues={initialValues}
-        style={{
-          width: 500,
-        }}
-        scrollToFirstError
-      >
-        <Form.Item
-          name="email"
-          label="E-mail"
-          rules={[
-            {
-              type: "email",
-              message: "Введен неверный E-mail!",
-            },
-            {
-              required: true,
-            },
-          ]}
+    <>
+      <div className="registration-form__wrapper">
+        <Form
+          // {...formItemLayout}
+          form={form}
+          name="ediUserForm"
+          layout="vertical"
+          validateMessages={validateMessages}
+          onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
+          initialValues={initialValues}
+          style={{
+            width: 500,
+          }}
+          scrollToFirstError
         >
-          <Input />
-        </Form.Item>
-
-        <Form.Item
-          name="password"
-          label="Изменить пароль"
-          rules={[
-            {
-              required: false,
-              // message: "Введен неверный Пароль!",
-            },
-          ]}
-          hasFeedback
-        >
-          <Input.Password />
-        </Form.Item>
-
-        <Form.Item
-          name="confirm"
-          label="Подтверждение пароля"
-          dependencies={["password"]}
-          hasFeedback
-          rules={[
-            {
-              required: false,
-            },
-            ({ getFieldValue }) => ({
-              validator(_, value) {
-                if (getFieldValue("password") === value) {
-                  return Promise.resolve();
-                }
-                return Promise.reject(new Error("Пароли не совпадают!"));
+          <Form.Item
+            name="email"
+            label="E-mail"
+            rules={[
+              {
+                type: "email",
+                message: "Введен неверный E-mail!",
               },
-            }),
-          ]}
-        >
-          <Input.Password />
-        </Form.Item>
-
-        <Form.Item
-          name="name"
-          label="Имя"
-          tooltip="Как Вас называть?"
-          rules={[
-            {
-              required: true,
-              whitespace: true,
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-
-        <Form.Item
-          name="phone"
-          label="Номер телефона"
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
-          <Input
-            addonBefore="+"
-            style={{
-              width: "100%",
-            }}
-          />
-        </Form.Item>
-
-        <Form.Item
-          name="gender"
-          label="Частное лицо или организация?"
-          rules={[
-            {
-              required: true,
-              message: "Необходимо выбрать",
-            },
-          ]}
-        >
-          <Select placeholder="Вы частное лицо или организация?">
-            <Option value="частное лицо">Частное лицо</Option>
-            <Option value="организация">Организация</Option>
-          </Select>
-        </Form.Item>
-
-        <Form.Item {...tailFormItemLayout} wrapperCol={{ offset: 8, span: 16 }}>
-          <Button
-            className="registration-form-button"
-            type="primary"
-            htmlType="submit"
-            disabled={isUpdateFetching}
+              {
+                required: true,
+              },
+            ]}
           >
-            Сохранить измененения
-          </Button>
-          {isSuccess ? answer : null}
-        </Form.Item>
-      </Form>
-    </div>
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            name="password"
+            label="Изменить пароль"
+            rules={[
+              {
+                required: false,
+                // message: "Введен неверный Пароль!",
+              },
+            ]}
+            hasFeedback
+          >
+            <Input.Password />
+          </Form.Item>
+
+          <Form.Item
+            name="confirm"
+            label="Подтверждение пароля"
+            dependencies={["password"]}
+            hasFeedback
+            rules={[
+              {
+                required: false,
+              },
+              ({ getFieldValue }) => ({
+                validator(_, value) {
+                  if (getFieldValue("password") === value) {
+                    return Promise.resolve();
+                  }
+                  return Promise.reject(new Error("Пароли не совпадают!"));
+                },
+              }),
+            ]}
+          >
+            <Input.Password />
+          </Form.Item>
+
+          <Form.Item
+            name="name"
+            label="Имя"
+            tooltip="Как Вас называть?"
+            rules={[
+              {
+                required: true,
+                whitespace: true,
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            name="phone"
+            label="Номер телефона"
+            rules={[
+              {
+                required: true,
+              },
+            ]}
+          >
+            <Input
+              addonBefore="+"
+              style={{
+                width: "100%",
+              }}
+            />
+          </Form.Item>
+
+          <Form.Item
+            name="gender"
+            label="Частное лицо или организация?"
+            rules={[
+              {
+                required: true,
+                message: "Необходимо выбрать",
+              },
+            ]}
+          >
+            <Select placeholder="Вы частное лицо или организация?">
+              <Option value="частное лицо">Частное лицо</Option>
+              <Option value="организация">Организация</Option>
+            </Select>
+          </Form.Item>
+
+          <Form.Item
+            {...tailFormItemLayout}
+            wrapperCol={{ offset: 8, span: 16 }}
+          >
+            <Button
+              className="registration-form-button"
+              type="primary"
+              htmlType="submit"
+              disabled={isUpdateFetching}
+            >
+              Сохранить измененения
+            </Button>
+            {successUpdate ? answer : null}
+          </Form.Item>
+        </Form>
+      </div>
+    </>
   );
 };
 
