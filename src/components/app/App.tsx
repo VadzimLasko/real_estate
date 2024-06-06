@@ -1,22 +1,13 @@
-import { lazy, Suspense } from "react";
+import { Suspense } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import AppHeader from "@/components/appHeader/AppHeader";
 import Footer from "@/components/footer/Footer";
 // import { useDispatch, useSelector } from "react-redux";
 // import { useEffect } from "react";
-import {
-  AdPage,
-  CreateAdPage,
-  EditAdPage,
-  HomePage,
-  LoginPage,
-  RegisterPage,
-  UserProfilePage,
-  EditUserProfilePage,
-} from "@/pages/index.js";
+import routes from "@/routes/index";
 // import Skeleton from "@mui/material/Skeleton";
-import Spinner from "@/components/spinner/Spinner.js";
+import Spinner from "@/components/spinner/Spinner";
 // import AddPhoto from "../forms/formElements/AddPhoto";
 // import AddAdForm from "../forms/addAdForm/AddAdForm";
 // import LoginForm from "../forms/loginForm/LoginForm";
@@ -32,14 +23,9 @@ const App = () => {
       <Suspense fallback={<Spinner />}>
         <AppHeader />
         <Routes>
-          <Route path="/ad/:slug" element={<AdPage />} />
-          <Route path="/ad/create" element={<CreateAdPage />} />
-          <Route path="/ad/:slug/edit" element={<EditAdPage />} />
-          <Route path="/" element={<HomePage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/user/:slug" element={<UserProfilePage />} />
-          <Route path="/user/:slug/edit" element={<EditUserProfilePage />} />
+          {routes.map(({ path, element }) => (
+            <Route key={path} path={path} element={element} />
+          ))}
         </Routes>
         <Footer />
       </Suspense>

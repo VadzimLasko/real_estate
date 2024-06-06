@@ -1,4 +1,4 @@
-// import { useState } from "react";
+import { FC } from "react";
 // import { useHttp } from "../../../hooks/http.hook";
 // import { useDispatch, useSelector } from "react-redux";
 import { nanoid } from "@reduxjs/toolkit";
@@ -12,7 +12,7 @@ import {
   useGetCurrentUserQuery,
 } from "@/api/authApiSlice.js";
 
-import { isCoincidence, setItem } from "@/utils/utils.js";
+import { isCoincidence, setItem } from "@/helpers/utils.js";
 
 import "./registerPage.sass";
 //Todo добавь страницу соглашения
@@ -52,7 +52,7 @@ const tailFormItemLayout = {
   // },
 };
 
-const RegisterPage = () => {
+const RegisterPage: FC = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const { data: users = [] } = useGetUsersQuery();
@@ -66,7 +66,7 @@ const RegisterPage = () => {
       .then((response) => {
         if (response) {
           console.log(values);
-          setItem("accessID", values.id);
+          setItem(values.id);
           navigate("/");
         }
       })

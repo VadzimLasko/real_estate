@@ -1,7 +1,9 @@
-import { useNavigate, useParams } from "react-router-dom";
-import { useGetOneAdQuery } from "@/api/adApiSlice.js";
+import { FC } from "react";
+import { useParams } from "react-router-dom";
+import { useGetOneAdQuery } from "@/api/adApiSlice";
 
-import Spinner from "@/components/spinner/Spinner.js";
+import Spinner from "@/components/spinner/Spinner";
+import { AnyObject } from "antd/es/_util/type";
 
 // const getBase64 = (file) =>
 //   new Promise((resolve, reject) => {
@@ -11,17 +13,17 @@ import Spinner from "@/components/spinner/Spinner.js";
 //     reader.onerror = (error) => reject(error);
 //   });
 
-const AdPage = (props) => {
-  let { slug } = useParams();
+const AdPage: FC = () => {
+  const { slug } = useParams();
   const { data: ad, isFetching } = useGetOneAdQuery(slug);
   // const srcForImg = ad ? ad.photos[0].originalFileUrl : null;
 
-  const objectToDivList = (object) => {
-    if (!object) return null;
+  const objectToDivList = (obj: AnyObject) => {
+    if (!obj) return null;
 
-    const objectEntries = Object.entries(object);
+    const objectEntries = Object.entries(obj);
     //Todo сделано только для одного фото
-    const srcForImg = object.photos[0].originalFileUrl;
+    const srcForImg = obj.photos[0].originalFileUrl;
 
     return (
       <ul>

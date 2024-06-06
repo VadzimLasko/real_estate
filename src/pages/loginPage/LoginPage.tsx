@@ -1,24 +1,28 @@
-// import { useHttp } from "../../../hooks/http.hook";
-// import { useDispatch, useSelector } from "react-redux";
-// import { nanoid } from "@reduxjs/toolkit";
-import { useState } from "react";
+import { FC } from "react";
 import { useNavigate } from "react-router-dom";
+
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Checkbox, Form, Input } from "antd";
 
+import { useGetUsersQuery } from "@/api/authApiSlice";
 import {
-  useGetUsersQuery,
-  useRegisterMutation,
-  useGetCurrentUserQuery,
-} from "@/api/authApiSlice.js";
-import { isCoincidence, setItem, currentUserFromEmail } from "@/utils/utils.js";
+  isCoincidence,
+  setItem,
+  currentUserFromEmail,
+} from "@/helpers/utils.js";
 
 import "./loginPage.sass";
 
-const LoginPage = () => {
+interface LoginFormValues {
+  email: string;
+  password: string;
+}
+
+const LoginPage: FC = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
-  const { data: users = [] } = useGetUsersQuery();
+
+  const { data: users = [] } = useGetUsersQuery(undefined);
 
   const validateMessages = {
     required: "Необходимо заполнить!",
@@ -36,14 +40,14 @@ const LoginPage = () => {
     ]);
   };
 
-  const onFinish = (values) => {
+  const onFinish = (values: LoginFormValues) => {
     const isValid =
       isCoincidence(users, "email", values.email) &&
       isCoincidence(users, "password", values.password);
     if (isValid) {
       const user = currentUserFromEmail(users, values.email);
       if (user) {
-        setItem("accessID", user.id);
+        setItem(user.id);
         navigate("/");
       } else {
         newError();
@@ -53,7 +57,7 @@ const LoginPage = () => {
     }
   };
 
-  const onFinishFailed = (errorInfo) => {
+  const onFinishFailed = (errorInfo: unknown) => {
     console.log("Failed:", errorInfo);
   };
 
@@ -78,7 +82,7 @@ const LoginPage = () => {
         validateMessages={validateMessages}
         // layout="vertical"
         // variant="filled"
-        required="true"
+        // required="true"
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         autoComplete="off"

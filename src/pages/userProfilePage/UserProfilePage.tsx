@@ -1,4 +1,4 @@
-// import { useState } from "react";
+import { FC } from "react";
 // import { useHttp } from "../../../hooks/http.hook";
 import { useNavigate, useParams } from "react-router-dom";
 import { nanoid } from "@reduxjs/toolkit";
@@ -12,7 +12,7 @@ import {
 } from "@/api/authApiSlice.js";
 import Spinner from "@/components/spinner/Spinner.js";
 
-import { isCoincidence, setItem } from "@/utils/utils.js";
+import { isCoincidence, setItem } from "@/helpers/utils.js";
 
 import "./userProfilePage.sass";
 
@@ -45,7 +45,7 @@ const tailFormItemLayout = {
   // },
 };
 
-const UserProfilePage = (props) => {
+const UserProfilePage: FC = () => {
   //   BQYCL8D0OraeAipWQJU3P
   useGetUsersQuery();
   let { slug } = useParams();

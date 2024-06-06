@@ -1,18 +1,51 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { FC } from "react";
 import { useCallback } from "react";
 import { nanoid } from "@reduxjs/toolkit";
 import { useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { Button, Form, Input, InputNumber } from "antd";
-import { useGetUsersQuery } from "@/api/authApiSlice.js";
-import { useUpdateAdMutation, useGetOneAdQuery } from "@/api/adApiSlice.js";
+import { authApiSlice } from "@/api/authApiSlice.js";
+import {
+  useGetUsersQuery,
+  useRegisterMutation,
+  useGetCurrentUserQuery,
+} from "@/api/authApiSlice.js";
+import { useCreateAdMutation } from "@/api/adApiSlice.js";
 import AddPhoto from "@/components/addPhoto/AddPhoto.js";
 import Spinner from "@/components/spinner/Spinner.js";
 import MapComponent from "@/components/mapComponent/MapComponent.js";
-import { isCoincidence, getItem, currentUserFromId } from "@/utils/utils.js";
+import { isCoincidence, getItem, currentUserFromId } from "@/helpers/utils.js";
 
-import "./editAdPage.sass";
+import "./createAdPage.sass";
+
+// export const theme = {
+//   token: {
+//     fontSize: "1.4rem",
+//   },
+// };
+
+// {
+//   /* <ConfigProvider form={{ validateMessages }}>
+//   <Form />
+// </ConfigProvider>; */
+// }
+
+// {
+/* <ConfigProvider
+  theme={{
+    token: {
+      fontSize: "1.4rem",
+    },
+  }}form={{ validateMessages }}
+/>; */
+
+// const onFinish = () => {
+//   message.success('Submit success!');
+// };
+// const onFinishFailed = () => {
+//   message.error('Submit failed!');
+// }
 
 const formItemLayout = {
   labelCol: {
@@ -29,48 +62,47 @@ const validateMessages = {
   required: "Необходимо заполнить!",
 };
 
-const EditAdPage = () => {
-  //    sY7Mx29PtneaoBWAJyUZh
-  useGetUsersQuery();
-  let { slug } = useParams();
-  const { data: ad, isFetching } = useGetOneAdQuery(slug);
-  const [form] = Form.useForm();
-  const [updateAd] = useUpdateAdMutation();
+const initialValue = {
+  title: "", //
+  address: "", //
+  photo: "", //--
+  price: "", //
+  description: "", //
+  square: "", //
+  rooms: "", //
+  floor: "", //
+  coordinates: "", //--
+  name: "", //
+  phone: "", //
+
+  //photos
+};
+
+const CreateAdPage: FC = () => {
+  const { isFetching } = useGetUsersQuery();
+  const [createAd] = useCreateAdMutation();
   const { currentUser } = useSelector((state) => state.user);
 
-  if (isFetching) {
-    return <Spinner />;
-  }
-  if (!currentUser) {
-    return (
-      <div style={{ margin: "15rem auto 0", width: "25rem" }}>
-        Вы не можете редактировать это объявление
-      </div>
-    );
-  }
+  // const accessID = getItem("accessID");
 
-  let { id, author, photos, coordinates, ...initialValues } = ad;
-  const initialPhotos = photos ? photos : [];
-  const initialCoordinates = coordinates ? coordinates : [];
-  console.log(initialValues);
+  // const { data: users = [] } = useGetUsersQuery();
+  // const currentUser = currentUserFromId(users, accessID);
+  // useEffect(() => {
+  //   if (currentUser) {
+  //     return;
+  //   }
 
-  // const isAuthor = author === currentUser.email;
+  //   if (!currentUser && accessID) {
 
-  // const initialValue = {
-  //   title: "", //
-  //   price: "", //
-  //   description: "", //
-  //   square: "", //
-  //   rooms: "", //
-  //   floor: "", //s
-  //   name: "", //
-  //   phone: "", //
+  //       const { data: users = [] } = authApiSlice.endpoints.getUsers()
+  //     };
+  //   }
+  // }, []);
 
-  //   //photos
-  // };
+  let photos = "";
+  let coordinates = "";
 
-  // let photos;
-  // let coordinates;
+  const [form] = Form.useForm();
 
   const onChangePhoto = (files) => {
     photos = files;
@@ -81,20 +113,18 @@ const EditAdPage = () => {
   };
 
   const onFinish = (values) => {
-    values.id = id;
-    values.author = author;
+    values.id = nanoid();
+    values.author = currentUser.email;
     values.photos = photos;
-
+    values.phone = Number("375".concat(`${values.phone}`));
     values.coordinates = coordinates;
-    console.log("values", values);
 
-    updateAd({ id: id, ad: values })
+    createAd(values)
       .unwrap()
       .then((response) => {
         if (response) {
-          console.log("New update ad", values);
-          // form.resetFields();
-          alert("Good");
+          console.log("New ad", values);
+          form.resetFields();
         }
       })
       .catch((error) => {
@@ -108,7 +138,7 @@ const EditAdPage = () => {
   if (!currentUser) {
     return (
       <div style={{ margin: "15rem auto 0", width: "25rem" }}>
-        Вы не можете редактировать это объявление
+        Вам нужно авторизоваться
       </div>
     );
   }
@@ -120,13 +150,13 @@ const EditAdPage = () => {
         {...formItemLayout}
         onFinish={onFinish}
         // onFinishFailed
-        initialValues={initialValues}
+        initialValue={initialValue}
         scrollToFirstError
         layout="vertical"
         validateMessages={validateMessages}
         variant="filled"
         required="true"
-        name="updateAd"
+        name="CreateAd"
       >
         <Form.Item
           label="Заголовок"
@@ -157,12 +187,7 @@ const EditAdPage = () => {
           tooltip="Не более 8 фотографий"
           label="Фотографии"
         >
-          <AddPhoto
-            showCount
-            maxLength={8}
-            initialFileList={initialPhotos}
-            onChangePhoto={onChangePhoto}
-          />
+          <AddPhoto showCount maxLength={8} onChangePhoto={onChangePhoto} />
         </Form.Item>
 
         <Form.Item label="Стоимость" name="price" rules={[{ required: true }]}>
@@ -225,10 +250,7 @@ const EditAdPage = () => {
           <InputNumber min={1} max={30} style={{ width: "100%" }} />
         </Form.Item>
 
-        <MapComponent
-          initialCoordinates={initialCoordinates}
-          onChangeCoordinates={onChangeCoordinates}
-        />
+        <MapComponent onChangeCoordinates={onChangeCoordinates} />
 
         <Form.Item
           name="name"
@@ -254,7 +276,7 @@ const EditAdPage = () => {
           ]}
         >
           <InputNumber
-            addonBefore="+"
+            addonBefore="+375"
             style={{
               width: "100%",
             }}
@@ -263,7 +285,7 @@ const EditAdPage = () => {
 
         <Form.Item wrapperCol={{ offset: 9 }}>
           <Button type="primary" htmlType="submit">
-            Сохранить изменения
+            Добавить объявление
           </Button>
         </Form.Item>
       </Form>
@@ -271,4 +293,4 @@ const EditAdPage = () => {
   );
 };
 
-export default EditAdPage;
+export default CreateAdPage;

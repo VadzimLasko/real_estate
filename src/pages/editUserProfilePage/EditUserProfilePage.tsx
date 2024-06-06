@@ -1,3 +1,4 @@
+import { FC } from "react";
 import { useCallback, useEffect, useState } from "react";
 // import { useHttp } from "../../../hooks/http.hook";
 import { useNavigate, useParams } from "react-router-dom";
@@ -12,7 +13,7 @@ import {
 } from "@/api/authApiSlice.js";
 import Spinner from "@/components/spinner/Spinner.js";
 
-import { isCoincidence, setItem } from "@/utils/utils.js";
+import { isCoincidence, setItem } from "@/helpers/utils.js";
 
 import "./editUserProfilePage.sass";
 
@@ -45,7 +46,7 @@ const tailFormItemLayout = {
   // },
 };
 
-const EditUserProfilePage = (props) => {
+const EditUserProfilePage: FC = () => {
   //   BQYCL8D0OraeAipWQJU3P
   useGetUsersQuery();
   let { slug } = useParams();

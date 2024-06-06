@@ -1,12 +1,8 @@
-import {
-  createSlice,
-  createEntityAdapter,
-  createSelector,
-} from "@reduxjs/toolkit";
+import { createSlice, createEntityAdapter } from "@reduxjs/toolkit";
 
 import { authApiSlice } from "@/api/authApiSlice.js";
-import { adApiSlice } from "@/api/adApiSlice.js";
-import { isCoincidence, getItem, currentUserFromId } from "@/utils/utils.js";
+import { currentUserFromId } from "@/helpers/utils.js";
+import { getItem } from "@/helpers/persistanceStorage";
 
 const userAdapter = createEntityAdapter();
 
@@ -32,7 +28,7 @@ const userSlice = createSlice({
       .addMatcher(
         authApiSlice.endpoints.getUsers.matchFulfilled,
         (state, action) => {
-          const accessID = getItem("accessID");
+          const accessID = getItem();
 
           if (accessID) {
             const { id, email } = currentUserFromId(action.payload, accessID);
