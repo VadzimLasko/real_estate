@@ -1,23 +1,25 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { Ad, Ads } from "@/types/ads";
+import { baseUrl } from "@/helpers";
 
 export const adApiSlice = createApi({
   reducerPath: "apiAd",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:3001",
+    baseUrl,
   }),
   tagTypes: ["Ads"],
   endpoints: (builder) => ({
-    getAds: builder.query({
+    getAds: builder.query<Ads, void>({
       query: () => "/ads",
       providesTags: ["Ads"],
       keepUnusedDataFor: 5,
     }),
-    getOneAd: builder.query({
+    getOneAd: builder.query<Ad, string>({
       query: (id) => `/ads/${id}`,
       // providesTags: ["Ads"],
       keepUnusedDataFor: 5,
     }),
-    createAd: builder.mutation({
+    createAd: builder.mutation<Ad, Ad>({
       query: (ad) => ({
         url: "/ads",
         method: "POST",
@@ -25,7 +27,7 @@ export const adApiSlice = createApi({
       }),
       invalidatesTags: ["Ads"],
     }),
-    updateAd: builder.mutation({
+    updateAd: builder.mutation<Ad, { id: string; ad: Ad }>({
       query: ({ id, ad }) => ({
         url: `/ads/${id}`,
         method: "PUT",
@@ -33,7 +35,7 @@ export const adApiSlice = createApi({
       }),
       invalidatesTags: ["Ads"],
     }),
-    deleteAd: builder.mutation({
+    deleteAd: builder.mutation<{ success: boolean }, string>({
       query: (id) => ({
         url: `/ads/${id}`,
         method: "DELETE",

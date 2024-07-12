@@ -1,22 +1,21 @@
-import { FC } from "react";
 // import { useHttp } from "../../../hooks/http.hook";
-// import { useDispatch, useSelector } from "react-redux";
+import { FC } from "react";
 import { nanoid } from "@reduxjs/toolkit";
+// import { hash } from "bcrypt";
 // import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { Button, Checkbox, Form, Input, Select } from "antd";
-import {
-  useGetUsersQuery,
-  useRegisterMutation,
-  useGetCurrentUserQuery,
-} from "@/api/authApiSlice.js";
+import { useGetUsersQuery, useRegisterMutation } from "@/api/authApiSlice";
 
-import { isCoincidence, setItem } from "@/helpers/utils.js";
+import { isCoincidence, setItem } from "@/helpers";
+import { User } from "@/types/users";
 
 import "./registerPage.sass";
-//Todo добавь страницу соглашения
-//Todo удали uuid и reselect из зависимостей
+
+import { hash } from "bcryptjs";
+//TODO добавь страницу соглашения
+//TODO удали uuid И reselect из зависимостей
 const validateMessages = {
   required: "Необходимо заполнить!",
 };
@@ -57,10 +56,13 @@ const RegisterPage: FC = () => {
   const navigate = useNavigate();
   const { data: users = [] } = useGetUsersQuery();
 
-  const [register, { isFetching }] = useRegisterMutation();
+  const [register, { isLoading }] = useRegisterMutation();
 
-  const onFinish = (values) => {
+  const onFinish = async (values: User) => {
     values.id = nanoid();
+    values.favorites = [];
+    values.password = await hash(values.password, 10);
+    delete values.confirm;
     register(values)
       .unwrap()
       .then((response) => {
@@ -215,7 +217,7 @@ const RegisterPage: FC = () => {
             className="registration-form-button"
             type="primary"
             htmlType="submit"
-            disabled={isFetching}
+            disabled={isLoading}
           >
             Зарегистрироваться
           </Button>

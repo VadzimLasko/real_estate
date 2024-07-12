@@ -1,10 +1,12 @@
+import AdsList from "@/components/adsList/AdsList";
+import FiltersPanel from "@/components/filters/FiltersPanel";
 import { FC } from "react";
-import MainMenuPanel from "@/components/mainMenuPanel/MainMenuPanel";
 
 const HomePage: FC = () => {
   return (
     <>
-      <MainMenuPanel />
+      <FiltersPanel />
+      <AdsList />
     </>
   );
 };

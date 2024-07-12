@@ -1,9 +1,9 @@
 import "./mainMenuPanel.sass";
 
-const MainMenuPanel = () => {
+const MainMenuPanel = ({ children }: any) => {
   return (
     <>
-      <section className="section-main"></section>
+      <section className="section-main">{children}</section>
     </>
   );
 };

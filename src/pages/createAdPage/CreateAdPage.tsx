@@ -1,23 +1,17 @@
 import { FC } from "react";
-import { useCallback } from "react";
 import { nanoid } from "@reduxjs/toolkit";
-import { useRef, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-
 import { Button, Form, Input, InputNumber } from "antd";
-import { authApiSlice } from "@/api/authApiSlice.js";
-import {
-  useGetUsersQuery,
-  useRegisterMutation,
-  useGetCurrentUserQuery,
-} from "@/api/authApiSlice.js";
+
+import { useTypedSelector } from "@/store";
+import { useGetUsersQuery } from "@/api/authApiSlice.js";
 import { useCreateAdMutation } from "@/api/adApiSlice.js";
 import AddPhoto from "@/components/addPhoto/AddPhoto.js";
 import Spinner from "@/components/spinner/Spinner.js";
 import MapComponent from "@/components/mapComponent/MapComponent.js";
-import { isCoincidence, getItem, currentUserFromId } from "@/helpers/utils.js";
+import { Ad, UploadFileType } from "@/types/ads";
 
 import "./createAdPage.sass";
+
 
 // export const theme = {
 //   token: {
@@ -62,32 +56,33 @@ const validateMessages = {
   required: "Необходимо заполнить!",
 };
 
-const initialValue = {
-  title: "", //
-  address: "", //
-  photo: "", //--
-  price: "", //
-  description: "", //
-  square: "", //
-  rooms: "", //
-  floor: "", //
-  coordinates: "", //--
-  name: "", //
-  phone: "", //
+// const initialValue = {
+//   title: "", //
+//   address: "", //
+//   photo: "", //--
+//   price: "", //
+//   description: "", //
+//   square: "", //
+//   rooms: "", //
+//   floor: "", //
+//   coordinates: "", //--
+//   name: "", //
+//   phone: "", //
 
-  //photos
-};
+//   //photos
+// };
 
 const CreateAdPage: FC = () => {
   const { isFetching } = useGetUsersQuery();
   const [createAd] = useCreateAdMutation();
-  const { currentUser } = useSelector((state) => state.user);
+  const { currentUser } = useTypedSelector((state) => state.user);
 
   // const accessID = getItem("accessID");
 
   // const { data: users = [] } = useGetUsersQuery();
   // const currentUser = currentUserFromId(users, accessID);
   // useEffect(() => {
+
   //   if (currentUser) {
   //     return;
   //   }
@@ -99,20 +94,32 @@ const CreateAdPage: FC = () => {
   //   }
   // }, []);
 
-  let photos = "";
-  let coordinates = "";
+  let photos: UploadFileType = [];
+  let coordinates: number[] = [];
 
   const [form] = Form.useForm();
 
-  const onChangePhoto = (files) => {
+  const onChangePhoto = (files: UploadFileType): void => {
     photos = files;
   };
 
-  const onChangeCoordinates = (coords) => {
+  const onChangeCoordinates = (coords: number[]): void => {
     coordinates = coords;
   };
 
-  const onFinish = (values) => {
+  if (isFetching) {
+    return <Spinner />;
+  }
+  if (!currentUser) {
+    return (
+      <div style={{ margin: "15rem auto 0", width: "25rem" }}>
+        Вам нужно авторизоваться
+      </div>
+    );
+  }
+
+  const onFinish = (values: Ad): void => {
+    console.log("values", values);
     values.id = nanoid();
     values.author = currentUser.email;
     values.photos = photos;
@@ -132,16 +139,16 @@ const CreateAdPage: FC = () => {
       });
   };
 
-  if (isFetching) {
-    return <Spinner />;
-  }
-  if (!currentUser) {
-    return (
-      <div style={{ margin: "15rem auto 0", width: "25rem" }}>
-        Вам нужно авторизоваться
-      </div>
-    );
-  }
+  // if (isFetching) {
+  //   return <Spinner />;
+  // }
+  // if (!currentUser) {
+  //   return (
+  //     <div style={{ margin: "15rem auto 0", width: "25rem" }}>
+  //       Вам нужно авторизоваться
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="add-ad-form__wrapper">
@@ -150,12 +157,11 @@ const CreateAdPage: FC = () => {
         {...formItemLayout}
         onFinish={onFinish}
         // onFinishFailed
-        initialValue={initialValue}
+        // initialValue={initialValue}
         scrollToFirstError
         layout="vertical"
         validateMessages={validateMessages}
         variant="filled"
-        required="true"
         name="CreateAd"
       >
         <Form.Item
@@ -187,7 +193,7 @@ const CreateAdPage: FC = () => {
           tooltip="Не более 8 фотографий"
           label="Фотографии"
         >
-          <AddPhoto showCount maxLength={8} onChangePhoto={onChangePhoto} />
+          <AddPhoto onChangePhoto={onChangePhoto} />
         </Form.Item>
 
         <Form.Item label="Стоимость" name="price" rules={[{ required: true }]}>

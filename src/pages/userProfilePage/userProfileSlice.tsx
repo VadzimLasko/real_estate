@@ -1,78 +1,42 @@
-import { createSlice, createEntityAdapter } from "@reduxjs/toolkit";
-
-import { authApiSlice } from "@/api/authApiSlice.js";
-import { currentUserFromId } from "@/helpers/utils.js";
+import {
+  createSlice,
+  createEntityAdapter,
+  PayloadAction,
+} from "@reduxjs/toolkit";
+import { authApiSlice } from "@/api/authApiSlice";
+import { currentUserFromId } from "@/helpers";
 import { getItem } from "@/helpers/persistanceStorage";
+import { CurrentUser, Users, CurrentUserState } from "@/types/users";
 
-const userAdapter = createEntityAdapter();
+const userAdapter = createEntityAdapter<CurrentUser>();
 
-const initialState = userAdapter.getInitialState({
+const initialState: CurrentUserState = userAdapter.getInitialState({
   currentUser: null,
 });
 
 const userSlice = createSlice({
   name: "user",
   initialState,
-  reducers: {
-    // userCreated: (state, action) => {
-    //   userAdapter.addOne(state, action.payload);
-    // },
-    // userDeleted: (state, action) => {
-    //   userAdapter.removeOne(state, action.payload);
-    // },
-  },
-  //Здесь АсинкСанк рассматривиается как внешний рэдюсер
+  reducers: {},
   extraReducers: (builder) => {
-    //Здесь АсинкСанк рассматривиается как внешний рэдюсер
     builder
       .addMatcher(
         authApiSlice.endpoints.getUsers.matchFulfilled,
-        (state, action) => {
+        (state, action: PayloadAction<Users>) => {
           const accessID = getItem();
 
           if (accessID) {
-            const { id, email } = currentUserFromId(action.payload, accessID);
-            state.currentUser = { id, email };
+            const currentUser = currentUserFromId(action.payload, accessID);
+            if (currentUser) {
+              const { id, email } = currentUser;
+              state.currentUser = { id, email };
+            }
           }
         }
       )
-      // .addMatcher(
-      //   adApiSlice.endpoints.getOneAd.matchFulfilled,
-      //   (state, action) => {
-      //     const accessID = getItem("accessID");
-
-      //     if (accessID) {
-      //       const { id, email, ...currentUser } = currentUserFromId(
-      //         action.payload,
-      //         accessID
-      //       );
-      //       state.currentUser = { id, email };
-      //     }
-      //   }
-      // )
       .addDefaultCase(() => {});
   },
 });
 
-const {
-  // actions,
-  reducer,
-} = userSlice;
+const { reducer } = userSlice;
 export default reducer;
-
-// const { selectAll } = heroesAdapter.getSelectors((state) => state.heroes);
-
-// export const filteredHeroesSelector = createSelector(
-//   //Эта хрень нужна для работы сразу с двумя частями стора и их подготовки, можно обойтись и без нее
-//   (state) => state.filters.activeFilter,
-//   selectAll,
-//   (filter, heroes) => {
-//     if (filter === "all") {
-//       return heroes;
-//     } else {
-//       return heroes.filter((item) => item.element === filter);
-//     }
-//   }
-// );
-
-// export const { heroCreated, heroDeleted } = actions;

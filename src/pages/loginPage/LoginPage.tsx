@@ -3,13 +3,10 @@ import { useNavigate } from "react-router-dom";
 
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Checkbox, Form, Input } from "antd";
+import { compare } from "bcryptjs";
 
 import { useGetUsersQuery } from "@/api/authApiSlice";
-import {
-  isCoincidence,
-  setItem,
-  currentUserFromEmail,
-} from "@/helpers/utils.js";
+import { setItem, currentUserFromEmail } from "@/helpers";
 
 import "./loginPage.sass";
 
@@ -22,7 +19,7 @@ const LoginPage: FC = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
 
-  const { data: users = [] } = useGetUsersQuery(undefined);
+  const { data: users = [] } = useGetUsersQuery();
 
   const validateMessages = {
     required: "Необходимо заполнить!",
@@ -40,26 +37,19 @@ const LoginPage: FC = () => {
     ]);
   };
 
-  const onFinish = (values: LoginFormValues) => {
-    const isValid =
-      isCoincidence(users, "email", values.email) &&
-      isCoincidence(users, "password", values.password);
-    if (isValid) {
-      const user = currentUserFromEmail(users, values.email);
-      if (user) {
-        setItem(user.id);
-        navigate("/");
-      } else {
-        newError();
-      }
+  const onFinish = async (values: LoginFormValues) => {
+    const user = currentUserFromEmail(users, values.email);
+    if (user && (await compare(values.password, user.password))) {
+      setItem(user.id);
+      navigate("/");
     } else {
       newError();
     }
   };
 
-  const onFinishFailed = (errorInfo: unknown) => {
-    console.log("Failed:", errorInfo);
-  };
+  // const onFinishFailed = (errorInfo: unknown) => {
+  //   console.log("Failed:", errorInfo);
+  // };
 
   return (
     <div className="login-form__wrapper">
@@ -84,7 +74,7 @@ const LoginPage: FC = () => {
         // variant="filled"
         // required="true"
         onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
+        // onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
         <Form.Item

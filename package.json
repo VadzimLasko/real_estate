@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
@@ -23,6 +24,7 @@
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "@types/bcryptjs": "^2.4.6",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@typescript-eslint/eslint-plugin": "^7.12.0",
@@ -44,10 +46,8 @@
     "react-toastify": "^10.0.5",
     "react-transition-group": "^4.4.5",
     "redux-thunk": "^2.4.2",
-    "reselect": "^4.1.8",
     "sass": "^1.69.0",
     "typescript": "^5.4.5",
-    "uuid": "^8.3.2",
     "vite": "^5.2.12",
     "web-vitals": "^2.1.4"
   }

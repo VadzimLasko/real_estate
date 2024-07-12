@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import {
   YMaps,
   Map as YMap,
@@ -7,16 +7,33 @@ import {
   Placemark,
   ObjectManager,
   Clusterer,
-  SearchControl,
-  useYMaps,
+  // SearchControl,
+  // useYMaps,
 } from "@pbe/react-yandex-maps";
 import Spinner from "../spinner/Spinner";
 
 import "./mapComponent.sass";
-//Todo разобраться с АПИ для карт
-const MapComponent = ({ onChangeCoordinates, initialCoordinates = [] }) => {
+import { Ad } from "@/types/ads";
+import { DataForPoints } from "@/types/map";
+//TODO разобраться с АПИ для карт
+
+interface MapComponentProps {
+  onChangeCoordinates?: (coords: number[]) => void;
+  initialCoordinates?: number[]; //проверить что я туда передаю
+  dataForPoints?: DataForPoints[];
+  selectedAd?: (id: string) => void;
+}
+const MapComponent: React.FC<MapComponentProps> = ({
+  onChangeCoordinates,
+  initialCoordinates = [],
+  dataForPoints,
+  selectedAd,
+}) => {
   const [isLoaded, setIsLoaded] = useState(false);
-  const [coordinate, setCoordinate] = useState(initialCoordinates);
+  const [coordinate, setCoordinate] = useState<number[]>(initialCoordinates);
+  const [select, setSelect] = useState("");
+
+  // console.log("selected in Map", select);
 
   const handleLoad = () => {
     setIsLoaded(true);
@@ -26,11 +43,28 @@ const MapComponent = ({ onChangeCoordinates, initialCoordinates = [] }) => {
     alert("Произошла ошибка при загрузке карты");
     setIsLoaded(true);
   };
+  //TODO помести типы для карты в папке типов для карты
+  type YandexMapEvent = {
+    get: (key: string) => number[];
+  };
 
-  const handleClick = (event) => {
-    const coords = event.get("coords");
-    setCoordinate(() => coords);
-    onChangeCoordinates(coords);
+  const handleClick = (event: YandexMapEvent) => {
+    if (onChangeCoordinates) {
+      // TODO разберись с необзательным методом
+      const coords: number[] = event.get("coords");
+      setCoordinate(() => coords);
+      if (onChangeCoordinates) {
+        onChangeCoordinates(coords);
+      }
+    }
+  };
+
+  const selectedAdInMap = (id: string) => {
+    setSelect(() => id);
+    if (selectedAd) {
+      // Проверяем если функция существует
+      selectedAd(id);
+    }
   };
 
   return (
@@ -70,16 +104,28 @@ const MapComponent = ({ onChangeCoordinates, initialCoordinates = [] }) => {
             clusters={{
               preset: "islands#redClusterIcons",
             }}
-            filter={(object) => object.id % 2 === 0}
+            filter={(object: { id: number }) => object.id % 2 === 0}
             // defaultFeatures={objectManagerFeatures}
             modules={[
               "objectManager.addon.objectsBalloon",
               "objectManager.addon.objectsHint",
             ]}
           />
-          <ZoomControl options={{ float: "right" }} />
+          <ZoomControl options={{ position: { right: 10, top: 10 } }} />
           <GeolocationControl options={{ float: "left" }} />
-          <Placemark geometry={coordinate} />
+          {!dataForPoints ? (
+            <Placemark geometry={coordinate} />
+          ) : (
+            dataForPoints.map(({ id, coordinates }) => {
+              return (
+                <Placemark
+                  key={id}
+                  onClick={() => selectedAdInMap(id)}
+                  geometry={coordinates}
+                />
+              );
+            })
+          )}
           {/* <SearchControl options={{ float: "right" }} /> */}
         </YMap>
       </YMaps>
@@ -88,3 +134,104 @@ const MapComponent = ({ onChangeCoordinates, initialCoordinates = [] }) => {
 };
 
 export default MapComponent;
+
+// import { useState } from "react";
+// import {
+//   YMaps,
+//   Map as YMap,
+//   ZoomControl,
+//   GeolocationControl,
+//   Placemark,
+//   ObjectManager,
+//   Clusterer,
+// } from "@pbe/react-yandex-maps";
+// import Spinner from "../spinner/Spinner";
+// import type { MapClickEvent } from "@pbe/react-yandex-maps"; // Assuming there is a type for Map click event
+
+// import "./mapComponent.sass";
+
+// interface MapComponentProps {
+//   onChangeCoordinates: (coords: number[]) => void;
+//   initialCoordinates?: number[]; // про
+// }
+
+// const MapComponent: React.FC<MapComponentProps> = ({
+//   onChangeCoordinates,
+//   initialCoordinates = [],
+// }) => {
+//   const [isLoaded, setIsLoaded] = useState(false);
+//   const [coordinate, setCoordinate] = useState<number[]>(initialCoordinates);
+
+//   const handleLoad = () => {
+//     setIsLoaded(true);
+//   };
+
+//   const handleError = () => {
+//     alert("Произошла ошибка при загрузке карты");
+//     setIsLoaded(true);
+//   };
+
+//   const handleClick = (event: MapClickEvent) => {
+//     const coords: number[] = event.get("coords");
+//     setCoordinate(() => coords);
+//     onChangeCoordinates(coords);
+//   };
+
+//   return (
+//     <div className="map">
+//       {!isLoaded && <Spinner />}
+//       <YMaps>
+//         <YMap
+//           onLoad={handleLoad}
+//           onError={handleError}
+//           onClick={handleClick}
+//           width={isLoaded ? "100%" : "0"}
+//           height="100%"
+//           defaultState={{
+//             center: [53.9, 27.55],
+//             zoom: 11,
+//           }}
+//         >
+//           <Clusterer
+//             options={{
+//               preset: "islands#invertedVioletClusterIcons",
+//               groupByCoordinates: false,
+//             }}
+//           >
+//             {/* Uncomment and supply clusterPoints array if needed */}
+//             {/* {clusterPoints.map((coordinates, index) => (
+//               <Placemark key={index} geometry={coordinates} />
+//             ))} */}
+//           </Clusterer>
+//           <ObjectManager
+//             options={{
+//               clusterize: true,
+//               gridSize: 32,
+//             }}
+//             objects={{
+//               openBalloonOnClick: true,
+//               preset: "islands#greenDotIcon",
+//             }}
+//             clusters={{
+//               preset: "islands#redClusterIcons",
+//             }}
+//             filter={(object: { id: number }) => object.id % 2 === 0}
+//             // Uncomment and supply objectManagerFeatures array if needed
+//             // defaultFeatures={objectManagerFeatures}
+//             modules={[
+//               "objectManager.addon.objectsBalloon",
+//               "objectManager.addon.objectsHint",
+//             ]}
+//           />
+//           <ZoomControl options={{ float: "right" }} />
+//           <GeolocationControl options={{ float: "left" }} />
+//           <Placemark geometry={coordinate} />
+//           {/* Uncomment and include SearchControl if needed */}
+//           {/* <SearchControl options={{ float: "right" }} /> */}
+//         </YMap>
+//       </YMaps>
+//     </div>
+//   );
+// };
+
+// export default MapComponent;

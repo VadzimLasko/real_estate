@@ -1,18 +1,14 @@
 import { FC } from "react";
 // import { useHttp } from "../../../hooks/http.hook";
-import { useNavigate, useParams } from "react-router-dom";
-import { nanoid } from "@reduxjs/toolkit";
-import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 
-import { Button, Checkbox, Form, Input, Select } from "antd";
+import { Button, Form, Input, Select } from "antd";
 import {
   useGetUsersQuery,
-  useUpdateUserMutation,
   useGetCurrentUserQuery,
 } from "@/api/authApiSlice.js";
 import Spinner from "@/components/spinner/Spinner.js";
-
-import { isCoincidence, setItem } from "@/helpers/utils.js";
+import { useTypedSelector } from "@/store";
 
 import "./userProfilePage.sass";
 
@@ -48,21 +44,27 @@ const tailFormItemLayout = {
 const UserProfilePage: FC = () => {
   //   BQYCL8D0OraeAipWQJU3P
   useGetUsersQuery();
-  let { slug } = useParams();
+  const { slug } = useParams<{ slug?: string }>();
+  if (!slug || slug.trim() === "") {
+    return (
+      <div style={{ margin: "15rem auto 0", width: "25rem" }}>
+        Такая страница не существует!
+      </div>
+    );
+  }
   const { data: user, isFetching } = useGetCurrentUserQuery(slug);
-  const [updateUser, { isFetching: isUpdateFetching }] =
-    useUpdateUserMutation();
+
   const [form] = Form.useForm();
 
-  const { currentUser } = useSelector((state) => state.user);
+  const { currentUser } = useTypedSelector((state) => state.user);
 
-  const onFinish = (values) => {
-    console.log("Received values of form: ", values);
-  };
+  // const onFinish = (values) => {
+  //   console.log("Received values of form: ", values);
+  // };
 
-  const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
-  };
+  // const onFinishFailed = (errorInfo) => {
+  //   console.log("Failed:", errorInfo);
+  // };
   const { Option } = Select;
 
   const validateMessages = {
@@ -72,7 +74,7 @@ const UserProfilePage: FC = () => {
   if (isFetching) {
     return <Spinner />;
   }
-  if (!currentUser) {
+  if (!currentUser || !user) {
     return (
       <div style={{ margin: "15rem auto 0", width: "25rem" }}>
         Вы не можете редактировать этот профиль
@@ -100,8 +102,8 @@ const UserProfilePage: FC = () => {
         name="ediUserForm"
         layout="vertical"
         validateMessages={validateMessages}
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
+        // onFinish={onFinish}
+        // onFinishFailed={onFinishFailed}
         initialValues={initialValues}
         style={{
           width: 500,

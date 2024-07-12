@@ -1,3 +1,5 @@
+@import '@/styles/style.sass'
+
 .ad-enter 
     opacity: 0
 
@@ -14,3 +16,75 @@
 .ad-exit-active 
     opacity: 0
     transition: opacity 500ms ease-in
+
+
+.ads-list
+    @include center-par
+
+    &__right
+        width: 70rem
+        height: 70rem
+        position: relative
+        padding: 2rem
+        z-index: 2
+        overflow: hidden
+        // height: 68rem
+        // padding: 1rem
+        display: grid
+        // grid-template-row: repeat(2, min-content)
+        grid-auto-rows: min-content
+        gap: 2rem      
+        grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr))
+        margin: 0 auto
+        border-radius: 3.5rem
+        border: solid black 1.5px
+        // padding-left: .2rem
+        // filter: blur(0px)
+        background-color: white
+        // backdrop-filter: blur(5px)
+
+    
+.ad-cart
+    width: 20rem
+    height: 15rem
+    overflow: hidden
+    background-color: blue
+    border-radius: .5rem
+    
+    
+    &__photo
+        height: 70%
+        background-color: yellow
+        // object-fit: contains
+        position: relative
+        // @include  center-par
+        img
+            object-fit: cover
+            width: 100% 
+            // display: block
+            height: 100%
+            
+
+        &_price
+            text-shadow: 1px 1px 0 #4074b5, 1px -1px 0 #4074b5, -1px 1px 0 #4074b5, -1px -1px 0 #4074b5, 1px 0px 0 #4074b5, 0px 1px 0 #4074b5, -1px 0px 0 #4074b5, 0px -1px 0 #4074b5, 1px 1px 1px rgba(206,89,55,0)
+            color: #FFFFFF
+            position: absolute
+            left: 10%
+            bottom: 10%
+    &__description
+        height: 30%
+        padding: .5rem 1rem
+        position: relative
+        background-color: green
+        &_floor
+            position: absolute
+            right: 1rem
+        &_square
+            // margin-right: 1rem
+        &_rooms
+            margin-right: 3rem
+        // &_address
+
+.extra
+    outline: 1rem solid #dd9831
+

@@ -1,19 +1,19 @@
 import { FC } from "react";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 // import { useHttp } from "../../../hooks/http.hook";
-import { useNavigate, useParams } from "react-router-dom";
-import { nanoid } from "@reduxjs/toolkit";
-import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+// import { nanoid } from "@reduxjs/toolkit";
 
-import { Button, Checkbox, Form, Input, Select } from "antd";
+import { Button, Form, Input, Select } from "antd";
+import { hash } from "bcryptjs";
+import { useTypedSelector } from "@/store";
 import {
   useGetUsersQuery,
   useUpdateUserMutation,
   useGetCurrentUserQuery,
 } from "@/api/authApiSlice.js";
+import { User } from "@/types/users";
 import Spinner from "@/components/spinner/Spinner.js";
-
-import { isCoincidence, setItem } from "@/helpers/utils.js";
 
 import "./editUserProfilePage.sass";
 
@@ -49,30 +49,38 @@ const tailFormItemLayout = {
 const EditUserProfilePage: FC = () => {
   //   BQYCL8D0OraeAipWQJU3P
   useGetUsersQuery();
-  let { slug } = useParams();
+  const { slug } = useParams<{ slug?: string }>();
+  if (!slug || slug.trim() === "") {
+    return (
+      <div style={{ margin: "15rem auto 0", width: "25rem" }}>
+        Такая страница не существует!
+      </div>
+    );
+  }
   const { data: user, isFetching } = useGetCurrentUserQuery(slug);
-  const [updateUser, { isFetching: isUpdateFetching, isSuccess }] =
+  const [updateUser, { isLoading: isUpdateLoading, isSuccess }] =
     useUpdateUserMutation();
   const [successUpdate, setSuccessUpdate] = useState(false);
   useEffect(() => {
-    let timerId;
+    let timerId: NodeJS.Timeout;
     if (isSuccess) {
       setSuccessUpdate(true);
       timerId = setTimeout(() => setSuccessUpdate(false), 4000);
     }
     return () => clearTimeout(timerId);
   }, [isSuccess]);
+
   const [form] = Form.useForm();
-  console.log(isSuccess);
+  // console.log(isSuccess);
 
-  const { currentUser } = useSelector((state) => state.user);
+  const { currentUser } = useTypedSelector((state) => state.user);
 
-  const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
-  };
+  // const onFinishFailed = (errorInfo) => {
+  //   console.log("Failed:", errorInfo);
+  // };
   // let sameIsSuccess = isSuccess;
 
-  let answer = <span>Данные успешно обновлены!</span>;
+  const answer = <span>Данные успешно обновлены!</span>;
 
   // const successUpdated = () => {
   //   setTimeout(() => {
@@ -93,23 +101,25 @@ const EditUserProfilePage: FC = () => {
   if (isFetching) {
     return <Spinner />;
   }
-  if (!currentUser) {
+  if (!currentUser || !user) {
     return (
       <div style={{ margin: "15rem auto 0", width: "25rem" }}>
         Вы не можете редактировать этот профиль
       </div>
     );
   }
-
-  let { id, password, confirm, ...initialValues } = user;
-  const onFinish = (values) => {
-    console.log(isSuccess);
+  //TODO сделать хранение паролей в базе в виде JWT
+  const { id, password, ...initialValues } = user;
+  const onFinish = async (values: User) => {
+    // console.log(isSuccess);
     values.id = id;
-    values.password = values.password ? values.password : password;
-    values.confirm = values.confirm ? values.confirm : confirm;
+    values.password = values.password
+      ? await hash(values.password, 10)
+      : password;
+    delete values.confirm;
     console.log("Received values of form: ", values);
     updateUser({ id, user: values });
-    console.log(isSuccess);
+    // console.log(isSuccess);
   };
   // const initialPhotos = photos ? photos : [];
   // const initialCoordinates = coordinates ? coordinates : [];
@@ -126,13 +136,13 @@ const EditUserProfilePage: FC = () => {
     <>
       <div className="registration-form__wrapper">
         <Form
-          // {...formItemLayout}
+          {...formItemLayout}
           form={form}
           name="ediUserForm"
           layout="vertical"
           validateMessages={validateMessages}
           onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
+          // onFinishFailed={onFinishFailed}
           initialValues={initialValues}
           style={{
             width: 500,
@@ -192,37 +202,6 @@ const EditUserProfilePage: FC = () => {
           </Form.Item>
 
           <Form.Item
-            name="name"
-            label="Имя"
-            tooltip="Как Вас называть?"
-            rules={[
-              {
-                required: true,
-                whitespace: true,
-              },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-
-          <Form.Item
-            name="phone"
-            label="Номер телефона"
-            rules={[
-              {
-                required: true,
-              },
-            ]}
-          >
-            <Input
-              addonBefore="+"
-              style={{
-                width: "100%",
-              }}
-            />
-          </Form.Item>
-
-          <Form.Item
             name="gender"
             label="Частное лицо или организация?"
             rules={[
@@ -246,7 +225,7 @@ const EditUserProfilePage: FC = () => {
               className="registration-form-button"
               type="primary"
               htmlType="submit"
-              disabled={isUpdateFetching}
+              disabled={isUpdateLoading}
             >
               Сохранить измененения
             </Button>

@@ -1,14 +1,21 @@
-export const isCoincidence = (arr, key: string, value: string) => {
-  return arr.some((ar) => ar[key] === value);
+import { Users, User } from "@/types/users";
+
+export const isCoincidence = (
+  arr: Users,
+  key: keyof User,
+  value: string
+): boolean => {
+  return arr.some((user: User) => user[key] === value);
 };
 
-export const currentUserFromEmail = (arr, email: string) => {
-  const user = arr.find((user) => user.email === email);
-  console.log("user", user);
-  return user;
+export const currentUserFromEmail = (
+  arr: Users,
+  email: string
+): User | undefined => {
+  return arr.find((user: User) => user.email === email);
 };
 
-export const currentUserFromId = (arr, id) => {
-  const user = arr.find((user) => user.id === id);
-  return user;
+export const currentUserFromId = (arr: Users, id: string): User | null => {
+  const user = arr.find((user: User) => user.id === id);
+  return user ? user : null;
 };

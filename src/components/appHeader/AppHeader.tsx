@@ -25,15 +25,25 @@ const AppHeader = () => {
         </nav>
       </div>
       <ul className="header__right-side">
-        <li><Link to="/login">Войти  </Link></li>
-        <li><Link to="/register">Зарегистрироваться</Link></li>
-        <li><Link to="/ad/:slug/edit">Редактирование объявления  </Link></li>
-        <li><Link to="/user/:slug">Редактирование профиля</Link></li>
-        <li><Link to="/ad/create">
-          <button className="header__right-side__add-ad btn" type="button">
-            <span>+</span> Добавить объявление
-          </button>
-        </Link></li>
+        <li>
+          <Link to="/login">Войти </Link>
+        </li>
+        <li>
+          <Link to="/register">Зарегистрироваться</Link>
+        </li>
+        <li>
+          <Link to="/ad/:slug/edit">Редактирование объявления </Link>
+        </li>
+        <li>
+          <Link to="/user/:slug">Редактирование профиля</Link>
+        </li>
+        <li>
+          <Link to="/ad/create">
+            <button className="header__right-side__add-ad btn" type="button">
+              <span>+</span> Добавить объявление
+            </button>
+          </Link>
+        </li>
       </ul>
     </header>
   );

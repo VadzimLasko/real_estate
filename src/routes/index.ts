@@ -12,6 +12,7 @@ const UserProfilePage = lazy(
 const EditUserProfilePage = lazy(
   () => import("@/pages/editUserProfilePage/EditUserProfilePage")
 );
+const NotFoundPage = lazy(() => import("@/pages/notFoundPage/NotFoundPage"));
 
 interface Route {
   path: string;
@@ -51,6 +52,10 @@ const routes: Route[] = [
   {
     path: "/user/:slug/edit",
     element: EditUserProfilePage,
+  },
+  {
+    path: "*",
+    element: NotFoundPage,
   },
 ];
 

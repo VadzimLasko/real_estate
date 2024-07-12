@@ -1,17 +1,18 @@
 import { FC } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { useCallback } from "react";
-import { nanoid } from "@reduxjs/toolkit";
-import { useRef, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+// import { useCallback } from "react";
+// import { nanoid } from "@reduxjs/toolkit";
+// import { useRef, useEffect } from "react";
 
 import { Button, Form, Input, InputNumber } from "antd";
+import { useTypedSelector } from "@/store";
 import { useGetUsersQuery } from "@/api/authApiSlice.js";
 import { useUpdateAdMutation, useGetOneAdQuery } from "@/api/adApiSlice.js";
 import AddPhoto from "@/components/addPhoto/AddPhoto.js";
 import Spinner from "@/components/spinner/Spinner.js";
+import { Ad, UploadFileType } from "@/types/ads";
 import MapComponent from "@/components/mapComponent/MapComponent.js";
-import { isCoincidence, getItem, currentUserFromId } from "@/helpers/utils.js";
+// import { isCoincidence, getItem, currentUserFromId } from "@/helpers/utils.js";
 
 import "./editAdPage.sass";
 
@@ -33,11 +34,18 @@ const validateMessages = {
 const EditAdPage: FC = () => {
   //    sY7Mx29PtneaoBWAJyUZh
   useGetUsersQuery();
-  let { slug } = useParams();
+  const { slug } = useParams<{ slug: string }>();
+  if (!slug || slug.trim() === "") {
+    return (
+      <div style={{ margin: "15rem auto 0", width: "25rem" }}>
+        Такая страница не существует!
+      </div>
+    );
+  }
   const { data: ad, isFetching } = useGetOneAdQuery(slug);
   const [form] = Form.useForm();
   const [updateAd] = useUpdateAdMutation();
-  const { currentUser } = useSelector((state) => state.user);
+  const { currentUser } = useTypedSelector((state) => state.user);
 
   if (isFetching) {
     return <Spinner />;
@@ -49,11 +57,22 @@ const EditAdPage: FC = () => {
       </div>
     );
   }
+  if (!ad) {
+    return (
+      <div style={{ margin: "15rem auto 0", width: "25rem" }}>
+        Такого объявления не существует!
+      </div>
+    );
+  }
 
-  let { id, author, photos, coordinates, ...initialValues } = ad;
-  const initialPhotos = photos ? photos : [];
-  const initialCoordinates = coordinates ? coordinates : [];
-  console.log(initialValues);
+  const { id, author, photos, coordinates, ...initialValues } = ad;
+  console.log("ad", ad);
+  let editedPhotos = photos;
+  let editedCoordinates = coordinates;
+  // const isEmptyObject = Object.keys(photos).length === 0;
+  // const initialPhotos = isEmptyObject ? photos : [];
+  // const initialCoordinates = coordinates ? coordinates : "[]";
+  // console.log(initialValues);
 
   // const isAuthor = author === currentUser.email;
 
@@ -70,26 +89,26 @@ const EditAdPage: FC = () => {
   //   //photos
   // };
 
-  // let photos;
-  // let coordinates;
+  // let editedPhotos: UploadFileType;
+  // let editedCoordinates: number[];
 
-  const onChangePhoto = (files) => {
-    photos = files;
+  const onChangePhoto = (files: UploadFileType): void => {
+    editedPhotos = files;
   };
 
-  const onChangeCoordinates = (coords) => {
-    coordinates = coords;
+  const onChangeCoordinates = (coords: number[]): void => {
+    editedCoordinates = coords;
   };
 
-  const onFinish = (values) => {
+  const onFinish = (values: Ad) => {
     values.id = id;
     values.author = author;
-    values.photos = photos;
+    values.photos = editedPhotos;
 
-    values.coordinates = coordinates;
+    values.coordinates = editedCoordinates;
     console.log("values", values);
 
-    updateAd({ id: id, ad: values })
+    updateAd({ id, ad: values })
       .unwrap()
       .then((response) => {
         if (response) {
@@ -126,7 +145,6 @@ const EditAdPage: FC = () => {
         layout="vertical"
         validateMessages={validateMessages}
         variant="filled"
-        required="true"
         name="updateAd"
       >
         <Form.Item
@@ -159,9 +177,7 @@ const EditAdPage: FC = () => {
           label="Фотографии"
         >
           <AddPhoto
-            showCount
-            maxLength={8}
-            initialFileList={initialPhotos}
+            initialFileList={editedPhotos}
             onChangePhoto={onChangePhoto}
           />
         </Form.Item>
@@ -227,7 +243,7 @@ const EditAdPage: FC = () => {
         </Form.Item>
 
         <MapComponent
-          initialCoordinates={initialCoordinates}
+          initialCoordinates={editedCoordinates}
           onChangeCoordinates={onChangeCoordinates}
         />
 

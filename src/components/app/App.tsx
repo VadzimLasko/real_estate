@@ -1,32 +1,37 @@
-import { Suspense } from "react";
+import React, { Suspense } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import AppHeader from "@/components/appHeader/AppHeader";
 import Footer from "@/components/footer/Footer";
-// import { useDispatch, useSelector } from "react-redux";
-// import { useEffect } from "react";
-import routes from "@/routes/index";
+
+import routes from "@/routes";
 // import Skeleton from "@mui/material/Skeleton";
 import Spinner from "@/components/spinner/Spinner";
-// import AddPhoto from "../forms/formElements/AddPhoto";
-// import AddAdForm from "../forms/addAdForm/AddAdForm";
-// import LoginForm from "../forms/loginForm/LoginForm";
-// import RegistrationForm from "../forms/registrationForm/RegistrationForm";
-// import MapComponent from "../map/Map";
-// import { selectAll, fetchAds } from "../adsList/adsSlice";
-// import { ConfigProvider } from "antd";
-import "@/components/app/app.sass";
 
+import "@/components/app/app.sass";
+import MainMenuPanel from "../mainMenuPanel/MainMenuPanel";
+
+interface RouteConfig {
+  path: string;
+  element: React.ElementType;
+}
+//TODO разобраться с ЭппХеад чтобы при переключениях не пропадал
 const App = () => {
   return (
     <Router>
       <Suspense fallback={<Spinner />}>
         <AppHeader />
-        <Routes>
-          {routes.map(({ path, element }) => (
-            <Route key={path} path={path} element={element} />
-          ))}
-        </Routes>
+        <MainMenuPanel>
+          <Routes>
+            {routes.map(({ path, element }: RouteConfig) => (
+              <Route
+                key={path}
+                path={path}
+                element={React.createElement(element)}
+              />
+            ))}
+          </Routes>
+        </MainMenuPanel>
         <Footer />
       </Suspense>
     </Router>

@@ -9,7 +9,7 @@ export const getItem = (): string | null => {
   }
 };
 
-export const setItem = (data: string) => {
+export const setItem = (data: string): void => {
   try {
     localStorage.setItem(accessKey, data);
   } catch (e) {
