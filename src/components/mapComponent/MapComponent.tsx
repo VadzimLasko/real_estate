@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { FC, useState } from "react";
 import {
   YMaps,
   Map as YMap,
@@ -10,20 +10,15 @@ import {
   // SearchControl,
   // useYMaps,
 } from "@pbe/react-yandex-maps";
+
 import Spinner from "../spinner/Spinner";
+import { MapComponentProps } from "@/types/map";
 
 import "./mapComponent.sass";
-import { Ad } from "@/types/ads";
-import { DataForPoints } from "@/types/map";
-//TODO разобраться с АПИ для карт
 
-interface MapComponentProps {
-  onChangeCoordinates?: (coords: number[]) => void;
-  initialCoordinates?: number[]; //проверить что я туда передаю
-  dataForPoints?: DataForPoints[];
-  selectedAd?: (id: string) => void;
-}
-const MapComponent: React.FC<MapComponentProps> = ({
+//TODO разобраться с АПИ для карт
+//TODO удали лишние консоль логи и коментарии
+const MapComponent: FC<MapComponentProps> = ({
   onChangeCoordinates,
   initialCoordinates = [],
   dataForPoints,
@@ -31,9 +26,7 @@ const MapComponent: React.FC<MapComponentProps> = ({
 }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [coordinate, setCoordinate] = useState<number[]>(initialCoordinates);
-  const [select, setSelect] = useState("");
-
-  // console.log("selected in Map", select);
+  const [, setSelect] = useState("");
 
   const handleLoad = () => {
     setIsLoaded(true);
@@ -62,13 +55,12 @@ const MapComponent: React.FC<MapComponentProps> = ({
   const selectedAdInMap = (id: string) => {
     setSelect(() => id);
     if (selectedAd) {
-      // Проверяем если функция существует
       selectedAd(id);
     }
   };
 
   return (
-    <div className="map">
+    <>
       {!isLoaded ? <Spinner /> : null}
       <YMaps>
         <YMap
@@ -129,7 +121,7 @@ const MapComponent: React.FC<MapComponentProps> = ({
           {/* <SearchControl options={{ float: "right" }} /> */}
         </YMap>
       </YMaps>
-    </div>
+    </>
   );
 };
 

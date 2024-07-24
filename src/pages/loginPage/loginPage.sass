@@ -1,26 +1,32 @@
-.login-form__wrapper
-    max-width: 35rem
-    position: relative
-    z-index: 2
-    // height: 68rem
-    padding-top: 1.5rem
-    margin: 0 auto
-    border-radius: 3.5rem
-    border: solid black 1.5px
-    padding-left: 2rem
-    // filter: blur(0px)
-    background-color: white
-    // backdrop-filter: blur(5px)
+@import '@/styles/style.sass'
+    
+.login-form
+    &-background
+        @include white-opacity(0.6)
+        backdrop-filter: blur(10px)
+        height: 100vh
+    &__wrapper
+        max-width: 35rem
+        position: relative
+        padding-top: 1.5rem
+        margin: auto
+        border-radius: 3.5rem
+        padding-left: 2rem
+        top: 5rem
+        @include center-parent
+        @include white-opacity(0.7)
+        box-shadow: $box-shadow-h
+    &-forgot
+        float: right
 
-.login-form 
-    max-width: 30rem
+    .ant-col-rtl .login-form-forgot
+        float: left
 
-.login-form-forgot
-    float: right
+    &-button
+        width: 100%
+        margin-bottom: 1rem
 
-.ant-col-rtl .login-form-forgot
-    float: left
+    .ant-col-rtl .login-form-forgot
+        float: left
+        
 
-.login-form-button
-    width: 100%
-    margin-bottom: 1rem

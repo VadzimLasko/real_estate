@@ -1,11 +1,14 @@
-@mixin center-par
+@mixin center-parent
     display: flex
     justify-content: center
     align-items: center
 
 @mixin main-block-center
     max-width: 160rem
-    margin: 0 auto 
+    margin: auto 
+
+@mixin white-opacity($opacity)
+    background-color: rgb(255, 255, 255, $opacity)
 
 // @mixin btn
     background-color: #F8C20A

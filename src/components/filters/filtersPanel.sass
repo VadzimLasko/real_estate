@@ -1,14 +1,39 @@
+@import '../../styles/style.sass'
 
 .filters-panel
     position: relative
     z-index: 3
-    background-color: yellow
-    width: 160rem
-    height: 9rem
-    margin: 0 auto
+    background-color: $color-white
+    height: 6rem
+    padding-top: .4rem 
+    border-bottom: .2rem solid $color-gray
     &__main
         width: 120rem
-        margin: 0 auto
+        margin: auto
+        .anticon
+            transform: rotate(90deg)
+        // .ant-tag
+        //     font-size: 1.6rem
+        .ant-flex
+            border: none !important
+        .ant-collapse
+            &-item
+                width: 20rem
+                &-active
+                    svg 
+                        transform: rotate(-180deg) !important
+            &-content
+                &-box
+                    p
+                        input, span
+                            font-size: 1.6rem
+                
+            &-header
+                align-items: center !important
+                &-text
+                    font-size: 1.6rem
+                    // text-align: center 
 
-.ant-flex
-    border: none !important
+
+
+

@@ -5,48 +5,34 @@ import "./appHeader.sass";
 const AppHeader = () => {
   return (
     <header className="header">
-      <div className="header__left-side">
+      <div className="header__wrapper">
         <Link to="/" className="header__logo">
           Недвижимость
         </Link>
         <nav className="header__navigation">
-          <NavLink to="/" className="header__navigation__item" tabIndex={0}>
-            1 кнопка
+          <NavLink
+            to="/login"
+            className="header__navigation__item"
+            tabIndex={0}
+          >
+            Войти
           </NavLink>
-          <NavLink to="/" className="header__navigation__item" tabIndex={0}>
-            2 кнопка
+          <NavLink
+            to="/register"
+            className="header__navigation__item"
+            tabIndex={0}
+          >
+            Зарегистрироваться
           </NavLink>
-          <NavLink to="/" className="header__navigation__item" tabIndex={0}>
-            3 кнопка
-          </NavLink>
-          <NavLink to="/" className="header__navigation__item" tabIndex={0}>
-            4 кнопка
-          </NavLink>
-        </nav>
-      </div>
-      <ul className="header__right-side">
-        <li>
-          <Link to="/login">Войти </Link>
-        </li>
-        <li>
-          <Link to="/register">Зарегистрироваться</Link>
-        </li>
-        <li>
-          <Link to="/ad/:slug/edit">Редактирование объявления </Link>
-        </li>
-        <li>
-          <Link to="/user/:slug">Редактирование профиля</Link>
-        </li>
-        <li>
-          <Link to="/ad/create">
-            <button className="header__right-side__add-ad btn" type="button">
+          <Link className="header__add-ad" to="/ad/create" tabIndex={0}>
+            <button className="header__add-ad btn" type="button">
               <span>+</span> Добавить объявление
             </button>
           </Link>
-        </li>
-      </ul>
+        </nav>
+      </div>
     </header>
   );
 };
 
-export default AppHeader;
+export default AppHeader; //TODO не забудь добавить кнопки редактирования профиля и объявления

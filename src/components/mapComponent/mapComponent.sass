@@ -1,18 +1,17 @@
-@import '../../styles/style.sass'
+@import '@/styles/style.sass'
     
-.map  
-    width: 80rem
-    height: 70rem
-    position: relative
+.map
+    height: 50vh
     z-index: 2
     overflow: hidden
-    // height: 68rem
-    // padding: 1rem
-    @include center-par
-    margin: 0 auto
-    border-radius: 3.5rem
-    border: solid black 1.5px
-    // padding-left: .2rem
-    // filter: blur(0px)
-    background-color: white
-    // backdrop-filter: blur(5px)
+    @include center-parent
+    border-top: .2rem solid $color-gray
+    border-bottom: .2rem solid $color-gray
+    border-radius: $border-radius-s
+    &__ads-list 
+        width: 50vw
+        height: 100vh
+        z-index: 2
+        overflow: hidden
+        @include center-parent
+        border-right: .2rem solid $color-gray

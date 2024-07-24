@@ -2,18 +2,16 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface FilterState {
   priceRange: number[] | null;
-  rooms: number[] | null;
+  rooms: string[];
   squareRange: number[] | null;
-  floor: number[] | null;
-  filterLoadingStatus: boolean;
+  floor: string[] | null;
 }
 
 const initialState: FilterState = {
   priceRange: null,
-  rooms: null,
+  rooms: [],
   squareRange: null,
   floor: null,
-  filterLoadingStatus: false,
 };
 
 const filterSlice = createSlice({
@@ -35,7 +33,5 @@ const filterSlice = createSlice({
 const { reducer, actions } = filterSlice;
 
 export const { filterChanged } = actions;
-Fil;
-A;
 
 export default reducer;

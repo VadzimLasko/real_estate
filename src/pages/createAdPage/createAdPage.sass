@@ -1,12 +1,18 @@
-.add-ad-form__wrapper
-    max-width: 65rem
+@import '@/styles/style.sass'
+    
+.add-ad-form
+    background-image: url('../../img/19742.webp')
+    background-size: 18%
+    background-repeat: repeat
     position: relative
-    z-index: 1000
-    // height: 68rem
-    padding-top: 1.5rem
-    margin: 0 auto
-    border-radius: 3.5rem
-    border: solid black 1.5px
-    // filter: blur(0px)
-    background-color: white
-    // backdrop-filter: blur(5px)
+    z-index: 1
+    &__wrapper
+        max-width: 65rem
+        position: relative
+        top: -.2rem
+        @include white-opacity(0.2)
+        backdrop-filter: blur(3px)
+        padding-top: 1.5rem
+        margin: 0 auto
+        border-radius: $border-radius-m
+        border: .2rem solid $color-gray

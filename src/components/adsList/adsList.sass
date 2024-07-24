@@ -1,4 +1,4 @@
-@import '@/styles/style.sass'
+@import '../../styles/style.sass'
 
 .ad-enter 
     opacity: 0
@@ -19,12 +19,13 @@
 
 
 .ads-list
-    @include center-par
+    @include center-parent
 
     &__right
-        width: 70rem
-        height: 70rem
-        position: relative
+        width: 50vw
+        height: 100vh
+        // right: 0px
+        // position: relative
         padding: 2rem
         z-index: 2
         overflow: hidden
@@ -35,12 +36,12 @@
         grid-auto-rows: min-content
         gap: 2rem      
         grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr))
-        margin: 0 auto
-        border-radius: 3.5rem
-        border: solid black 1.5px
+        // margin: 0 auto
+        // border-radius: 3.5rem
+        // border: solid black 1.5px
         // padding-left: .2rem
         // filter: blur(0px)
-        background-color: white
+        background-color: $color-white
         // backdrop-filter: blur(5px)
 
     
@@ -86,5 +87,6 @@
         // &_address
 
 .extra
-    outline: 1rem solid #dd9831
+    outline: 1rem solid $color-outline
+
 

@@ -1,34 +1,32 @@
 @import '../../styles/style.sass'
 
 .header
-    @include main-block-center
-    display: flex
-    align-items: center
-    background-color: white
-    min-height: 7rem
-    justify-content: space-between
-    &__left-side 
-        @include center-par
-        padding-left: 5rem
+    background-color: $color-white
+    max-width: auto
+    border: .2rem solid $color-gray
+    &__wrapper
+        @include main-block-center 
+        @include center-parent
+        justify-content: space-between
+        min-height: 7rem
+        padding: 0 5rem
     &__logo
-        margin-right: 2rem
         text-decoration: none
         text-transform: uppercase
         font-weight: 700
-
     &__navigation
+        @include center-parent
         &__item
             text-decoration: none
             &:not(:last-child)
-                margin-right: 1rem
+                margin-right: 2rem
+    &__add-ad
+        text-decoration: none
 
-    &__right-side
-        margin-right: 5rem
-   
 
 .btn
     text-decoration: none
-    @include center-par
+    @include center-parent
     transition: all .2s
     border: none
     font-family: inherit
@@ -41,6 +39,7 @@
     span
         font-size: 2.9rem
         margin-right: .7rem 
+        text-decoration: none
     &:hover 
         transform: translateY(-.3rem)
         box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.2)

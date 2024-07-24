@@ -8,7 +8,6 @@ import routes from "@/routes";
 // import Skeleton from "@mui/material/Skeleton";
 import Spinner from "@/components/spinner/Spinner";
 
-import "@/components/app/app.sass";
 import MainMenuPanel from "../mainMenuPanel/MainMenuPanel";
 
 interface RouteConfig {
