@@ -167,7 +167,7 @@ const FiltersPanel: React.FC = () => {
             return (
               <Collapse
                 key={collapse.key}
-                // size="large"
+                size="small"
                 expandIconPosition="end"
                 items={[collapse]}
                 onChange={onChange}

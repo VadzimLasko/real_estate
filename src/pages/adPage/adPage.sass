@@ -1,5 +1,7 @@
 @import '@/styles/style.sass'
-    
+
+$title-hr-indentation: 8rem
+
 .h-style
     width: 100vw
     height: 60vh
@@ -34,6 +36,7 @@
 
 .modal 
     position: fixed
+    z-index: 2
     top: 0
     left: 0
     width: 100%
@@ -55,11 +58,62 @@
         margin: 0 3rem 
 
 .ant-c
-    html
-        overflow: hidden
-        height: 100vh
     .slick-arrow  
         position: fixed
-        top: 50% N
+        z-index: 3
+        top: 50% 
+
+.ad
+    position: relative
+    z-index: 1
+    &__main
+        width: 100vw
+        position: relative
+        margin: auto
+        // padding-top: .4rem
+        display: flex
+        justify-content: center
+        &__left
+            background-color: $color-white
+            width: 65%
+            height: 100rem
+            position: relative
+            display: flex
+            flex-wrap: wrap
+            justify-content: end
+            align-content: flex-start
+        &__right
+            background-color: $color-white
+            min-width: 35%
+            height: 100rem
+            text-align: right
+            padding-right: 10%
+            border-left: $hr-width solid $color-gray
+    
+.title-hr
+    width: 100%
+    height: .2rem
+    background-color: $color-gray
+    z-index: 2
+    position: absolute
+    top: $title-hr-indentation
+
+.left
+    &__left
+        background-color: $color-white
+        width: calc((35 / 65) * 100%)
+        height: 40rem
+        text-align: left
+        padding-left: calc((10 / 65) * 100%)
+    &__right
+        background-color: $color-white
+        width: calc((30 / 65) * 100%)
+        height: 40rem
+    &__main
+        background-color: $color-white
+        width: 80%
+        height: 50rem
+N
+
 
 
