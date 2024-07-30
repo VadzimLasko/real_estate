@@ -18,7 +18,7 @@ import { CaretRightOutlined } from "@ant-design/icons";
 
 import "./filtersPanel.sass";
 import { useDispatch } from "react-redux";
-import { filterChanged } from "./filterSlice";
+import { filterChanged } from "../../store/slices/filterSlice";
 
 interface PriceProps {
   defState?: number[];

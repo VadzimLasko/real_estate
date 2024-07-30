@@ -1,15 +1,15 @@
 import { Link, NavLink } from "react-router-dom";
 import "./appHeader.sass";
-
+//TODO разобраться с кнопками регистрации и входа когда ты залогиненн и нет
 //Это header
 const AppHeader = () => {
   return (
     <header className="header">
       <div className="header__wrapper">
         <Link to="/" className="header__logo">
-          Недвижимость
+          Real Estate
         </Link>
-        <nav className="header__navigation">
+        <nav id="appHeader" className="header__navigation">
           <NavLink
             to="/login"
             className="header__navigation__item"

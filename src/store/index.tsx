@@ -2,8 +2,8 @@ import { configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useSelector } from "react-redux";
 import { adApiSlice } from "@/api/adApiSlice";
 import { authApiSlice } from "@/api/authApiSlice";
-import user from "@/pages/userProfilePage/userProfileSlice.js";
-import filter from "@/components/filters/filterSlice";
+import user from "@/store/slices/userSlice.js";
+import filter from "@/store/slices/filterSlice";
 
 const store = configureStore({
   reducer: {

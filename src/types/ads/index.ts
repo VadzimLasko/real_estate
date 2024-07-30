@@ -21,5 +21,3 @@ export interface Ad {
   coordinates: number[];
 }
 export type Ads = Array<Ad>;
-// photos[0].thumbUrl;
-// photos[0].thumbUrl ??

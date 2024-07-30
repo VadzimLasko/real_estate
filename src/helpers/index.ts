@@ -3,6 +3,7 @@ import {
   isCoincidence,
   currentUserFromEmail,
   currentUserFromId,
+  firstLetterBig,
 } from "@/helpers/utils";
 import { baseUrl } from "@/helpers/vars";
 
@@ -12,5 +13,6 @@ export {
   isCoincidence,
   currentUserFromEmail,
   currentUserFromId,
+  firstLetterBig,
   baseUrl,
 };

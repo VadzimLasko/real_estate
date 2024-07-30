@@ -1,6 +1,7 @@
 @import '@/styles/style.sass'
 
 $title-hr-indentation: 8rem
+$titles-size: 2.2rem
 
 .h-style
     width: 100vw
@@ -66,18 +67,15 @@ $title-hr-indentation: 8rem
 .ad
     position: relative
     z-index: 1
+    margin-bottom: 1rem
     &__main
         width: 100vw
-        position: relative
         margin: auto
-        // padding-top: .4rem
         display: flex
         justify-content: center
-        &__left
+        &__left 
             background-color: $color-white
             width: 65%
-            height: 100rem
-            position: relative
             display: flex
             flex-wrap: wrap
             justify-content: end
@@ -85,35 +83,92 @@ $title-hr-indentation: 8rem
         &__right
             background-color: $color-white
             min-width: 35%
-            height: 100rem
-            text-align: right
             padding-right: 10%
+            padding-left: 3%
             border-left: $hr-width solid $color-gray
-    
-.title-hr
-    width: 100%
-    height: .2rem
-    background-color: $color-gray
-    z-index: 2
-    position: absolute
-    top: $title-hr-indentation
+    .title
+        position: relative
+        font-size: $titles-size
+        top: calc(($title-hr-indentation / 2) - ($titles-size / 2))
+        &-line
+            width: 100%
+            height: .2rem
+            background-color: $color-gray
+            z-index: 2
+            position: absolute
+            top: $title-hr-indentation
+    .left
+        &__left
+            background-color: yellow
+            width: calc((35 / 65) * 100%)
+            height: 10rem
+            padding-left: calc((10 / 65) * 100%)
+            padding-right: calc((3 / 65) * 100%)
+            margin-bottom: 15rem
+            &:after 
+                content: ''
+                position: absolute
+                top: $title-hr-indentation
+                left: 0
+                width: calc((35 / 65) * 100%)
+                height: calc(15rem - $title-hr-indentation)
+                background: $color-white
+        &__right
+            background-color: $color-white
+            width: calc((30 / 65) * 100%)
+            text-align: center
+        &__main
+            background-color: $color-white
+            width: 70%
+            min-height: 20rem
+            position: relative
+            height: auto
+            &__container
+                padding: 2rem
+                text-align: justify
+                div
+                    margin-bottom: 1.5rem
+    .text
+        width: 19rem
+        display: flex
+        align-items: center
+        justify-content: space-between
+        &__container
+            margin-left: auto
+            width: 19rem
+            position: relative
+            z-index: 2
+            top: calc(($title-hr-indentation))
+            &_right
+                position: relative
+                top: calc(($title-hr-indentation))   
+        &_price
+            text-align: right 
+            
+        &_element
+            margin-bottom: 1.5rem
+        &_big
+            font-size: 2rem
+        &_bold
+            font-weight: 700
+    .svg 
+        position: relative
+        width: 5rem
+        height: 5rem
+        background-position: center
+        background-size: 150%
+        &__container
+            display: flex
+            align-items: center
+            gap: 1.5rem
+        &_square
+            background-image: url('../../icons/plan-svg.svg')
+        &_floor
+            background-image: url('../../icons/floor-svg.svg')
 
-.left
-    &__left
-        background-color: $color-white
-        width: calc((35 / 65) * 100%)
-        height: 40rem
-        text-align: left
-        padding-left: calc((10 / 65) * 100%)
-    &__right
-        background-color: $color-white
-        width: calc((30 / 65) * 100%)
-        height: 40rem
-    &__main
-        background-color: $color-white
-        width: 80%
-        height: 50rem
-N
+
+
+
 
 
 

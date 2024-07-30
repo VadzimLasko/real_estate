@@ -1,14 +1,21 @@
 import React, { FC, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Carousel } from "antd";
+import { AnyObject } from "antd/es/_util/type";
 import { disablePageScroll, enablePageScroll } from "scroll-lock";
 import { useGetOneAdQuery } from "@/api/adApiSlice";
-import { useUpdateFavoritesMutation } from "@/api/authApiSlice";
+import {
+  useGetUsersQuery,
+  useUpdateFavoritesMutation,
+} from "@/api/authApiSlice";
 import Spinner from "@/components/spinner/Spinner";
-import "./adPage.sass";
-import { AnyObject } from "antd/es/_util/type";
+import { currentUserFromId, firstLetterBig } from "@/helpers";
+
 import { Ad } from "@/types/ads";
+import { User } from "@/types/users";
 import MapComponent from "@/components/mapComponent/MapComponent";
+
+import "./adPage.sass";
 
 const App: FC<{ photos: string[] }> = ({ photos }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -107,27 +114,15 @@ const AdPage: React.FC = () => {
   const [updateFavorites] = useUpdateFavoritesMutation();
   // TODO: добавь фаворитов
   const { data: ad, isFetching } = useGetOneAdQuery(slug ?? "");
+  const { data: users = [] } = useGetUsersQuery();
+
+  let gender = "Информация об авторе отсутствует";
+  if (ad && users.length > 0) {
+    const currentUser = currentUserFromId(users, ad.author);
+    gender = currentUser ? currentUser.gender : gender;
+  }
 
   const srcForImg = ad ? ad.photos.map((photo) => photo.originalFileUrl) : null;
-
-  const objectToDivList = (obj: AnyObject) => {
-    if (!obj) return null;
-
-    const objectEntries = Object.entries(obj);
-
-    return (
-      <ul>
-        <App photos={srcForImg} />
-        {objectEntries.map(([key, value]) =>
-          key === "photos" ? null : (
-            <li key={key}>
-              {key} - {value}
-            </li>
-          )
-        )}
-      </ul>
-    );
-  };
 
   const render = ({
     title,
@@ -139,33 +134,53 @@ const AdPage: React.FC = () => {
     floor,
     name,
     phone,
-    author,
     coordinates,
   }: Ad) => {
     return (
       <>
         <App photos={srcForImg} />
         <div className="ad">
-          <div className="title-hr"></div>
+          <span className="title-line" />
           <div className="ad__main">
             <div className="ad__main__left">
               <div className="left__left">
-                {price}$<div>{square}м2</div>
-                <div>{floor}этаж</div>
+                <div className="text_price title">{price} $</div>
+                <div className="text__container">
+                  <div className="text">
+                    <div className="svg__container">
+                      <div className="svg svg_square" />
+                      <span>Площадь</span>
+                    </div>
+                    <div>{square}м2</div>
+                  </div>
+
+                  <div className="text">
+                    <div className="svg__container">
+                      <div className="svg svg_floor" />
+                      <span>Этаж</span>
+                    </div>
+                    <div>{floor}</div>
+                  </div>
+                </div>
               </div>
-              <div className="left__right">{rooms}-комнатная квартира</div>
+
+              <div className="left__right title">
+                {rooms}-комнатная квартира
+              </div>
               <div className="left__main">
-                <div>{description}</div>
-                <div>{address}</div>
+                <div className="left__main__container">
+                  <div className="text_big text_bold">{title}</div>
+                  <div>{description}</div>
+                  <div className="text_big">{address}</div>
+                </div>
               </div>
             </div>
             <div className="ad__main__right">
-              <span>Частное лицо</span>
-              <br />
-              <span>{name}</span>
-              <br />
-              <span>{phone}</span>
-              <br />
+              <div className="title">{firstLetterBig(gender)}</div>
+              <div className="text__container_right">
+                <div className="text_element">{name}</div>
+                <div>{phone}</div>
+              </div>
             </div>
           </div>
         </div>

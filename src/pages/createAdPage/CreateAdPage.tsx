@@ -60,7 +60,7 @@ const CreateAdPage: FC = () => {
   const { isFetching } = useGetUsersQuery();
   const [createAd] = useCreateAdMutation();
   const { currentUser } = useTypedSelector((state) => state.user);
-
+  //TODO поправь загрузку фото, а то не отображается загрузка
   const formItemLayout = {
     labelCol: {
       xs: { span: 22 },
@@ -75,22 +75,6 @@ const CreateAdPage: FC = () => {
   const validateMessages = {
     required: "Необходимо заполнить!",
   };
-  // const accessID = getItem("accessID");
-
-  // const { data: users = [] } = useGetUsersQuery();
-  // const currentUser = currentUserFromId(users, accessID);
-  // useEffect(() => {
-
-  //   if (currentUser) {
-  //     return;
-  //   }
-
-  //   if (!currentUser && accessID) {
-
-  //       const { data: users = [] } = authApiSlice.endpoints.getUsers()
-  //     };
-  //   }
-  // }, []);
 
   let photos: UploadFileType = [];
   let coordinates: number[] = [];
@@ -105,21 +89,10 @@ const CreateAdPage: FC = () => {
     coordinates = coords;
   };
 
-  if (isFetching) {
-    return <Spinner />;
-  }
-  if (!currentUser) {
-    return (
-      <div style={{ margin: "15rem auto 0", width: "25rem" }}>
-        Вам нужно авторизоваться
-      </div>
-    );
-  }
-
   const onFinish = (values: Ad): void => {
     console.log("values", values);
     values.id = nanoid();
-    values.author = currentUser.email;
+    values.author = currentUser!.id;
     values.photos = photos;
     values.phone = Number("375".concat(`${values.phone}`));
     values.coordinates = coordinates;
@@ -147,6 +120,17 @@ const CreateAdPage: FC = () => {
   //     </div>
   //   );
   // }
+
+  if (isFetching) {
+    return <Spinner />;
+  }
+  if (!currentUser) {
+    return (
+      <div style={{ margin: "15rem auto 0", width: "25rem" }}>
+        Вам нужно авторизоваться
+      </div>
+    );
+  }
 
   return (
     <div className="add-ad-form">
