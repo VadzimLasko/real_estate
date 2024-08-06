@@ -16,3 +16,11 @@ export const setItem = (data: string): void => {
     console.log("Error setting data from localStorage", e);
   }
 };
+
+export const deleteItem = (): void => {
+  try {
+    localStorage.removeItem(accessKey);
+  } catch (e) {
+    console.log("Error setting data from localStorage", e);
+  }
+};

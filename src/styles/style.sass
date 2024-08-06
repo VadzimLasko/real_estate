@@ -11,19 +11,24 @@
 
 html
   font-size: 62.5%
-  // @include respond(tab-land)
-  //       font-size: 55%
-  // @include respond(tab-port-b)
-  //       font-size: 50%
-  // @include respond(big-screen)
-  //       font-size: 80%
+  @include respond(phone)
+    font-size: 42%
+  @include respond(tab-port-xs)
+    font-size: 47%
+  @include respond(tab-port-s)
+    font-size: 50%
+  @include respond(tab-port-m)
+    font-size: 52%
+  @include respond(tab-port-l)
+    font-size: 55%
+  @include respond(big-screen)
+    font-size: 68%
 
 body
   font-family: "Open Sans", sans-serif
   font-weight: 400
   font-size: 1.6rem
-  // margin: 0 auto
-  // width: auto
+  overflow-y: scroll
   position: relative
   font-display: swap
   font-style: normal

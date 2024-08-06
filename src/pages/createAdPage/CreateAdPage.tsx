@@ -7,54 +7,11 @@ import { useGetUsersQuery } from "@/api/authApiSlice.js";
 import { useCreateAdMutation } from "@/api/adApiSlice.js";
 import AddPhoto from "@/components/addPhoto/AddPhoto.js";
 import Spinner from "@/components/spinner/Spinner.js";
+import InfoMessage from "@/components/infoMessage/InfoMessage";
 import MapComponent from "@/components/mapComponent/MapComponent.js";
 import { Ad, UploadFileType } from "@/types/ads";
 
 import "./createAdPage.sass";
-
-// export const theme = {
-//   token: {
-//     fontSize: "1.4rem",
-//   },
-// };
-
-// {
-//   /* <ConfigProvider form={{ validateMessages }}>
-//   <Form />
-// </ConfigProvider>; */
-// }
-
-// {
-/* <ConfigProvider
-  theme={{
-    token: {
-      fontSize: "1.4rem",
-    },
-  }}form={{ validateMessages }}
-/>; */
-
-// const onFinish = () => {
-//   message.success('Submit success!');
-// };
-// const onFinishFailed = () => {
-//   message.error('Submit failed!');
-// }
-
-// const initialValue = {
-//   title: "", //
-//   address: "", //
-//   photo: "", //--
-//   price: "", //
-//   description: "", //
-//   square: "", //
-//   rooms: "", //
-//   floor: "", //
-//   coordinates: "", //--
-//   name: "", //
-//   phone: "", //
-
-//   //photos
-// };
 
 const CreateAdPage: FC = () => {
   const { isFetching } = useGetUsersQuery();
@@ -110,26 +67,11 @@ const CreateAdPage: FC = () => {
       });
   };
 
-  // if (isFetching) {
-  //   return <Spinner />;
-  // }
-  // if (!currentUser) {
-  //   return (
-  //     <div style={{ margin: "15rem auto 0", width: "25rem" }}>
-  //       Вам нужно авторизоваться
-  //     </div>
-  //   );
-  // }
-
   if (isFetching) {
     return <Spinner />;
   }
   if (!currentUser) {
-    return (
-      <div style={{ margin: "15rem auto 0", width: "25rem" }}>
-        Вам нужно авторизоваться
-      </div>
-    );
+    return <InfoMessage>Вам нужно авторизоваться</InfoMessage>;
   }
 
   return (
@@ -240,6 +182,7 @@ const CreateAdPage: FC = () => {
           >
             <InputNumber min={1} max={30} style={{ width: "100%" }} />
           </Form.Item>
+
           <div className="map">
             <MapComponent onChangeCoordinates={onChangeCoordinates} />
           </div>

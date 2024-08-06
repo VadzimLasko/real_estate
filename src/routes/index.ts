@@ -13,6 +13,7 @@ const EditUserProfilePage = lazy(
   () => import("@/pages/editUserProfilePage/EditUserProfilePage")
 );
 const NotFoundPage = lazy(() => import("@/pages/notFoundPage/NotFoundPage"));
+const Agreements = lazy(() => import("@/pages/agreements/Agreements"));
 
 interface Route {
   path: string;
@@ -38,6 +39,14 @@ const routes: Route[] = [
     element: HomePage,
   },
   {
+    path: "/user/favorites",
+    element: HomePage,
+  },
+  {
+    path: "/user/created",
+    element: HomePage,
+  },
+  {
     path: "/login",
     element: LoginPage,
   },
@@ -54,18 +63,13 @@ const routes: Route[] = [
     element: EditUserProfilePage,
   },
   {
+    path: "/agreements",
+    element: Agreements,
+  },
+  {
     path: "*",
     element: NotFoundPage,
   },
 ];
 
 export default routes;
-
-// <Route path="/ad/:slug" element={<AdPage />} />
-// <Route path="/ad/create" element={<CreateAdPage />} />
-// <Route path="/ad/:slug/edit" element={<EditAdPage />} />
-// <Route path="/" element={<HomePage />} />
-// <Route path="/login" element={<LoginPage />} />
-// <Route path="/register" element={<RegisterPage />} />
-// <Route path="/user/:slug" element={<UserProfilePage />} />
-// <Route path="/user/:slug/edit" element={<EditUserProfilePage />} />

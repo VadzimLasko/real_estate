@@ -5,11 +5,11 @@ import {
 } from "@reduxjs/toolkit";
 import { authApiSlice } from "@/api/authApiSlice";
 import { currentUserFromId } from "@/helpers";
-import { getItem } from "@/helpers/persistanceStorage";
+import { getItem, deleteItem } from "@/helpers/persistanceStorage";
 import { CurrentUser, Users, CurrentUserState } from "@/types/users";
 
 const userAdapter = createEntityAdapter<CurrentUser>();
-
+//TODO может не нужет здесь энтити адаптер
 const initialState: CurrentUserState = userAdapter.getInitialState({
   currentUser: null,
 });
@@ -17,7 +17,12 @@ const initialState: CurrentUserState = userAdapter.getInitialState({
 const userSlice = createSlice({
   name: "user",
   initialState,
-  reducers: {},
+  reducers: {
+    removeCurrentUser(state) {
+      deleteItem();
+      state.currentUser = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addMatcher(
@@ -28,8 +33,8 @@ const userSlice = createSlice({
           if (accessID) {
             const currentUser = currentUserFromId(action.payload, accessID);
             if (currentUser) {
-              const { id, email } = currentUser;
-              state.currentUser = { id, email };
+              const { id, email, favorites } = currentUser;
+              state.currentUser = { id, email, favorites };
             }
           }
         }
@@ -38,5 +43,8 @@ const userSlice = createSlice({
   },
 });
 
-const { reducer } = userSlice;
+const { reducer, actions } = userSlice;
+
+export const { removeCurrentUser } = actions;
+
 export default reducer;

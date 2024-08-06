@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { nanoid } from "@reduxjs/toolkit";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button, Checkbox, Form, Input, Select } from "antd";
 import { hash } from "bcryptjs";
 
@@ -62,13 +62,12 @@ const RegisterPage: FC = () => {
       .unwrap()
       .then((response) => {
         if (response) {
-          console.log(values);
           setItem(values.id);
           navigate("/");
         }
       })
       .catch((error) => {
-        console.log(error);
+        console.log("error", error);
       });
   };
 
@@ -184,7 +183,10 @@ const RegisterPage: FC = () => {
             {...tailFormItemLayout}
           >
             <Checkbox>
-              Согласен с условиями <a href="/">соглашения</a>
+              Согласен с условиями{" "}
+              <Link to="/agreements" target="_blank">
+                соглашения
+              </Link>
             </Checkbox>
           </Form.Item>
           <Form.Item

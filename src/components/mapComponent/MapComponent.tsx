@@ -26,7 +26,7 @@ const MapComponent: FC<MapComponentProps> = ({
 }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [coordinate, setCoordinate] = useState<number[]>(initialCoordinates);
-  const [, setSelect] = useState("");
+  const [select, setSelect] = useState("");
 
   const handleLoad = () => {
     setIsLoaded(true);
@@ -36,14 +36,12 @@ const MapComponent: FC<MapComponentProps> = ({
     alert("Произошла ошибка при загрузке карты");
     setIsLoaded(true);
   };
-  //TODO помести типы для карты в папке типов для карты
   type YandexMapEvent = {
     get: (key: string) => number[];
   };
 
   const handleClick = (event: YandexMapEvent) => {
     if (onChangeCoordinates) {
-      // TODO разберись с необзательным методом
       const coords: number[] = event.get("coords");
       setCoordinate(() => coords);
       if (onChangeCoordinates) {
@@ -70,7 +68,7 @@ const MapComponent: FC<MapComponentProps> = ({
           width={isLoaded ? "100%" : "0"}
           height="100%"
           defaultState={{
-            center: [53.9, 27.55],
+            center: coordinate.length > 0 ? coordinate : [53.9, 27.55],
             zoom: 11,
           }}
         >
@@ -114,6 +112,7 @@ const MapComponent: FC<MapComponentProps> = ({
                   key={id}
                   onClick={() => selectedAdInMap(id)}
                   geometry={coordinates}
+                  options={{ iconColor: id === select ? "#FF0000" : "#1E98FF" }}
                 />
               );
             })

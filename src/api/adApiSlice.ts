@@ -52,19 +52,3 @@ export const {
   useUpdateAdMutation,
   useDeleteAdMutation,
 } = adApiSlice;
-
-// const oneAd = {
-//   id: "KECSPPJEwiEQ5F05SA3yV",
-//   title: "Mr.",
-//   address: "full street address",
-//   photos: "",
-//   price: 12,
-//   description: "this is a comment",
-//   square: 12,
-//   rooms: 2,
-//   floor: 2,
-//   name: "my full name",
-//   phone: 375444546589,
-//   author: "2me@mydomain.com",
-//   coordinates: "",
-// };

@@ -1,20 +1,16 @@
 @import '@/styles/style.sass'
 
-.user-profile
+.info-message
     @include white-opacity(0.6)
     backdrop-filter: blur(10px)
     height: 100vh
     &__wrapper
-        max-width: 60rem
+        max-width: max-content
         position: relative
-        padding-top: 1.5rem
+        padding: 1.5rem
         margin: auto
         border-radius: 3.5rem
         top: 5rem
         @include center-parent
         @include white-opacity(0.8)
         box-shadow: $box-shadow-h
-        .disable
-            color: $color-black 
-            .ant-select-selection-item
-                color: $color-black 

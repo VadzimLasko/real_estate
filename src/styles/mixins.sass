@@ -11,27 +11,27 @@
     background-color: rgb(255, 255, 255, $opacity)
 
 // @mixin btn
-    background-color: #F8C20A
-    border-radius: .6rem
-    height: 4.4rem
-    width: 24rem
-    border: unset
-    font-weight: 600
-    @include center-par
-    span
-        font-size: 2.9rem
-        margin-right: .5rem 
+    // background-color: #F8C20A
+    // border-radius: .6rem
+    // height: 4.4rem
+    // width: 24rem
+    // border: unset
+    // font-weight: 600
+    // @include center-par
+    // span
+    //     font-size: 2.9rem
+    //     margin-right: .5rem 
 
 @mixin respond($breakpoint)
     @if $breakpoint == phone 
         @media only screen and (max-width: 662px)
             @content
 
-    @if $breakpoint == tab-port-s
+    @if $breakpoint == tab-port-xs
         @media only screen and (max-width: 770px)
             @content
 
-    @if $breakpoint == tab-port-l
+    @if $breakpoint == tab-port-s
         @media only screen and (max-width: 860px)
             @content
 
@@ -39,7 +39,7 @@
         @media only screen and (max-width: 980px)
             @content
 
-    @if $breakpoint == tab-port-b
+    @if $breakpoint == tab-port-l
         @media only screen and (max-width: 1080px)
             @content
     

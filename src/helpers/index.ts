@@ -1,4 +1,4 @@
-import { getItem, setItem } from "@/helpers/persistanceStorage";
+import { getItem, setItem, deleteItem } from "@/helpers/persistanceStorage";
 import {
   isCoincidence,
   currentUserFromEmail,
@@ -10,6 +10,7 @@ import { baseUrl } from "@/helpers/vars";
 export {
   getItem,
   setItem,
+  deleteItem,
   isCoincidence,
   currentUserFromEmail,
   currentUserFromId,

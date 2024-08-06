@@ -1,128 +1,89 @@
-import React, { FC, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
-import { Carousel } from "antd";
-import { AnyObject } from "antd/es/_util/type";
-import { disablePageScroll, enablePageScroll } from "scroll-lock";
+import React, { useState, useEffect } from "react";
+import { Link, useParams } from "react-router-dom";
+import { Button, Tooltip } from "antd";
+import { EditOutlined, HeartFilled, HeartOutlined } from "@ant-design/icons";
+
 import { useGetOneAdQuery } from "@/api/adApiSlice";
 import {
   useGetUsersQuery,
   useUpdateFavoritesMutation,
 } from "@/api/authApiSlice";
+import { useTypedSelector } from "@/store";
 import Spinner from "@/components/spinner/Spinner";
+import Slider from "@/components/slider/Slider";
 import { currentUserFromId, firstLetterBig } from "@/helpers";
-
 import { Ad } from "@/types/ads";
-import { User } from "@/types/users";
 import MapComponent from "@/components/mapComponent/MapComponent";
 
 import "./adPage.sass";
 
-const App: FC<{ photos: string[] }> = ({ photos }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [activePhoto, setActivePhoto] = useState("");
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const carouselRef = useRef<any>(null);
-  const modalCarouselRef = useRef<any>(null);
-
-  const handleImageClick = (photo: string, index: number) => {
-    setActivePhoto(photo);
-    setCurrentSlide(index);
-    setIsModalOpen(true);
-    disablePageScroll();
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    enablePageScroll();
-  };
-
-  const handleBeforeChange = (from: number, to: number) => {
-    setCurrentSlide(to);
-    setActivePhoto(photos[to]);
-  };
-
-  const goToSlide = (index: number) => {
-    setCurrentSlide(index);
-    setActivePhoto(photos[index]);
-    if (carouselRef.current) {
-      carouselRef.current.goTo(index);
-    }
-    if (modalCarouselRef.current) {
-      modalCarouselRef.current.goTo(index);
-    }
-  };
-
-  return (
-    <>
-      <Carousel
-        ref={carouselRef}
-        arrows
-        effect="fade"
-        infinite={false}
-        beforeChange={handleBeforeChange}
-        dots={false}
-        initialSlide={currentSlide}
-        className={isModalOpen ? "ant-c" : ""}
-      >
-        {photos.map((photo, index) => (
-          <div key={index}>
-            <h3 className="h-style">
-              <img
-                src={photo}
-                alt="img"
-                className="img-style"
-                onClick={() => handleImageClick(photo, index)}
-              />
-            </h3>
-          </div>
-        ))}
-      </Carousel>
-      <div className="custom-dots">
-        <div className="dots-container">
-          {photos.map((photo, index) => (
-            <img
-              key={index}
-              onClick={() => goToSlide(index)}
-              src={photo}
-              alt={`thumbnail-${index}`}
-              className={`dot-img ${index === currentSlide ? "active" : ""}`}
-            />
-          ))}
-        </div>
-      </div>
-
-      {isModalOpen && (
-        <div className="modal" onClick={() => handleCloseModal()}>
-          <Carousel
-            ref={modalCarouselRef}
-            arrows
-            effect="fade"
-            infinite={false}
-            beforeChange={handleBeforeChange}
-            dots={false}
-          >
-            {<img src={activePhoto} alt="modal-img" className="modal-img" />}
-          </Carousel>
-        </div>
-      )}
-    </>
-  );
-};
-
 const AdPage: React.FC = () => {
   const { slug } = useParams();
   const [updateFavorites] = useUpdateFavoritesMutation();
-  // TODO: добавь фаворитов
+  const { currentUser } = useTypedSelector((state) => state.user);
   const { data: ad, isFetching } = useGetOneAdQuery(slug ?? "");
   const { data: users = [] } = useGetUsersQuery();
+  const [isFavorited, setIsFavorited] = useState<boolean>(false);
+  const [isAuthor, setIsAuthor] = useState<boolean>(false);
 
-  let gender = "Информация об авторе отсутствует";
-  if (ad && users.length > 0) {
-    const currentUser = currentUserFromId(users, ad.author);
-    gender = currentUser ? currentUser.gender : gender;
-  }
+  useEffect(() => {
+    if (ad && currentUser) {
+      setIsFavorited(currentUser.favorites.includes(ad.id));
+      setIsAuthor(ad.author === currentUser.id);
+    }
+  }, [ad, currentUser]);
 
-  const srcForImg = ad ? ad.photos.map((photo) => photo.originalFileUrl) : null;
+  const like = async () => {
+    if (ad && currentUser) {
+      const updatedFavorites = [...currentUser.favorites, ad.id];
+
+      await updateFavorites({
+        id: currentUser.id,
+        favorites: updatedFavorites,
+      });
+      setIsFavorited(true);
+    }
+  };
+
+  const dislike = async () => {
+    if (ad && currentUser) {
+      const updatedFavorites = currentUser.favorites.filter(
+        (id) => id !== ad.id
+      );
+      await updateFavorites({
+        id: currentUser.id,
+        favorites: updatedFavorites,
+      });
+      setIsFavorited(false);
+    }
+  };
+
+  const renderFavorites = () => (
+    <>
+      <Tooltip
+        title={isFavorited ? "Удалить из избранного" : "Добавить в избранное"}
+      >
+        {isFavorited ? (
+          <HeartFilled onClick={dislike} className="heart-favorites filled" />
+        ) : (
+          <HeartOutlined onClick={like} className="heart-favorites outlined" />
+        )}
+      </Tooltip>
+      <br />
+
+      {isAuthor && (
+        <Link to={`/ad/${slug}/edit`}>
+          <Button>
+            <EditOutlined /> Редактировать объявление
+          </Button>
+        </Link>
+      )}
+    </>
+  );
+
+  const srcForImg = (
+    ad?.photos.map((photo) => photo.originalFileUrl) || []
+  ).filter((val): val is string => !!val);
 
   const render = ({
     title,
@@ -136,9 +97,13 @@ const AdPage: React.FC = () => {
     phone,
     coordinates,
   }: Ad) => {
+    if (!ad) return null;
+
+    const adAuthor = currentUserFromId(users, ad.author);
+    const gender = adAuthor ? adAuthor.gender : "Информации об авторе нет";
     return (
       <>
-        <App photos={srcForImg} />
+        <Slider photos={srcForImg} />
         <div className="ad">
           <span className="title-line" />
           <div className="ad__main">
@@ -164,9 +129,13 @@ const AdPage: React.FC = () => {
                 </div>
               </div>
 
-              <div className="left__right title">
-                {rooms}-комнатная квартира
+              <div className="left__right">
+                <div className="title">{rooms}-комнатная квартира</div>
+                <div className="favorites">
+                  {currentUser && renderFavorites()}
+                </div>
               </div>
+
               <div className="left__main">
                 <div className="left__main__container">
                   <div className="text_big text_bold">{title}</div>

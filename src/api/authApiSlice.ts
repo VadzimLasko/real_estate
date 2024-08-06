@@ -13,16 +13,10 @@ export const authApiSlice = createApi({
       query: () => "/users",
       providesTags: ["Auth"],
       keepUnusedDataFor: 5,
-      // transformResponse: (response, meta, arg) => {
-      //   return response
-      // },
     }),
     getCurrentUser: builder.query<User, string>({
       query: (id) => `/users/${id}`,
       keepUnusedDataFor: 5,
-      // transformResponse: (response, meta, arg) => {
-      //   return response
-      // },
     }),
     register: builder.mutation<User, Partial<User>>({
       query: (credentials) => ({

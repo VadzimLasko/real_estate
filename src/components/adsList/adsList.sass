@@ -1,74 +1,50 @@
 @import '../../styles/style.sass'
 
-.ad-enter 
-    opacity: 0
-
-
-.ad-enter-active 
-    opacity: 1
-    transition: opacity 500ms ease-in
-
-
-.ad-exit 
-    opacity: 1
-
-
-.ad-exit-active 
-    opacity: 0
-    transition: opacity 500ms ease-in
-
-
 .ads-list
     @include center-parent
-
+    .adItem-enter 
+        opacity: 0 
+    .adItem-enter-active 
+        opacity: 1 
+        transition: all 500ms
+    .adItem-exit 
+        opacity: 1 
+    .adItem-exit-active 
+        opacity: 0 
+        transition: all 500ms
     &__right
         width: 50vw
         height: 100vh
-        // right: 0px
-        // position: relative
         padding: 2rem
         z-index: 2
-        overflow: hidden
-        // height: 68rem
-        // padding: 1rem
+        overflow-y: scroll
+        scrollbar-gutter: stable
+        scroll
         display: grid
-        // grid-template-row: repeat(2, min-content)
         grid-auto-rows: min-content
         gap: 2rem      
         grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr))
-        // margin: 0 auto
-        // border-radius: 3.5rem
-        // border: solid black 1.5px
-        // padding-left: .2rem
-        // filter: blur(0px)
         background-color: $color-white
-        // backdrop-filter: blur(5px)
 
-    
-.ad-cart
-    width: 20rem
-    height: 15rem
+.ad-card
+    max-width: 25rem
+    max-height: 20rem
     overflow: hidden
-    background-color: blue
     border-radius: .5rem
-    
-    
+    text-decoration: none
     &__photo
         height: 70%
-        background-color: yellow
-        // object-fit: contains
         position: relative
-        // @include  center-par
-        img
+        overflow: hidden
+        .img
             object-fit: cover
+            transform: scale(120%)
             width: 100% 
-            // display: block
             height: 100%
-            
-
         &_price
             text-shadow: 1px 1px 0 #4074b5, 1px -1px 0 #4074b5, -1px 1px 0 #4074b5, -1px -1px 0 #4074b5, 1px 0px 0 #4074b5, 0px 1px 0 #4074b5, -1px 0px 0 #4074b5, 0px -1px 0 #4074b5, 1px 1px 1px rgba(206,89,55,0)
             color: #FFFFFF
+            font-size: 1.8rem
             position: absolute
             left: 10%
             bottom: 10%
@@ -76,15 +52,13 @@
         height: 30%
         padding: .5rem 1rem
         position: relative
-        background-color: green
+        color: $color-black
+        font-size: 1.4rem
         &_floor
             position: absolute
             right: 1rem
-        &_square
-            // margin-right: 1rem
         &_rooms
             margin-right: 3rem
-        // &_address
 
 .extra
     outline: 1rem solid $color-outline

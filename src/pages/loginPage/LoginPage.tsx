@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Checkbox, Form, Input } from "antd";
 import { compare } from "bcryptjs";
@@ -13,7 +13,7 @@ interface LoginFormValues {
   email: string;
   password: string;
 }
-
+//TODO разобраться с карентюсер на каждом компоненте, т.к. он есть хедере
 const LoginPage: FC = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
@@ -129,7 +129,7 @@ const LoginPage: FC = () => {
             >
               Войти
             </Button>
-            <a href="">Зарегистрироваться</a>
+            <Link to="/register">Зарегистрироваться</Link>
           </Form.Item>
         </Form>
       </div>

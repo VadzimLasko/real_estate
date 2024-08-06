@@ -1,24 +1,12 @@
 import React, { useEffect, useState } from "react";
 import type { CollapseProps } from "antd";
-import { Collapse } from "antd";
-import {
-  Button,
-  Flex,
-  Segmented,
-  Tag,
-  Switch,
-  Col,
-  InputNumber,
-  Row,
-  Slider,
-  Space,
-} from "antd";
-import type { FlexProps, SegmentedProps } from "antd";
-import { CaretRightOutlined } from "@ant-design/icons";
+import { Collapse, Input } from "antd";
+import { Flex, Tag, Switch, Slider } from "antd";
+import { useDispatch } from "react-redux";
+
+import { filterChanged } from "../../store/slices/filterSlice";
 
 import "./filtersPanel.sass";
-import { useDispatch } from "react-redux";
-import { filterChanged } from "../../store/slices/filterSlice";
 
 interface PriceProps {
   defState?: number[];
@@ -26,13 +14,12 @@ interface PriceProps {
 }
 
 const PriceAndSquare: React.FC<PriceProps> = ({
-  defState = [0, 100],
+  defState = [0, 1_000_000],
   type,
 }) => {
   const dispatch = useDispatch();
   const [value, setValue] = useState<number[]>(defState);
   const [priceFrom, priceTo] = value;
-  console.log("value", value);
 
   useEffect(() => {
     dispatch(
@@ -44,7 +31,6 @@ const PriceAndSquare: React.FC<PriceProps> = ({
   }, [value, type]);
 
   const onChange = (newValue: number[]) => {
-    console.log("newValue", newValue);
     setValue(newValue);
   };
   const onInputChange =
@@ -52,15 +38,19 @@ const PriceAndSquare: React.FC<PriceProps> = ({
       const newValue = [...value];
       newValue[index] = Number(e.target.value);
       setValue(newValue);
-      console.log("newValue", newValue);
     };
 
   return (
     <>
-      <Slider style={{ display: "none" }} />
-      <Slider range value={value} onChange={onChange} />
-      <input onInput={onInputChange(0)} value={priceFrom} />
-      <input onInput={onInputChange(1)} value={priceTo} />
+      <Slider
+        range
+        value={value}
+        min={defState[0]}
+        max={defState[1]}
+        onChange={onChange}
+      />
+      <Input onInput={onInputChange(0)} value={priceFrom} />
+      <Input onInput={onInputChange(1)} value={priceTo} />
     </>
   );
 };
@@ -106,7 +96,6 @@ const Floor: React.FC = () => {
   const [select, setSelect] = React.useState(false);
   const onChange = (checked: boolean) => {
     setSelect(checked);
-    console.log(`switch to ${checked}`);
   };
 
   useEffect(() => {
@@ -140,7 +129,7 @@ const items: CollapseProps["items"] = [
   {
     key: "3",
     label: "Площадь, м2",
-    children: <p>{<PriceAndSquare type="square" defState={[1, 200]} />}</p>,
+    children: <p>{<PriceAndSquare type="square" defState={[1, 250]} />}</p>,
   },
   {
     key: "4",
@@ -150,15 +139,11 @@ const items: CollapseProps["items"] = [
 ];
 
 const boxStyle: React.CSSProperties = {
-  // width: "100%",
   borderRadius: 6,
   border: "1px solid #40a9ff",
 };
 
 const FiltersPanel: React.FC = () => {
-  const onChange = (key: string | string[]) => {
-    console.log(key);
-  };
   return (
     <div className="filters-panel">
       <div className="filters-panel__main">
@@ -170,7 +155,6 @@ const FiltersPanel: React.FC = () => {
                 size="small"
                 expandIconPosition="end"
                 items={[collapse]}
-                onChange={onChange}
               />
             );
           })}
