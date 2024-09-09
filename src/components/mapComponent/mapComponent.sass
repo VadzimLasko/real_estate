@@ -13,6 +13,11 @@
         overflow: hidden
         @include center-parent
         border-right: .2rem solid $color-gray
+        @include respond(tab-port-xs)
+            width: 90vw
+            height: 40vh
+            border: .2rem solid $color-gray
+            border-top: none
     &__ad-list 
         width: 90vw
         height: 80vh

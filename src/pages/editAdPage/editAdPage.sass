@@ -1,27 +1,21 @@
 @import '@/styles/style.sass'
     
 .edit-ad
-    background-image: url('../../img/19742.webp')
-    background-size: 18%
-    background-repeat: repeat
-    position: relative
-    z-index: 1
+    @include background
     &__wrapper
-        max-width: 65rem
+        width: 60rem
         position: relative
         top: -.1rem
         @include white-opacity(0.2)
         backdrop-filter: blur(3px)
-        padding-top: 1.5rem
+        padding: 2rem
         margin: 0 auto
         border-radius: $border-radius-m
         border: .2rem solid $color-gray
         .button
             margin-bottom: 1.5rem
+    &__form
+        width: 70rem
 
 .success-answer
-    position: absolute
-    width: 20rem
-    text-align: center
-    top: 3.5rem
-    left: -0.4rem
+    @include success-answer

@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { nanoid } from "@reduxjs/toolkit";
-import { Button, Form, Input, InputNumber } from "antd";
+import { Button, Form, Input, InputNumber, Flex } from "antd";
 
 import { useTypedSelector } from "@/store";
 import { useGetUsersQuery } from "@/api/authApiSlice.js";
@@ -17,15 +17,17 @@ const CreateAdPage: FC = () => {
   const { isFetching } = useGetUsersQuery();
   const [createAd] = useCreateAdMutation();
   const { currentUser } = useTypedSelector((state) => state.user);
-  //TODO поправь загрузку фото, а то не отображается загрузка
   const formItemLayout = {
     labelCol: {
-      xs: { span: 22 },
-      sm: { span: 22, push: 1 },
+      span: 22,
+      push: 1,
     },
     wrapperCol: {
-      xs: { span: 22 },
-      sm: { span: 22, offset: 1 },
+      xs: { span: 22, offset: 1 },
+      sm: {
+        span: 22,
+        offset: 1,
+      },
     },
   };
 
@@ -47,7 +49,6 @@ const CreateAdPage: FC = () => {
   };
 
   const onFinish = (values: Ad): void => {
-    console.log("values", values);
     values.id = nanoid();
     values.author = currentUser!.id;
     values.photos = photos;
@@ -58,12 +59,11 @@ const CreateAdPage: FC = () => {
       .unwrap()
       .then((response) => {
         if (response) {
-          console.log("New ad", values);
           form.resetFields();
         }
       })
       .catch((error) => {
-        console.log("error", error);
+        console.error(error);
       });
   };
 
@@ -218,10 +218,12 @@ const CreateAdPage: FC = () => {
             />
           </Form.Item>
 
-          <Form.Item wrapperCol={{ offset: 9 }}>
-            <Button type="primary" htmlType="submit">
-              Добавить объявление
-            </Button>
+          <Form.Item>
+            <Flex justify="center">
+              <Button type="primary" htmlType="submit">
+                Добавить объявление
+              </Button>
+            </Flex>
           </Form.Item>
         </Form>
       </div>

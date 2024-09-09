@@ -2,27 +2,27 @@
 @import './typography.sass'
 @import './variables.sass'
 
-
 *, ::after, ::before
   margin: 0
   padding: 0
   box-sizing: border-box
 
-
 html
   font-size: 62.5%
-  @include respond(phone)
-    font-size: 42%
-  @include respond(tab-port-xs)
-    font-size: 47%
-  @include respond(tab-port-s)
+  @include respond(big-screen)
+    font-size: 90%
+  @include respond(tab-land)
+    font-size: 55%
+  @include respond(tab-port-l)
     font-size: 50%
   @include respond(tab-port-m)
-    font-size: 52%
-  @include respond(tab-port-l)
-    font-size: 55%
-  @include respond(big-screen)
-    font-size: 68%
+    font-size: 45%
+  @include respond(tab-port-s)
+    font-size: 40%
+  @include respond(tab-port-xs)
+    font-size: 35%
+  @include respond(phone)
+    font-size: 33%
 
 body
   font-family: "Open Sans", sans-serif
@@ -30,8 +30,5 @@ body
   font-size: 1.6rem
   overflow-y: scroll
   position: relative
-  font-display: swap
   font-style: normal
   background-color: $color-white
-
-

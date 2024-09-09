@@ -5,7 +5,7 @@ import {
   currentUserFromId,
   firstLetterBig,
 } from "@/helpers/utils";
-import { baseUrl } from "@/helpers/vars";
+import { baseUrl, hashCount } from "@/helpers/vars";
 
 export {
   getItem,
@@ -16,4 +16,5 @@ export {
   currentUserFromId,
   firstLetterBig,
   baseUrl,
+  hashCount,
 };

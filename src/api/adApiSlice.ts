@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+
 import { Ad, Ads } from "@/types/ads";
 import { baseUrl } from "@/helpers";
 
@@ -12,12 +13,10 @@ export const adApiSlice = createApi({
     getAds: builder.query<Ads, void>({
       query: () => "/ads",
       providesTags: ["Ads"],
-      keepUnusedDataFor: 5,
     }),
     getOneAd: builder.query<Ad, string>({
       query: (id) => `/ads/${id}`,
-      // providesTags: ["Ads"],
-      keepUnusedDataFor: 5,
+      keepUnusedDataFor: 0,
     }),
     createAd: builder.mutation<Ad, Ad>({
       query: (ad) => ({

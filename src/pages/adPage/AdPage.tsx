@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Button, Tooltip } from "antd";
-import { EditOutlined, HeartFilled, HeartOutlined } from "@ant-design/icons";
+import {
+  EditOutlined,
+  HeartFilled,
+  HeartOutlined,
+  DeleteOutlined,
+} from "@ant-design/icons";
 
-import { useGetOneAdQuery } from "@/api/adApiSlice";
+import { useGetOneAdQuery, useDeleteAdMutation } from "@/api/adApiSlice";
 import {
   useGetUsersQuery,
   useUpdateFavoritesMutation,
@@ -19,10 +24,13 @@ import "./adPage.sass";
 
 const AdPage: React.FC = () => {
   const { slug } = useParams();
+  const navigate = useNavigate();
   const [updateFavorites] = useUpdateFavoritesMutation();
+  const [deleteAd] = useDeleteAdMutation();
   const { currentUser } = useTypedSelector((state) => state.user);
   const { data: ad, isFetching } = useGetOneAdQuery(slug ?? "");
   const { data: users = [] } = useGetUsersQuery();
+
   const [isFavorited, setIsFavorited] = useState<boolean>(false);
   const [isAuthor, setIsAuthor] = useState<boolean>(false);
 
@@ -48,13 +56,20 @@ const AdPage: React.FC = () => {
   const dislike = async () => {
     if (ad && currentUser) {
       const updatedFavorites = currentUser.favorites.filter(
-        (id) => id !== ad.id
+        (id: string) => id !== ad.id
       );
       await updateFavorites({
         id: currentUser.id,
         favorites: updatedFavorites,
       });
       setIsFavorited(false);
+    }
+  };
+
+  const handleDeleteAd = async () => {
+    if (ad && isAuthor) {
+      await deleteAd(ad.id);
+      navigate("/");
     }
   };
 
@@ -72,11 +87,21 @@ const AdPage: React.FC = () => {
       <br />
 
       {isAuthor && (
-        <Link to={`/ad/${slug}/edit`}>
-          <Button>
-            <EditOutlined /> Редактировать объявление
+        <>
+          <Link to={`/ad/${slug}/edit`}>
+            <Button size="small" className="btn-group link-edit">
+              <EditOutlined /> Редактировать
+            </Button>
+          </Link>
+          <br />
+          <Button
+            size="small"
+            onClick={handleDeleteAd}
+            className="btn-group link-delete"
+          >
+            <DeleteOutlined /> Удалить
           </Button>
-        </Link>
+        </>
       )}
     </>
   );

@@ -2,7 +2,6 @@ import "./notFoundPage.css";
 
 const NotFoundPage = () => {
   return (
-    // TODO добавь инлайн стили встили
     <div
       style={{
         width: "160rem",

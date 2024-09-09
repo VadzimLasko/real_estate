@@ -6,11 +6,19 @@
     background-color: $color-white
     height: 6rem
     border-bottom: .2rem solid $color-gray
+    @include respond(tab-port-l)
+        height: 7rem
+    @include respond(tab-port-m)
+        height: 8rem
+    @include respond(phone)
+        height: 7.5rem
     &__main
         width: 120rem
         margin: auto
         position: relative
         top: 12%
+        @include respond(phone)
+            width: 90rem
         .anticon
             transform: rotate(90deg)
         .ant-flex
@@ -18,6 +26,10 @@
         .ant-collapse
             &-item
                 width: 20rem
+                @include respond(tab-port-l)
+                    width: 25rem
+                @include respond(phone)
+                    width: 21rem
                 &-active
                     svg 
                         transform: rotate(-180deg) !important
@@ -28,10 +40,9 @@
                             font-size: 1.6rem
             &-header
                 align-items: center !important
+                @include respond(tab-port-xs)
+                    padding: .7rem !important
+                @include respond(phone)
+                    padding: .5rem !important
                 &-text
                     font-size: 1.6rem
-
-
-
-
-

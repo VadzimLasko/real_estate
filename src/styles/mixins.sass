@@ -10,25 +10,25 @@
 @mixin white-opacity($opacity)
     background-color: rgb(255, 255, 255, $opacity)
 
-// @mixin btn
-    // background-color: #F8C20A
-    // border-radius: .6rem
-    // height: 4.4rem
-    // width: 24rem
-    // border: unset
-    // font-weight: 600
-    // @include center-par
-    // span
-    //     font-size: 2.9rem
-    //     margin-right: .5rem 
+@mixin background
+    background-image: url('../../img/19742.webp')
+    background-size: 18%
+    background-repeat: repeat
+
+@mixin success-answer
+    position: absolute
+    width: 20rem
+    text-align: center
+    top: 3.5rem
+    left: 18.5rem
 
 @mixin respond($breakpoint)
     @if $breakpoint == phone 
-        @media only screen and (max-width: 662px)
+        @media only screen and (max-width: 670px)
             @content
 
     @if $breakpoint == tab-port-xs
-        @media only screen and (max-width: 770px)
+        @media only screen and (max-width: 767px)
             @content
 
     @if $breakpoint == tab-port-s
@@ -36,7 +36,7 @@
             @content
 
     @if $breakpoint == tab-port-m
-        @media only screen and (max-width: 980px)
+        @media only screen and (max-width: 960px)
             @content
 
     @if $breakpoint == tab-port-l
@@ -44,7 +44,7 @@
             @content
     
     @if $breakpoint == tab-land
-        @media only screen and (max-width: 1300px)
+        @media only screen and (max-width: 1200px)
             @content
 
     @if $breakpoint == big-screen

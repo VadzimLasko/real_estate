@@ -1,14 +1,14 @@
 @import '@/styles/style.sass'
     
 .login-form
+    width: 50rem
     &-background
-        @include white-opacity(0.6)
-        backdrop-filter: blur(10px)
+        @include background
         height: 100vh
     &__wrapper
-        max-width: 35rem
+        max-width: 40rem
         position: relative
-        padding-top: 1.5rem
+        padding: 2rem
         margin: auto
         border-radius: 3.5rem
         padding-left: 2rem
@@ -16,16 +16,15 @@
         @include center-parent
         @include white-opacity(0.7)
         box-shadow: $box-shadow-h
+        @include respond(tab-port-m)
+            max-width: 50rem
     &-forgot
         float: right
-
     .ant-col-rtl .login-form-forgot
         float: left
-
     &-button
         width: 100%
         margin-bottom: 1rem
-
     .ant-col-rtl .login-form-forgot
         float: left
         

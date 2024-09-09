@@ -1,62 +1,51 @@
-import { FC } from "react";
+import { FC, useState, useEffect } from "react";
 import { nanoid } from "@reduxjs/toolkit";
 import { Link, useNavigate } from "react-router-dom";
 import { Button, Checkbox, Form, Input, Select } from "antd";
 import { hash } from "bcryptjs";
 
 import { useGetUsersQuery, useRegisterMutation } from "@/api/authApiSlice";
-import { isCoincidence, setItem } from "@/helpers";
+import { hashCount, isCoincidence, setItem } from "@/helpers";
 import { User } from "@/types/users";
 
 import "./registerPage.sass";
 
-//TODO добавь страницу соглашения
-//TODO поправь очередность импортов
-//TODO удали ненужные зависимости
-const validateMessages = {
-  required: "Необходимо заполнить!",
-};
-
-const formItemLayout = {
-  // labelCol: {
-  //   xs: {
-  //     span: 24,
-  //   },
-  //   sm: {
-  //     span: 10,
-  //   },
-  // },
-  // wrapperCol: {
-  //   xs: {
-  //     span: 24,
-  //   },
-  //   sm: {
-  //     span: 16,
-  //   },
-  // },
-};
-const tailFormItemLayout = {
-  // wrapperCol: {
-  //   xs: {
-  //     span: 24,
-  //   },
-  //   sm: {
-  //     span: 16,
-  //   },
-  // },
-};
+type SizeType = Parameters<typeof Form>[0]["size"];
 
 const RegisterPage: FC = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const { data: users = [] } = useGetUsersQuery();
   const [register, { isLoading }] = useRegisterMutation();
+  const [size, setSize] = useState("middle");
   const { Option } = Select;
+
+  const handleResize = () => {
+    if (window.innerWidth < 860) {
+      setSize("small");
+    } else if (window.innerWidth >= 860 && window.innerWidth < 1200) {
+      setSize("middle");
+    } else {
+      setSize("large");
+    }
+  };
+
+  const validateMessages = {
+    required: "Необходимо заполнить!",
+  };
+
+  useEffect(() => {
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   const onFinish = async (values: User) => {
     values.id = nanoid();
     values.favorites = [];
-    values.password = await hash(values.password, 10);
+    values.password = await hash(values.password, hashCount);
     delete values.confirm;
     register(values)
       .unwrap()
@@ -67,7 +56,7 @@ const RegisterPage: FC = () => {
         }
       })
       .catch((error) => {
-        console.log("error", error);
+        console.error(error);
       });
   };
 
@@ -75,7 +64,6 @@ const RegisterPage: FC = () => {
     <div className="registration-form">
       <div className="registration-form__wrapper">
         <Form
-          {...formItemLayout}
           form={form}
           name="registrationForm"
           layout="vertical"
@@ -84,9 +72,8 @@ const RegisterPage: FC = () => {
           initialValues={{
             prefix: "375",
           }}
-          style={{
-            width: 500,
-          }}
+          size={size as SizeType}
+          className="registration-form__form"
           scrollToFirstError
         >
           <Form.Item
@@ -180,7 +167,6 @@ const RegisterPage: FC = () => {
                       ),
               },
             ]}
-            {...tailFormItemLayout}
           >
             <Checkbox>
               Согласен с условиями{" "}
@@ -190,8 +176,10 @@ const RegisterPage: FC = () => {
             </Checkbox>
           </Form.Item>
           <Form.Item
-            {...tailFormItemLayout}
-            wrapperCol={{ offset: 8, span: 16 }}
+            wrapperCol={{
+              xs: { offset: 8, span: 8 },
+              sm: { offset: 9, span: 10 },
+            }}
           >
             <Button
               className="registration-form-button"

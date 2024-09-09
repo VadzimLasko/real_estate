@@ -5,7 +5,6 @@ import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { useGetAdsQuery } from "@/api/adApiSlice";
 import { useTypedSelector } from "@/store";
 import MapComponent from "../mapComponent/MapComponent";
-import InfoMessage from "@/components/infoMessage/InfoMessage";
 import Spinner from "@/components/spinner/Spinner";
 import { Ad } from "@/types/ads";
 import { DataForPoints } from "@/types/map";
@@ -24,21 +23,22 @@ const AdsList: FC = () => {
   const { currentUser } = useTypedSelector((state) => state.user);
 
   const param = location.pathname.split("/").at(-1);
-  console.log("adsForRender", adsForRender);
 
   useEffect(() => {
+    if (ads) {
+      setAdsForRender(ads);
+    }
     if (ads && currentUser) {
       if (param === "favorites") {
         setAdsForRender(
           ads.filter((ad) => currentUser.favorites.includes(ad.id))
         );
-      } else if (param === "created") {
+      }
+      if (param === "created") {
         setAdsForRender(ads.filter((ad) => ad.author === currentUser.id));
-      } else {
-        setAdsForRender(ads);
       }
     }
-  }, [ads, location]);
+  }, [ads, location, currentUser]);
 
   const selectedAd = (value: string) => {
     setSelected(value);
@@ -64,7 +64,7 @@ const AdsList: FC = () => {
 
       if (filteredRooms.length > 0) {
         if (filteredRooms.includes("4+")) {
-          filteredRooms = filteredRooms.filter((room) => room !== "4+");
+          filteredRooms = filteredRooms.filter((room: string) => room !== "4+");
           filteredAdsWith4 = filteredAds.filter((ad) => ad.rooms >= 4);
         }
         const filteredAdsWithout4 = filteredAds.filter((ad) =>
@@ -145,10 +145,6 @@ const AdsList: FC = () => {
   };
   if (isFetching || !ads) {
     return <Spinner />;
-  }
-
-  if (!currentUser) {
-    return <InfoMessage>Вам нужно авторизоваться</InfoMessage>;
   }
 
   if (ads) {

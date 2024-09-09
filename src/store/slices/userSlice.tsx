@@ -1,26 +1,25 @@
-import {
-  createSlice,
-  createEntityAdapter,
-  PayloadAction,
-} from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+
 import { authApiSlice } from "@/api/authApiSlice";
 import { currentUserFromId } from "@/helpers";
 import { getItem, deleteItem } from "@/helpers/persistanceStorage";
-import { CurrentUser, Users, CurrentUserState } from "@/types/users";
+import { Users, CurrentUserState } from "@/types/users";
 
-const userAdapter = createEntityAdapter<CurrentUser>();
-//TODO может не нужет здесь энтити адаптер
-const initialState: CurrentUserState = userAdapter.getInitialState({
+const initialState: CurrentUserState = {
   currentUser: null,
-});
+};
+
+const userCleanup = (state: CurrentUserState) => {
+  deleteItem();
+  state.currentUser = null;
+};
 
 const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
     removeCurrentUser(state) {
-      deleteItem();
-      state.currentUser = null;
+      userCleanup(state);
     },
   },
   extraReducers: (builder) => {
@@ -39,6 +38,9 @@ const userSlice = createSlice({
           }
         }
       )
+      .addMatcher(authApiSlice.endpoints.deleteUser.matchFulfilled, (state) => {
+        userCleanup(state);
+      })
       .addDefaultCase(() => {});
   },
 });

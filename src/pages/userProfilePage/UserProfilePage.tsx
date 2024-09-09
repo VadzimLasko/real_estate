@@ -1,58 +1,41 @@
 import { FC } from "react";
-import { useParams } from "react-router-dom";
-import { Button, Form, Input, Select } from "antd";
+import { useNavigate, useParams } from "react-router-dom";
+import { Button, Flex, Form, Input, Select } from "antd";
 
-import { useGetCurrentUserQuery } from "@/api/authApiSlice.js";
+import {
+  useGetCurrentUserQuery,
+  useDeleteUserMutation,
+} from "@/api/authApiSlice.js";
 import Spinner from "@/components/spinner/Spinner.js";
 import InfoMessage from "@/components/infoMessage/InfoMessage";
 import { useTypedSelector } from "@/store";
 
+import { DeleteOutlined } from "@ant-design/icons";
 import "./userProfilePage.sass";
 
-const formItemLayout = {
-  // labelCol: {
-  //   xs: {
-  //     span: 24,
-  //   },
-  //   sm: {
-  //     span: 10,
-  //   },
-  // },
-  // wrapperCol: {
-  //   xs: {
-  //     span: 24,
-  //   },
-  //   sm: {
-  //     span: 16,
-  //   },
-  // },
-};
-const tailFormItemLayout = {
-  // wrapperCol: {
-  //   xs: {
-  //     span: 24,
-  //   },
-  //   sm: {
-  //     span: 16,
-  //   },
-  // },
-};
-
 const UserProfilePage: FC = () => {
-  //   gr_VWKkx8bs15Ajbj66AG
   const { slug } = useParams<{ slug?: string }>();
   if (!slug || slug.trim() === "") {
     return <InfoMessage>Такая страница не существует!</InfoMessage>;
   }
+  const navigate = useNavigate();
   const { data: user, isFetching } = useGetCurrentUserQuery(slug);
+  const [deleteUser] = useDeleteUserMutation();
 
   const [form] = Form.useForm();
 
   const { currentUser } = useTypedSelector((state) => state.user);
 
-  if (!currentUser || !user) {
-    return <InfoMessage>Вы не можете редактировать этот профиль</InfoMessage>;
+  if (!currentUser || !user || currentUser.id !== user.id) {
+    return <InfoMessage>Вы не можете просматривать данный профиль</InfoMessage>;
   }
+
+  const handleDeleteUser = async () => {
+    if (currentUser && user && currentUser.id === user.id) {
+      await deleteUser(currentUser.id);
+      navigate("/");
+    }
+  };
 
   let { id, password, confirm, ...initialValues } = user;
 
@@ -64,14 +47,11 @@ const UserProfilePage: FC = () => {
     <div className="user-profile">
       <div className="user-profile__wrapper">
         <Form
-          // {...formItemLayout}
           form={form}
           name="ediUserForm"
           layout="vertical"
           initialValues={initialValues}
-          style={{
-            width: 500,
-          }}
+          className="user-profile__form"
           scrollToFirstError
         >
           <Form.Item name="email" label="E-mail">
@@ -86,19 +66,24 @@ const UserProfilePage: FC = () => {
             ></Select>
           </Form.Item>
 
-          <Form.Item
-            {...tailFormItemLayout}
-            wrapperCol={{ offset: 8, span: 16 }}
-          >
-            <Button
-              className="registration-form-button"
-              type="primary"
-              href={`/user/${slug}/edit`}
-              htmlType="button"
-            >
-              Редактировать данные
-            </Button>
+          <Form.Item>
+            <Flex justify="center">
+              <Button
+                className="registration-form-button"
+                type="primary"
+                href={`/user/${slug}/edit`}
+                htmlType="button"
+              >
+                Редактировать данные
+              </Button>
+            </Flex>
           </Form.Item>
+          <Flex justify="center">
+            <Button onClick={handleDeleteUser}>
+              <DeleteOutlined />
+              Удалить профиль
+            </Button>
+          </Flex>
         </Form>
       </div>
     </div>

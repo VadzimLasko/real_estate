@@ -4,8 +4,6 @@ export interface CurrentUser {
   favorites: Array<string>;
 }
 
-// TODO потом убери вопросики из ключей
-
 export interface User {
   id: string;
   email: string;

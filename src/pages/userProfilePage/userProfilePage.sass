@@ -1,13 +1,12 @@
 @import '@/styles/style.sass'
 
 .user-profile
-    @include white-opacity(0.6)
-    backdrop-filter: blur(10px)
+    @include background
     height: 100vh
     &__wrapper
-        max-width: 60rem
+        width: 60rem
         position: relative
-        padding-top: 1.5rem
+        padding: 2.5rem
         margin: auto
         border-radius: 3.5rem
         top: 5rem
@@ -18,3 +17,5 @@
             color: $color-black 
             .ant-select-selection-item
                 color: $color-black 
+    &__form
+        width: 70rem

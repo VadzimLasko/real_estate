@@ -1,11 +1,8 @@
-import { FC } from "react";
-import { useEffect, useState } from "react";
-// import { useHttp } from "../../../hooks/http.hook";
+import { FC, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-// import { nanoid } from "@reduxjs/toolkit";
-
-import { Button, Form, Input, Select } from "antd";
+import { Button, Flex, Form, Input, Select } from "antd";
 import { hash } from "bcryptjs";
+
 import { useTypedSelector } from "@/store";
 import {
   useUpdateUserMutation,
@@ -13,42 +10,12 @@ import {
 } from "@/api/authApiSlice.js";
 import { User } from "@/types/users";
 import Spinner from "@/components/spinner/Spinner.js";
+import InfoMessage from "@/components/infoMessage/InfoMessage";
+import { hashCount } from "@/helpers";
 
 import "./editUserProfilePage.sass";
-import InfoMessage from "@/components/infoMessage/InfoMessage";
-
-const formItemLayout = {
-  // labelCol: {
-  //   xs: {
-  //     span: 24,
-  //   },
-  //   sm: {
-  //     span: 10,
-  //   },
-  // },
-  // wrapperCol: {
-  //   xs: {
-  //     span: 24,
-  //   },
-  //   sm: {
-  //     span: 16,
-  //   },
-  // },
-};
-const tailFormItemLayout = {
-  // wrapperCol: {
-  //   xs: {
-  //     span: 24,
-  //   },
-  //   sm: {
-  //     span: 16,
-  //   },div
-  // },
-};
 
 const EditUserProfilePage: FC = () => {
-  //   gr_VWKkx8bs15Ajbj66AG
-
   const [successUpdate, setSuccessUpdate] = useState(false);
 
   const { slug } = useParams<{ slug?: string }>();
@@ -78,20 +45,20 @@ const EditUserProfilePage: FC = () => {
     required: "Необходимо заполнить!",
   };
 
-  if (!currentUser || !user) {
+  if (!currentUser || !user || currentUser.id !== user.id) {
     return <InfoMessage>Вы не можете редактировать этот профиль</InfoMessage>;
   }
   const { id, password, ...initialValues } = user;
   const onFinish = async (values: User) => {
     values.id = id;
     values.password = values.password
-      ? await hash(values.password, 10)
+      ? await hash(values.password, hashCount)
       : password;
     delete values.confirm;
     updateUser({ id, user: values })
       .unwrap()
       .catch((error) => {
-        console.log("error", error);
+        console.error(error);
       });
   };
 
@@ -104,16 +71,13 @@ const EditUserProfilePage: FC = () => {
       <div className="edit-user-profile">
         <div className="edit-user-profile__wrapper">
           <Form
-            {...formItemLayout}
             form={form}
             name="ediUserForm"
             layout="vertical"
             validateMessages={validateMessages}
             onFinish={onFinish}
             initialValues={initialValues}
-            style={{
-              width: 500,
-            }}
+            className="edit-user-profile__form"
             scrollToFirstError
           >
             <Form.Item
@@ -183,18 +147,17 @@ const EditUserProfilePage: FC = () => {
               </Select>
             </Form.Item>
 
-            <Form.Item
-              {...tailFormItemLayout}
-              wrapperCol={{ offset: 8, span: 16 }}
-            >
-              <Button
-                className="button"
-                type="primary"
-                htmlType="submit"
-                disabled={isUpdateLoading}
-              >
-                Сохранить измененения
-              </Button>
+            <Form.Item>
+              <Flex justify="center">
+                <Button
+                  className="button"
+                  type="primary"
+                  htmlType="submit"
+                  disabled={isUpdateLoading}
+                >
+                  Сохранить измененения
+                </Button>
+              </Flex>
               {successUpdate ? answer : null}
             </Form.Item>
           </Form>

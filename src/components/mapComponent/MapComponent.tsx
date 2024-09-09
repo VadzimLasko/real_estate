@@ -7,8 +7,6 @@ import {
   Placemark,
   ObjectManager,
   Clusterer,
-  // SearchControl,
-  // useYMaps,
 } from "@pbe/react-yandex-maps";
 
 import Spinner from "../spinner/Spinner";
@@ -16,8 +14,6 @@ import { MapComponentProps } from "@/types/map";
 
 import "./mapComponent.sass";
 
-//TODO разобраться с АПИ для карт
-//TODO удали лишние консоль логи и коментарии
 const MapComponent: FC<MapComponentProps> = ({
   onChangeCoordinates,
   initialCoordinates = [],
@@ -77,11 +73,7 @@ const MapComponent: FC<MapComponentProps> = ({
               preset: "islands#invertedVioletClusterIcons",
               groupByCoordinates: false,
             }}
-          >
-            {/* {clusterPoints.map((coordinates, index) => (
-              <Placemark key={index} geometry={coordinates} />
-            ))} */}
-          </Clusterer>
+          ></Clusterer>
           <ObjectManager
             options={{
               clusterize: true,
@@ -95,7 +87,6 @@ const MapComponent: FC<MapComponentProps> = ({
               preset: "islands#redClusterIcons",
             }}
             filter={(object: { id: number }) => object.id % 2 === 0}
-            // defaultFeatures={objectManagerFeatures}
             modules={[
               "objectManager.addon.objectsBalloon",
               "objectManager.addon.objectsHint",
@@ -117,7 +108,6 @@ const MapComponent: FC<MapComponentProps> = ({
               );
             })
           )}
-          {/* <SearchControl options={{ float: "right" }} /> */}
         </YMap>
       </YMaps>
     </>
@@ -125,104 +115,3 @@ const MapComponent: FC<MapComponentProps> = ({
 };
 
 export default MapComponent;
-
-// import { useState } from "react";
-// import {
-//   YMaps,
-//   Map as YMap,
-//   ZoomControl,
-//   GeolocationControl,
-//   Placemark,
-//   ObjectManager,
-//   Clusterer,
-// } from "@pbe/react-yandex-maps";
-// import Spinner from "../spinner/Spinner";
-// import type { MapClickEvent } from "@pbe/react-yandex-maps"; // Assuming there is a type for Map click event
-
-// import "./mapComponent.sass";
-
-// interface MapComponentProps {
-//   onChangeCoordinates: (coords: number[]) => void;
-//   initialCoordinates?: number[]; // про
-// }
-
-// const MapComponent: React.FC<MapComponentProps> = ({
-//   onChangeCoordinates,
-//   initialCoordinates = [],
-// }) => {
-//   const [isLoaded, setIsLoaded] = useState(false);
-//   const [coordinate, setCoordinate] = useState<number[]>(initialCoordinates);
-
-//   const handleLoad = () => {
-//     setIsLoaded(true);
-//   };
-
-//   const handleError = () => {
-//     alert("Произошла ошибка при загрузке карты");
-//     setIsLoaded(true);
-//   };
-
-//   const handleClick = (event: MapClickEvent) => {
-//     const coords: number[] = event.get("coords");
-//     setCoordinate(() => coords);
-//     onChangeCoordinates(coords);
-//   };
-
-//   return (
-//     <div className="map">
-//       {!isLoaded && <Spinner />}
-//       <YMaps>
-//         <YMap
-//           onLoad={handleLoad}
-//           onError={handleError}
-//           onClick={handleClick}
-//           width={isLoaded ? "100%" : "0"}
-//           height="100%"
-//           defaultState={{
-//             center: [53.9, 27.55],
-//             zoom: 11,
-//           }}
-//         >
-//           <Clusterer
-//             options={{
-//               preset: "islands#invertedVioletClusterIcons",
-//               groupByCoordinates: false,
-//             }}
-//           >
-//             {/* Uncomment and supply clusterPoints array if needed */}
-//             {/* {clusterPoints.map((coordinates, index) => (
-//               <Placemark key={index} geometry={coordinates} />
-//             ))} */}
-//           </Clusterer>
-//           <ObjectManager
-//             options={{
-//               clusterize: true,
-//               gridSize: 32,
-//             }}
-//             objects={{
-//               openBalloonOnClick: true,
-//               preset: "islands#greenDotIcon",
-//             }}
-//             clusters={{
-//               preset: "islands#redClusterIcons",
-//             }}
-//             filter={(object: { id: number }) => object.id % 2 === 0}
-//             // Uncomment and supply objectManagerFeatures array if needed
-//             // defaultFeatures={objectManagerFeatures}
-//             modules={[
-//               "objectManager.addon.objectsBalloon",
-//               "objectManager.addon.objectsHint",
-//             ]}
-//           />
-//           <ZoomControl options={{ float: "right" }} />
-//           <GeolocationControl options={{ float: "left" }} />
-//           <Placemark geometry={coordinate} />
-//           {/* Uncomment and include SearchControl if needed */}
-//           {/* <SearchControl options={{ float: "right" }} /> */}
-//         </YMap>
-//       </YMaps>
-//     </div>
-//   );
-// };
-
-// export default MapComponent;

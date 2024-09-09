@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Button, Form, Input, InputNumber } from "antd";
+import { Button, Flex, Form, Input, InputNumber } from "antd";
 
 import { useTypedSelector } from "@/store";
 import { useUpdateAdMutation, useGetOneAdQuery } from "@/api/adApiSlice.js";
@@ -23,7 +23,6 @@ const EditAdPage: FC = () => {
   const [updateAd, { isLoading: isUpdateLoading, isSuccess }] =
     useUpdateAdMutation();
   const { currentUser } = useTypedSelector((state) => state.user);
-
   useEffect(() => {
     let timerId: NodeJS.Timeout;
     if (isSuccess) {
@@ -32,64 +31,29 @@ const EditAdPage: FC = () => {
     }
     return () => clearTimeout(timerId);
   }, [isSuccess]);
-
-  const formItemLayout = {
-    labelCol: {
-      xs: { span: 22 },
-      sm: { span: 22, push: 1 },
-    },
-    wrapperCol: {
-      xs: { span: 22 },
-      sm: { span: 22, offset: 1 },
-    },
-  };
-
   const validateMessages = {
     required: "Необходимо заполнить!",
   };
-
   const answer = (
     <span className="success-answer">Данные успешно обновлены!</span>
   );
-
   if (!ad) {
     return <InfoMessage>Такого объявления не существует!</InfoMessage>;
   }
-
+  if (!currentUser || ad.author !== currentUser.id) {
+    return (
+      <InfoMessage>Вы не можете редактировать данное объявление</InfoMessage>
+    );
+  }
   const { id, author, photos, coordinates, ...initialValues } = ad;
   let editedPhotos = photos;
   let editedCoordinates = coordinates;
-  // const isEmptyObject = Object.keys(photos).length === 0;
-  // const initialPhotos = isEmptyObject ? photos : [];
-  // const initialCoordinates = coordinates ? coordinates : "[]";
-  // console.log(initialValues);
-
-  // const isAuthor = author === currentUser.email;
-
-  // const initialValue = {
-  //   title: "", //
-  //   price: "", //
-  //   description: "", //
-  //   square: "", //
-  //   rooms: "", //
-  //   floor: "", //s
-  //   name: "", //
-  //   phone: "", //
-
-  //   //photos
-  // };
-
-  // let editedPhotos: UploadFileType;
-  // let editedCoordinates: number[];
-
   const onChangePhoto = (files: UploadFileType): void => {
     editedPhotos = files;
   };
-
   const onChangeCoordinates = (coords: number[]): void => {
     editedCoordinates = coords;
   };
-
   const onFinish = (values: Ad) => {
     values.id = id;
     values.author = author;
@@ -98,28 +62,22 @@ const EditAdPage: FC = () => {
     updateAd({ id, ad: values })
       .unwrap()
       .catch((error) => {
-        console.log("error", error);
+        console.error(error);
       });
   };
-
   if (isFetching) {
     return <Spinner />;
   }
-
-  if (!currentUser) {
-    return <InfoMessage>Вам нужно авторизоваться</InfoMessage>;
-  }
-
   return (
     <div className="edit-ad">
       <div className="edit-ad__wrapper">
         <Form
           form={form}
-          {...formItemLayout}
           onFinish={onFinish}
           initialValues={initialValues}
           scrollToFirstError
           layout="vertical"
+          className="edit-ad__form"
           validateMessages={validateMessages}
           variant="filled"
           name="updateAd"
@@ -135,7 +93,6 @@ const EditAdPage: FC = () => {
           >
             <Input maxLength={100} />
           </Form.Item>
-
           <Form.Item
             label="Адрес"
             name="address"
@@ -147,7 +104,6 @@ const EditAdPage: FC = () => {
           >
             <Input showCount maxLength={50} />
           </Form.Item>
-
           <Form.Item
             name="photos"
             tooltip="Не более 8 фотографий"
@@ -158,7 +114,6 @@ const EditAdPage: FC = () => {
               onChangePhoto={onChangePhoto}
             />
           </Form.Item>
-
           <Form.Item
             label="Стоимость"
             name="price"
@@ -171,7 +126,6 @@ const EditAdPage: FC = () => {
               style={{ width: "100%" }}
             />
           </Form.Item>
-
           <Form.Item
             label="Описание объекта"
             name="description"
@@ -186,7 +140,6 @@ const EditAdPage: FC = () => {
               maxLength={1000}
             />
           </Form.Item>
-
           <Form.Item
             rules={[
               {
@@ -204,7 +157,6 @@ const EditAdPage: FC = () => {
               style={{ width: "100%" }}
             />
           </Form.Item>
-
           <Form.Item
             label="Колличество комнат"
             name="rooms"
@@ -213,7 +165,6 @@ const EditAdPage: FC = () => {
           >
             <InputNumber min={1} max={10} style={{ width: "100%" }} />
           </Form.Item>
-
           <Form.Item
             label="Этаж"
             tooltip="Положительное число от 1 до 30"
@@ -222,12 +173,10 @@ const EditAdPage: FC = () => {
           >
             <InputNumber min={1} max={30} style={{ width: "100%" }} />
           </Form.Item>
-
           <MapComponent
             initialCoordinates={editedCoordinates}
             onChangeCoordinates={onChangeCoordinates}
           />
-
           <Form.Item
             name="name"
             label="Ваше имя"
@@ -241,7 +190,6 @@ const EditAdPage: FC = () => {
           >
             <Input />
           </Form.Item>
-
           <Form.Item
             name="phone"
             label="Номер телефона"
@@ -258,11 +206,16 @@ const EditAdPage: FC = () => {
               }}
             />
           </Form.Item>
-
-          <Form.Item wrapperCol={{ offset: 9 }}>
-            <Button type="primary" disabled={isUpdateLoading} htmlType="submit">
-              Сохранить изменения
-            </Button>
+          <Form.Item>
+            <Flex justify="center">
+              <Button
+                type="primary"
+                disabled={isUpdateLoading}
+                htmlType="submit"
+              >
+                Сохранить изменения
+              </Button>
+            </Flex>
             {successUpdate ? answer : null}
           </Form.Item>
         </Form>

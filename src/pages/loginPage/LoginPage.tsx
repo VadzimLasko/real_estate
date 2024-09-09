@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Checkbox, Form, Input } from "antd";
@@ -13,11 +13,24 @@ interface LoginFormValues {
   email: string;
   password: string;
 }
-//TODO разобраться с карентюсер на каждом компоненте, т.к. он есть хедере
+
+type SizeType = Parameters<typeof Form>[0]["size"];
+
 const LoginPage: FC = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const { data: users = [] } = useGetUsersQuery();
+  const [size, setSize] = useState("middle");
+
+  const handleResize = () => {
+    if (window.innerWidth < 860) {
+      setSize("small");
+    } else if (window.innerWidth >= 860 && window.innerWidth < 1200) {
+      setSize("middle");
+    } else {
+      setSize("large");
+    }
+  };
 
   const validateMessages = {
     required: "Необходимо заполнить!",
@@ -35,6 +48,14 @@ const LoginPage: FC = () => {
     ]);
   };
 
+  useEffect(() => {
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   const onFinish = async (values: LoginFormValues) => {
     const user = currentUserFromEmail(users, values.email);
     if (user && (await compare(values.password, user.password))) {
@@ -51,16 +72,8 @@ const LoginPage: FC = () => {
         <Form
           name="LoginForm"
           className="login-form"
-          // labelCol={{
-          //   span: 8,
-          // }}
-          // wrapperCol={{
-          //   span: 22,
-          // }}
-          // style={{
-          //   maxWidth: 600,
-          // }}
           form={form}
+          size={size as SizeType}
           initialValues={{
             remember: true,
           }}
@@ -71,9 +84,6 @@ const LoginPage: FC = () => {
           <Form.Item
             label="E-mail"
             name="email"
-            //   wrapperCol={{
-            //     offset: 1,
-            //   }}
             rules={[
               {
                 type: "email",
@@ -110,18 +120,9 @@ const LoginPage: FC = () => {
             <Form.Item name="remember" valuePropName="checked" noStyle>
               <Checkbox>Запомнить меня</Checkbox>
             </Form.Item>
-            {/* TODO  разобраться с напоминанием пароля в случае забывания */}
-            {/* <a className="login-form-forgot" href="">
-              Забыл пароль
-            </a> */}
           </Form.Item>
 
-          <Form.Item
-          // wrapperCol={{
-          //   offset: 8,
-          //   span: 16,
-          // }}
-          >
+          <Form.Item>
             <Button
               type="primary"
               htmlType="submit"

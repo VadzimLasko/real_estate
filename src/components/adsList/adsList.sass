@@ -2,6 +2,8 @@
 
 .ads-list
     @include center-parent
+    @include respond(tab-port-xs)
+        flex-direction: column
     .adItem-enter 
         opacity: 0 
     .adItem-enter-active 
@@ -19,12 +21,16 @@
         z-index: 2
         overflow-y: scroll
         scrollbar-gutter: stable
-        scroll
         display: grid
         grid-auto-rows: min-content
         gap: 2rem      
-        grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr))
+        grid-template-columns: repeat(auto-fit, minmax(20rem, auto))
         background-color: $color-white
+        @include respond(tab-port-xs)
+            width: 90vw
+            max-height: 60vh
+            border-left: .2rem solid $color-gray
+            border-right: .2rem solid $color-gray
 
 .ad-card
     max-width: 25rem
