@@ -77,7 +77,7 @@ const EditAdPage: FC = () => {
           initialValues={initialValues}
           scrollToFirstError
           layout="vertical"
-          className="edit-ad__form"
+          style={{ width: "700" }}
           validateMessages={validateMessages}
           variant="filled"
           name="updateAd"

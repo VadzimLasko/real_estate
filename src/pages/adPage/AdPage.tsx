@@ -14,7 +14,7 @@ import {
   useUpdateFavoritesMutation,
 } from "@/api/authApiSlice";
 import { useTypedSelector } from "@/store";
-import Spinner from "@/components/spinner/Spinner";
+import { GeneralSpinner } from "@/components/spinner/Spinner";
 import Slider from "@/components/slider/Slider";
 import { currentUserFromId, firstLetterBig } from "@/helpers";
 import { Ad } from "@/types/ads";
@@ -187,7 +187,7 @@ const AdPage: React.FC = () => {
   };
 
   if (isFetching) {
-    return <Spinner />;
+    return <GeneralSpinner />;
   }
 
   if (ad) {

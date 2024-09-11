@@ -1,5 +1,4 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { RootState } from "@reduxjs/toolkit/query";
 import { TypedUseSelectorHook, useSelector } from "react-redux";
 import { adApiSlice } from "@/api/adApiSlice";
 import { authApiSlice } from "@/api/authApiSlice";
@@ -21,7 +20,7 @@ const store = configureStore({
   devTools: process.env.NODE_ENV !== "production",
 });
 
-export type state = ReturnType<typeof store.getState>;
+export type RootState = ReturnType<typeof store.getState>;
 export const useTypedSelector: TypedUseSelectorHook<RootState> = useSelector;
 
 export default store;

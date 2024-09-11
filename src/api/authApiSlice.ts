@@ -13,11 +13,9 @@ export const authApiSlice = createApi({
     getUsers: builder.query<Users, void>({
       query: () => "/users",
       providesTags: ["Auth"],
-      keepUnusedDataFor: 5,
     }),
     getCurrentUser: builder.query<User, string>({
       query: (id) => `/users/${id}`,
-      keepUnusedDataFor: 5,
     }),
     register: builder.mutation<User, Partial<User>>({
       query: (credentials) => ({

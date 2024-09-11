@@ -1,6 +1,6 @@
 import "./spinner.css";
 
-const Spinner = () => {
+export default function Spinner() {
   return (
     <div className="loading">
       <span></span>
@@ -10,6 +10,8 @@ const Spinner = () => {
       <span></span>
     </div>
   );
-};
+}
 
-export default Spinner;
+export const GeneralSpinner = () => {
+  return <div className="wrapper">{<Spinner />}</div>;
+};

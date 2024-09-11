@@ -42,6 +42,11 @@
   animation-delay: -0.5s;
 }
 
+.wrapper {
+  padding-top: 30vh; 
+  height: 100vh;
+}
+
 @keyframes scale {
   0%,
   40%,

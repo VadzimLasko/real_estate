@@ -3,7 +3,8 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import AppHeader from "@/components/appHeader/AppHeader";
 import Footer from "@/components/footer/Footer";
 import routes from "@/routes";
-import Spinner from "@/components/spinner/Spinner";
+import { GeneralSpinner } from "@/components/spinner/Spinner";
+import ErrorBoundary from "@/components/errorBoundary/ErrorBoundary";
 
 interface RouteConfig {
   path: string;
@@ -13,19 +14,21 @@ interface RouteConfig {
 const App = () => {
   return (
     <Router>
-      <Suspense fallback={<Spinner />}>
-        <AppHeader />
-        <Routes>
-          {routes.map(({ path, element }: RouteConfig) => (
-            <Route
-              key={path}
-              path={path}
-              element={React.createElement(element)}
-            />
-          ))}
-        </Routes>
-        <Footer />
+      <AppHeader />
+      <Suspense fallback={<GeneralSpinner />}>
+        <ErrorBoundary>
+          <Routes>
+            {routes.map(({ path, element }: RouteConfig) => (
+              <Route
+                key={path}
+                path={path}
+                element={React.createElement(element)}
+              />
+            ))}
+          </Routes>
+        </ErrorBoundary>
       </Suspense>
+      <Footer />
     </Router>
   );
 };

@@ -1,9 +1,5 @@
-import React from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { DownOutlined } from "@ant-design/icons";
-import type { MenuProps } from "antd";
-import { Dropdown, Space } from "antd";
 
 import { useGetUsersQuery } from "@/api/authApiSlice";
 import { useTypedSelector } from "@/store";

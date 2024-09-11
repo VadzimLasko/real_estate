@@ -5,7 +5,7 @@ import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { useGetAdsQuery } from "@/api/adApiSlice";
 import { useTypedSelector } from "@/store";
 import MapComponent from "../mapComponent/MapComponent";
-import Spinner from "@/components/spinner/Spinner";
+import { GeneralSpinner } from "@/components/spinner/Spinner";
 import { Ad } from "@/types/ads";
 import { DataForPoints } from "@/types/map";
 
@@ -144,7 +144,7 @@ const AdsList: FC = () => {
     );
   };
   if (isFetching || !ads) {
-    return <Spinner />;
+    return <GeneralSpinner />;
   }
 
   if (ads) {
